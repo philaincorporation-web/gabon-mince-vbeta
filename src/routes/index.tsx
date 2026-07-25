@@ -586,14 +586,14 @@ function Home() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
           {venues.map((v) => (
             <article key={v.title} className="group cursor-pointer">
-              <div className="relative overflow-hidden rounded-[1.5rem] mb-6 shadow-soft bg-slate-100">
+              <div className="relative overflow-hidden rounded-[1.5rem] mb-6 shadow-soft bg-slate-100 max-h-[24rem] sm:max-h-none">
                 <img
                   src={v.image}
                   alt={v.title}
                   width={800}
                   height={1000}
                   loading="lazy"
-                  className="aspect-[4/5] w-full object-cover object-center transition-transform duration-[900ms] ease-out group-hover:scale-105"
+                  className="aspect-[4/5] w-full h-full object-cover object-center transition-transform duration-[900ms] ease-out group-hover:scale-105"
                 />
                 <div className="absolute top-5 left-5">
                   <span className="bg-white/90 backdrop-blur px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest text-forest">
@@ -656,14 +656,14 @@ function Home() {
           </div>
 
           <div className="relative">
-            <div className="rounded-3xl overflow-hidden shadow-2xl rotate-0 lg:rotate-2 hover:rotate-0 transition-transform duration-700 max-w-md mx-auto lg:ml-auto">
+            <div className="rounded-3xl overflow-hidden shadow-2xl rotate-0 lg:rotate-2 hover:rotate-0 transition-transform duration-700 max-w-md mx-auto lg:ml-auto max-h-[28rem] sm:max-h-none">
               <img
                 src={gabonMask}
                 alt="Masque traditionnel gabonais"
                 width={600}
                 height={800}
                 loading="lazy"
-                className="aspect-[3/4] w-full object-cover"
+                className="aspect-[3/4] w-full h-full object-cover"
               />
             </div>
             <div className="absolute -bottom-6 -left-6 bg-white/95 backdrop-blur rounded-2xl p-6 shadow-2xl max-w-xs hidden md:block">
@@ -695,10 +695,10 @@ function Home() {
         <div className="grid grid-cols-1 md:grid-cols-6 gap-6">
           <a
             href="#"
-            className="group md:col-span-4 relative overflow-hidden rounded-3xl aspect-[16/10] shadow-soft"
+            className="group md:col-span-4 relative overflow-hidden rounded-3xl aspect-[16/10] shadow-soft max-h-[26rem] sm:max-h-none"
           >
             <img
-               src="\public\Palaiscongrès2.webp"
+              src="/muséé12.webp"
               alt="Libreville"
               loading="lazy"
               className="absolute inset-0 w-full h-full object-cover transition-transform duration-[900ms] group-hover:scale-105"
@@ -716,14 +716,14 @@ function Home() {
           </a>
           <a
             href="#"
-            className="group md:col-span-2 relative overflow-hidden rounded-3xl aspect-[4/3] sm:aspect-[16/10] md:aspect-auto shadow-soft"
+            className="group md:col-span-2 relative overflow-hidden rounded-3xl aspect-[4/3] sm:aspect-[16/10] md:aspect-auto shadow-soft max-h-[20rem] sm:max-h-none"
           >
-           <img
-  src="\public\Portgentille.jpg"
-  alt="Port-Gentil"
-  loading="lazy"
-  className="absolute inset-0 w-full h-full object-cover transition-transform duration-[900ms] group-hover:scale-105"
-/>
+            <img
+              src="/port-gentil11.webp"
+              alt="Port-Gentil"
+              loading="lazy"
+              className="absolute inset-0 w-full h-full object-cover transition-transform duration-[900ms] group-hover:scale-105"
+            />
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
             <div className="absolute bottom-0 left-0 p-6 text-white">
               <span className="text-gold text-[10px] uppercase tracking-widest font-bold">
@@ -734,10 +734,10 @@ function Home() {
           </a>
           <a
             href="#"
-            className="group md:col-span-2 relative overflow-hidden rounded-3xl aspect-[4/3] sm:aspect-[16/10] shadow-soft"
+            className="group md:col-span-2 relative overflow-hidden rounded-3xl aspect-[4/3] sm:aspect-[16/10] shadow-soft max-h-[20rem] sm:max-h-none"
           >
             <img
-              src="\public\PLAteau.jpg"
+              src="/PLAteau.jpg"
               alt="Loango"
               loading="lazy"
               className="absolute inset-0 w-full h-full object-cover transition-transform duration-[900ms] group-hover:scale-105"
@@ -752,10 +752,10 @@ function Home() {
           </a>
           <a
             href="#"
-            className="group md:col-span-4 relative overflow-hidden rounded-3xl aspect-[16/10] shadow-soft"
+            className="group md:col-span-4 relative overflow-hidden rounded-3xl aspect-[16/10] shadow-soft max-h-[26rem] sm:max-h-none"
           >
             <img
-               src="public\tortue2.jpg"
+              src="/tortue.jpg"
               alt="Pointe Denis"
               loading="lazy"
               className="absolute inset-0 w-full h-full object-cover transition-transform duration-[900ms] group-hover:scale-105"
