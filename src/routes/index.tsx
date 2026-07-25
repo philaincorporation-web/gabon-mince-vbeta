@@ -1,9 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import heroLibreville from "@/assets/hero-libreville.jpg";
-import venueConference from "@/assets/venue-conference.jpg";
-import venuePointeDenis from "@/assets/venue-pointedenis.jpg";
-import venuePortGentil from "@/assets/venue-portgentil.jpg";
 import loangoElephant from "@/assets/loango-elephant.jpg";
 import gabonMask from "@/assets/gabon-mask.jpg";
 
@@ -13,7 +10,7 @@ export const Route = createFileRoute("/")({
 
 const heroSlidesFr = [
   {
-    image: heroLibreville,
+    image: "/baiedesRois2.webp",
     eyebrow: "Libreville · Capitale MICE",
     title: "L'Afrique Émergente",
     subtitle:
@@ -27,7 +24,7 @@ const heroSlidesFr = [
       "Éléphants de forêt, gorilles, baleines à bosse — l'Afrique dans sa forme la plus pure.",
   },
   {
-    image: venuePointeDenis,
+    image: "/lemeridien.jpg",
     eyebrow: "Pointe Denis · Incentive",
     title: "Le Luxe Côtier",
     subtitle:
@@ -37,7 +34,7 @@ const heroSlidesFr = [
 
 const heroSlidesEn = [
   {
-    image: heroLibreville,
+    image: "/baiedesRois2.webp",
     eyebrow: "Libreville · MICE Capital",
     title: "The Emerging Africa",
     subtitle:
@@ -51,7 +48,7 @@ const heroSlidesEn = [
       "Forest elephants, gorillas, humpback whales — Africa in its purest form.",
   },
   {
-    image: venuePointeDenis,
+    image: "/lemeridien.jpg",
     eyebrow: "Pointe Denis · Incentive",
     title: "Coastal Luxury",
     subtitle:
@@ -61,43 +58,43 @@ const heroSlidesEn = [
 
 const venuesFr = [
   {
-    image: venueConference,
+    image: "/AFAIRES.webp",
     location: "Libreville",
-    title: "Centre International d'Angondjé",
-    desc: "Infrastructures de pointe pour accueillir jusqu'à 3 500 délégués avec connectivité satellite haut-débit.",
+    title: "Espace des affaires d'Angondjé",
+    desc: "Plateformes de congrès premium et services MICE au cœur de la capitale.",
   },
   {
-    image: venuePointeDenis,
+    image: "/riverLoge.jpg",
     location: "Pointe Denis",
-    title: "Oceanic Executive Retreat",
-    desc: "Expériences d'incentive sur mesure combinant stratégie de haut niveau et luxe côtier.",
+    title: "Retraite riveraine executive",
+    desc: "Hébergement côtier intimiste avec salles de réunion face à la lagune et service sur mesure.",
   },
   {
-    image: venuePortGentil,
+    image: "/sogara.webp",
     location: "Port-Gentil",
-    title: "Port-Gentil Business Suites",
-    desc: "Au cœur de la puissance industrielle et économique du Gabon, pensé pour les investisseurs internationaux.",
+    title: "Plaine industrielle Sogara",
+    desc: "Centre stratégique pour l'industrie pétrolière, la logistique et les échanges d'affaires.",
   },
 ];
 
 const venuesEn = [
   {
-    image: venueConference,
+    image: "/AFAIRES.webp",
     location: "Libreville",
-    title: "Angondjé International Center",
-    desc: "State-of-the-art facilities for up to 3,500 delegates with high-speed satellite connectivity.",
+    title: "Angondjé Business Hub",
+    desc: "Premium conference platforms and MICE services at the heart of the capital.",
   },
   {
-    image: venuePointeDenis,
+    image: "/riverLoge.jpg",
     location: "Pointe Denis",
-    title: "Oceanic Executive Retreat",
-    desc: "Bespoke incentive experiences blending high-level strategy and coastal luxury.",
+    title: "River Lodge Executive Retreat",
+    desc: "Intimate coastal lodging with lagoon-front meeting spaces and bespoke service.",
   },
   {
-    image: venuePortGentil,
+    image: "/sogara.webp",
     location: "Port-Gentil",
-    title: "Port-Gentil Business Suites",
-    desc: "At the heart of Gabon's industrial and economic power, designed for international investors.",
+    title: "Sogara Industrial Platform",
+    desc: "Strategic center for oil, logistics and business exchange in the port zone.",
   },
 ];
 
@@ -174,8 +171,8 @@ function Home() {
           destinationsText:
             "Des centres urbains cosmopolites aux sanctuaires marins protégés — une géographie d'exception à portée de vol.",
           destinationCard1Label: "Capitale",
-          destinationCard1Title: "Libreville",
-          destinationCard1Text: "Hub économique, centres de conférences et vie nocturne raffinée.",
+          destinationCard1Title: "Vue sur l'entrée du musée national des arts et traditions du Gabon",
+          destinationCard1Text: "Le Gabon authentique se découvre aussi à travers son patrimoine.",
           destinationCard2Label: "Business",
           destinationCard2Title: "Port-Gentil",
           destinationCard3Label: "Nature Sauvage",
@@ -698,7 +695,7 @@ function Home() {
             className="group md:col-span-4 relative overflow-hidden rounded-3xl aspect-[16/10] shadow-soft"
           >
             <img
-               src="\public\Palaiscongrès2.webp"
+              src="/muséé12.webp"
               alt="Libreville"
               loading="lazy"
               className="absolute inset-0 w-full h-full object-cover transition-transform duration-[900ms] group-hover:scale-105"
@@ -718,12 +715,12 @@ function Home() {
             href="#"
             className="group md:col-span-2 relative overflow-hidden rounded-3xl aspect-[4/3] sm:aspect-[16/10] md:aspect-auto shadow-soft"
           >
-           <img
-  src="\public\Portgentille.jpg"
-  alt="Port-Gentil"
-  loading="lazy"
-  className="absolute inset-0 w-full h-full object-cover transition-transform duration-[900ms] group-hover:scale-105"
-/>
+            <img
+              src="/port-gentil11.webp"
+              alt="Port-Gentil"
+              loading="lazy"
+              className="absolute inset-0 w-full h-full object-cover transition-transform duration-[900ms] group-hover:scale-105"
+            />
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
             <div className="absolute bottom-0 left-0 p-6 text-white">
               <span className="text-gold text-[10px] uppercase tracking-widest font-bold">
@@ -737,7 +734,7 @@ function Home() {
             className="group md:col-span-2 relative overflow-hidden rounded-3xl aspect-[4/3] sm:aspect-[16/10] shadow-soft"
           >
             <img
-              src="\public\PLAteau.jpg"
+              src="/PLAteau.jpg"
               alt="Loango"
               loading="lazy"
               className="absolute inset-0 w-full h-full object-cover transition-transform duration-[900ms] group-hover:scale-105"
@@ -755,7 +752,7 @@ function Home() {
             className="group md:col-span-4 relative overflow-hidden rounded-3xl aspect-[16/10] shadow-soft"
           >
             <img
-               src="public\tortue2.jpg"
+              src="/tortue.jpg"
               alt="Pointe Denis"
               loading="lazy"
               className="absolute inset-0 w-full h-full object-cover transition-transform duration-[900ms] group-hover:scale-105"
