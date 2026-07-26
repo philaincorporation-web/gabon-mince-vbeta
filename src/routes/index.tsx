@@ -371,17 +371,18 @@ function Home() {
       <nav className={`fixed top-0 left-0 right-0 z-50 backdrop-blur-xl border-b px-4 sm:px-6 md:px-10 py-3 sm:py-4 flex flex-wrap items-center justify-between gap-3 transition-colors duration-500 ${
         isDark ? "bg-slate-950/80 border-slate-800" : "bg-white/75 border-black/5"
       }`}>
-        <Link to="/" className="flex items-center gap-3" onClick={() => setMenuOpen(false)}>
-          <div className="flex h-10 w-10 items-center justify-center rounded-full border border-forest/20 bg-white/90 p-1 shadow-sm shadow-forest/10 ring-1 ring-forest/10 sm:h-12 sm:w-12">
+        <Link to="/" className="flex min-w-0 items-center gap-2 sm:gap-3" onClick={() => setMenuOpen(false)}>
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-forest/20 bg-white/90 p-1 shadow-sm shadow-forest/10 ring-1 ring-forest/10 sm:h-12 sm:w-12">
             <img
               src="/logo%20GabonMince.png"
               alt="GabonMince"
               className="h-full w-full rounded-full object-cover"
             />
           </div>
-          <span className="font-display font-bold text-lg sm:text-xl tracking-tight text-forest">
+          <span className="hidden font-display font-bold text-lg tracking-tight text-forest min-[430px]:inline sm:text-xl">
             GABON<span className="text-ocean">MICE</span>
           </span>
+          <img src="/LogoAGATOUR.jpg" alt="AGATOUR" className="h-8 w-auto max-w-20 rounded bg-white p-0.5 object-contain sm:h-10 sm:max-w-none sm:p-1" />
         </Link>
 
         <div className={`hidden lg:flex items-center gap-10 text-[11px] font-semibold uppercase tracking-[0.18em] ${isDark ? "text-slate-300" : "text-slate-600"}`}>
