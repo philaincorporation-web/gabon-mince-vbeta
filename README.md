@@ -28,3 +28,4 @@ npm run dev
 - React
 - Tailwind CSS
 # gabon-mince2026
+# gabon-mince-vbeta
