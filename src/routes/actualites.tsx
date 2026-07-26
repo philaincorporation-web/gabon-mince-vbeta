@@ -1,0 +1,9 @@
+import { createFileRoute } from "@tanstack/react-router";
+import { CataloguePage, type CatalogueItem } from "@/components/catalogue-page";
+export const Route = createFileRoute("/actualites")({ component: NewsPage });
+const items: CatalogueItem[] = [
+  { image: "/baiedesRois2.webp", fr: { title: "GabonMICE", description: "Les rendez-vous à venir et les initiatives du secteur.", label: "À la une", details: "Suivez les nouveautés, opportunités et grands rendez-vous qui contribuent au rayonnement de la destination." }, en: { title: "GabonMICE", description: "Upcoming events and sector initiatives.", label: "Featured", details: "Follow the news, opportunities and key events contributing to the destination's visibility." } },
+  { image: "/libreville.jpg", fr: { title: "Libreville accueille", description: "Des événements à portée internationale.", label: "Événement", details: "Découvrez les actualités liées aux rencontres professionnelles et culturelles organisées dans la capitale." }, en: { title: "Libreville Hosts", description: "Events with international reach.", label: "Event", details: "Discover news about professional and cultural gatherings taking place in the capital." } },
+  { image: "/imageLAC.jpg", fr: { title: "Destination Gabon", description: "Un nouvel élan pour le tourisme d'affaires.", label: "Destination", details: "Le Gabon poursuit le développement d'une offre combinant excellence événementielle et authenticité." }, en: { title: "Destination Gabon", description: "New momentum for business tourism.", label: "Destination", details: "Gabon continues to develop an offer combining event excellence with authenticity." } },
+];
+function NewsPage() { return <CataloguePage title={{ fr: "Actualités", en: "News" }} intro={{ fr: "Les informations et opportunités autour du tourisme d'affaires au Gabon.", en: "News and opportunities around business tourism in Gabon." }} items={items} />; }

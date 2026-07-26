@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import heroLibreville from "@/assets/hero-libreville.jpg";
 import loangoElephant from "@/assets/loango-elephant.jpg";
@@ -274,11 +274,19 @@ function Home() {
     if (storedTheme) {
       setTheme(storedTheme);
     }
+    const storedLanguage = window.localStorage.getItem("gabonmice-language") as "fr" | "en" | null;
+    if (storedLanguage) {
+      setLanguage(storedLanguage);
+    }
   }, []);
 
   useEffect(() => {
     window.localStorage.setItem("gabonmice-theme", theme);
   }, [theme]);
+
+  useEffect(() => {
+    window.localStorage.setItem("gabonmice-language", language);
+  }, [language]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -297,18 +305,18 @@ function Home() {
 
   const navLinks = isFrench
     ? [
-        { label: "Business", href: "#mice" },
-        { label: "Destinations", href: "#destinations" },
-        { label: "Expériences", href: "#experiences" },
-        { label: "Investir", href: "#invest" },
-        { label: "Actualités", href: "#news" },
+        { label: "Business", href: "/lieux" },
+        { label: "Destinations", href: "/destinations" },
+        { label: "Expériences", href: "/experiences" },
+        { label: "Investir", href: "/investir" },
+        { label: "Actualités", href: "/actualites" },
       ]
     : [
-        { label: "Business", href: "#mice" },
-        { label: "Destinations", href: "#destinations" },
-        { label: "Experiences", href: "#experiences" },
-        { label: "Invest", href: "#invest" },
-        { label: "News", href: "#news" },
+        { label: "Business", href: "/lieux" },
+        { label: "Destinations", href: "/destinations" },
+        { label: "Experiences", href: "/experiences" },
+        { label: "Invest", href: "/investir" },
+        { label: "News", href: "/actualites" },
       ];
 
   const investItems = isFrench
@@ -363,7 +371,7 @@ function Home() {
       <nav className={`fixed top-0 left-0 right-0 z-50 backdrop-blur-xl border-b px-4 sm:px-6 md:px-10 py-3 sm:py-4 flex flex-wrap items-center justify-between gap-3 transition-colors duration-500 ${
         isDark ? "bg-slate-950/80 border-slate-800" : "bg-white/75 border-black/5"
       }`}>
-        <a href="#" className="flex items-center gap-3" onClick={() => setMenuOpen(false)}>
+        <Link to="/" className="flex items-center gap-3" onClick={() => setMenuOpen(false)}>
           <div className="flex h-10 w-10 items-center justify-center rounded-full border border-forest/20 bg-white/90 p-1 shadow-sm shadow-forest/10 ring-1 ring-forest/10 sm:h-12 sm:w-12">
             <img
               src="/logo%20GabonMince.png"
@@ -374,13 +382,13 @@ function Home() {
           <span className="font-display font-bold text-lg sm:text-xl tracking-tight text-forest">
             GABON<span className="text-ocean">MICE</span>
           </span>
-        </a>
+        </Link>
 
         <div className={`hidden lg:flex items-center gap-10 text-[11px] font-semibold uppercase tracking-[0.18em] ${isDark ? "text-slate-300" : "text-slate-600"}`}>
           {navLinks.map((link) => (
-            <a key={link.href} href={link.href} className="hover:text-forest transition-colors">
+            <Link key={link.href} to={link.href} className="hover:text-forest transition-colors">
               {link.label}
-            </a>
+            </Link>
           ))}
         </div>
 
@@ -395,9 +403,9 @@ function Home() {
           >
             {isDark ? "☀" : "☾"}
           </button>
-          <button
-            type="button"
-            onClick={() => setLanguage(isFrench ? "en" : "fr")}
+            <button
+              type="button"
+              onClick={() => setLanguage(isFrench ? "en" : "fr")}
             className={`inline-flex px-3 sm:px-4 py-2.5 rounded-full border text-[10px] sm:text-xs font-semibold tracking-widest uppercase transition-all duration-300 ${
               isDark ? "border-slate-700 text-slate-200 hover:bg-slate-800" : "border-forest/30 text-forest hover:bg-forest hover:text-white"
             }`}
@@ -414,13 +422,12 @@ function Home() {
           >
             <span className="text-lg leading-none">☰</span>
           </button>
-          <button
-            type="button"
-            onClick={() => setLanguage(isFrench ? "en" : "fr")}
+          <Link
+            to="/contact"
             className="hidden sm:inline-flex px-4 sm:px-6 md:px-8 py-2.5 rounded-full bg-forest text-white text-[10px] sm:text-xs font-semibold tracking-widest uppercase shadow-lg shadow-forest/25 hover:bg-forest-deep transition-all"
           >
             {copy.nav.cta}
-          </button>
+          </Link>
         </div>
       </nav>
 
@@ -446,9 +453,9 @@ function Home() {
           </div>
           <div className="flex flex-col gap-3">
             {navLinks.map((link) => (
-              <a
+              <Link
                 key={link.href}
-                href={link.href}
+                to={link.href}
                 className={`rounded-2xl border px-4 py-3 text-sm font-semibold uppercase tracking-[0.16em] transition-colors ${
                   isDark
                     ? "border-slate-700 text-slate-300 hover:border-forest hover:text-forest"
@@ -457,7 +464,7 @@ function Home() {
                 onClick={() => setMenuOpen(false)}
               >
                 {link.label}
-              </a>
+              </Link>
             ))}
             <button
               type="button"
@@ -855,6 +862,11 @@ function Home() {
               <span className="font-display font-bold text-lg tracking-tight text-forest">
                 GABON<span className="text-ocean">MICE</span>
               </span>
+              <img
+                src="/LogoAGATOUR.jpg"
+                alt="AGATOUR"
+                className="h-12 w-auto rounded-lg bg-white p-1 object-contain"
+              />
             </div>
             <p className={`max-w-md mb-8 font-light leading-relaxed ${mutedTextClass}`}>
               La plateforme officielle du tourisme d'affaires et de loisirs au Gabon. Promouvoir la
