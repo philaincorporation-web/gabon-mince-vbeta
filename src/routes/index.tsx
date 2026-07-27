@@ -25,6 +25,13 @@ const heroSlidesFr = [
   },
   {
     image: "/lemeridien.jpg",
+    eyebrow: "Parc National de Loango",
+    title: "Le Dernier Éden",
+    subtitle:
+      "Éléphants de forêt, gorilles, baleines à bosse — l'Afrique dans sa forme la plus pure.",
+  },
+  {
+    image: "/pointDenis.jpg",
     eyebrow: "Pointe Denis · Incentive",
     title: "Le Luxe Côtier",
     subtitle:
@@ -49,6 +56,13 @@ const heroSlidesEn = [
   },
   {
     image: "/lemeridien.jpg",
+    eyebrow: "Loango National Park",
+    title: "The Last Eden",
+    subtitle:
+      "Forest elephants, gorillas, humpback whales — Africa in its purest form.",
+  },
+  {
+    image: "/pointDenis.jpg",
     eyebrow: "Pointe Denis · Incentive",
     title: "Coastal Luxury",
     subtitle:
@@ -58,10 +72,10 @@ const heroSlidesEn = [
 
 const venuesFr = [
   {
-    image: "/AFAIRES.webp",
+    image: "/Palaiscongrès2.webp",
     location: "Libreville",
-    title: "Espace des affaires d'Angondjé",
-    desc: "Plateformes de congrès premium et services MICE au cœur de la capitale.",
+    title: "Libreville, Capitale des Grandes Rencontres",
+    desc: "Le Palais des Congrès Omar BONGO ONDIMBA est une infrastructure de référence dédiée à l’organisation de rencontres de haut niveau, favorisant le dialogue, la coopération et les échanges. Conçu pour accueillir des événements d’envergure nationale et internationale, il contribue au rayonnement du Gabon et soutient son développement économique, institutionnel et diplomatique.",
   },
   {
     image: "/riverLoge.jpg",
