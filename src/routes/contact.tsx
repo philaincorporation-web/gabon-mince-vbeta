@@ -1,44 +1,234 @@
-import { useEffect, useState, type FormEvent } from "react";
+import { useEffect, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { ToastProvider } from "@/components/Toast";
+import { ContactForm } from "@/components/ContactForm";
 
-export const Route = createFileRoute("/contact")({ component: ContactPage });
+export const Route = createFileRoute("/contact")({
+  component: ContactPage,
+});
 
 function ContactPage() {
-  const [submitted, setSubmitted] = useState(false);
   const [language, setLanguage] = useState<"fr" | "en">("fr");
   const [theme, setTheme] = useState<"light" | "dark">("light");
-  const isFrench = language === "fr";
-  const isDark = theme === "dark";
-  const copy = isFrench ? {
-    home: "Accueil", title: "Organiser un événement", hero: "Notre équipe vous accompagne pour concevoir un événement professionnel mémorable au Gabon.", project: "Votre projet", talk: "Parlons de votre événement", intro: "Congrès, séminaire, voyage incentive ou rencontre institutionnelle : partagez vos besoins et recevez un accompagnement personnalisé.", destination: "Destination", destinationText: "Libreville, Port-Gentil, Pointe Denis et parcs nationaux", support: "Accompagnement", supportText: "Lieux, hébergements, expériences et coordination locale", response: "Réponse personnalisée", responseText: "Notre équipe étudie votre demande et revient vers vous.", initiative: "Une initiative portée par", form: "Envoyez-nous votre demande", required: "Les champs marqués d’un astérisque sont obligatoires.", name: "Nom complet", organisation: "Organisation", email: "E-mail professionnel", phone: "Téléphone", type: "Type d'événement", attendees: "Nombre de participants", message: "Votre message", eventPlaceholder: "Congrès, séminaire, incentive…", attendeesPlaceholder: "Ex. 150", messagePlaceholder: "Dates envisagées, objectifs, lieu souhaité et informations utiles…", submit: "Envoyer la demande", thanks: "Merci pour votre demande.", confirmation: "Elle a bien été enregistrée. Notre équipe vous contactera prochainement.", footer: "Tous droits réservés.", venues: "Lieux", destinations: "Destinations", experiences: "Expériences"
-  } : {
-    home: "Home", title: "Plan an event", hero: "Our team helps you create an unforgettable professional event in Gabon.", project: "Your project", talk: "Let's talk about your event", intro: "Congress, seminar, incentive trip or institutional meeting: share your needs and receive personalised support.", destination: "Destination", destinationText: "Libreville, Port-Gentil, Pointe Denis and national parks", support: "Support", supportText: "Venues, accommodation, experiences and local coordination", response: "Personalised response", responseText: "Our team will review your request and get back to you.", initiative: "An initiative by", form: "Send us your request", required: "Fields marked with an asterisk are required.", name: "Full name", organisation: "Organisation", email: "Business email", phone: "Phone", type: "Event type", attendees: "Number of attendees", message: "Your message", eventPlaceholder: "Congress, seminar, incentive…", attendeesPlaceholder: "E.g. 150", messagePlaceholder: "Preferred dates, goals, desired venue and useful information…", submit: "Send request", thanks: "Thank you for your request.", confirmation: "It has been received. Our team will contact you shortly.", footer: "All rights reserved.", venues: "Venues", destinations: "Destinations", experiences: "Experiences"
-  };
 
   useEffect(() => {
     const savedLanguage = window.localStorage.getItem("gabonmice-language") as "fr" | "en" | null;
-    const savedTheme = window.localStorage.getItem("gabonmice-theme") as "light" | "dark" | null;
     if (savedLanguage) setLanguage(savedLanguage);
+    const savedTheme = window.localStorage.getItem("gabonmice-theme") as "light" | "dark" | null;
     if (savedTheme) setTheme(savedTheme);
   }, []);
-  useEffect(() => { window.localStorage.setItem("gabonmice-language", language); }, [language]);
-  useEffect(() => { window.localStorage.setItem("gabonmice-theme", theme); }, [theme]);
-  function handleSubmit(event: FormEvent<HTMLFormElement>) { event.preventDefault(); setSubmitted(true); }
+  useEffect(() => {
+    window.localStorage.setItem("gabonmice-language", language);
+  }, [language]);
+  useEffect(() => {
+    window.localStorage.setItem("gabonmice-theme", theme);
+  }, [theme]);
 
-  const panel = isDark ? "bg-slate-900 text-slate-100" : "bg-white text-slate-900";
-  const muted = isDark ? "text-slate-300" : "text-slate-600";
-  const input = isDark ? "border-slate-700 bg-slate-800 text-white placeholder:text-slate-400 focus:bg-slate-800" : "border-slate-200 bg-slate-50 text-slate-900 focus:bg-white";
-  return <main className={`min-h-screen overflow-hidden transition-colors ${isDark ? "bg-slate-950 text-slate-100" : "bg-slate-50 text-slate-900"}`} lang={language}>
-    <section className="relative isolate min-h-[29rem] overflow-hidden bg-forest px-4 pt-5 sm:px-8"><img src="/formulaire.png" alt="Organisation d'un événement au Gabon" className="absolute inset-0 -z-20 h-full w-full object-cover" /><div className="absolute inset-0 -z-10 bg-slate-950/75" />
-      <header className="mx-auto flex max-w-6xl items-center justify-between gap-2 text-white sm:gap-4"><Link to="/" className="flex min-w-0 items-center gap-2 sm:gap-3" aria-label="GabonMICE"><img src="/logo%20GabonMince.png" alt="GabonMICE" className="h-9 w-9 shrink-0 rounded-full border border-white/30 bg-white object-cover p-1 sm:h-12 sm:w-12" /><span className="hidden font-display text-xl font-bold min-[430px]:inline">GABON<span className="text-gold">MICE</span></span><img src="/LogoAGATOUR.jpg" alt="AGATOUR" className="h-8 w-auto max-w-20 rounded bg-white p-0.5 object-contain sm:h-11 sm:max-w-none sm:p-1" /></Link><div className="flex shrink-0 gap-1.5 sm:gap-2"><button type="button" onClick={() => setTheme(isDark ? "light" : "dark")} className="rounded-full border border-white/40 px-3 py-2 text-xs font-bold hover:bg-white hover:text-forest">{isDark ? "☀" : "☾"}</button><button type="button" onClick={() => setLanguage(isFrench ? "en" : "fr")} className="rounded-full border border-white/40 px-3 py-2 text-xs font-bold hover:bg-white hover:text-forest">{isFrench ? "EN" : "FR"}</button><Link to="/" className="rounded-full border border-white/40 px-3 py-2 text-[10px] font-bold uppercase tracking-wider hover:bg-white hover:text-forest sm:px-5 sm:text-xs sm:tracking-widest">{copy.home}</Link></div></header>
-      <div className="mx-auto max-w-3xl pt-20 text-center text-white sm:pt-24"><span className="text-xs font-bold uppercase tracking-[0.3em] text-gold">GabonMICE × AGATOUR</span><h1 className="mt-5 font-display text-4xl font-bold sm:text-6xl">{copy.title}</h1><p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-white/85 sm:text-lg">{copy.hero}</p></div>
-    </section>
-    <section className="relative z-10 mx-auto -mt-32 max-w-6xl px-4 pb-16 sm:px-8 sm:pb-24"><div className={`grid overflow-hidden rounded-[2rem] shadow-2xl md:grid-cols-[0.85fr_1.15fr] ${panel}`}><aside className={`p-8 sm:p-12 ${isDark ? "bg-slate-800" : "bg-slate-100"}`}><span className="text-xs font-bold uppercase tracking-[0.25em] text-forest">{copy.project}</span><h2 className="mt-4 font-display text-3xl font-bold">{copy.talk}</h2><p className={`mt-5 leading-relaxed ${muted}`}>{copy.intro}</p><div className="mt-10 space-y-7"><InfoItem icon="⌖" title={copy.destination} text={copy.destinationText} /><InfoItem icon="✦" title={copy.support} text={copy.supportText} /><InfoItem icon="◷" title={copy.response} text={copy.responseText} /></div><div className={`mt-12 border-t pt-7 ${isDark ? "border-slate-700" : "border-slate-300"}`}><p className={`text-sm font-semibold ${isDark ? "text-slate-200" : "text-slate-700"}`}>{copy.initiative}</p><Logos /></div></aside>
-      <div className="p-8 sm:p-12"><h2 className="font-display text-3xl font-bold">{copy.form}</h2><p className={`mt-3 ${muted}`}>{copy.required}</p>{submitted ? <div className="mt-8 rounded-2xl border border-forest/20 bg-forest/10 p-5 text-forest"><strong>{copy.thanks}</strong><br />{copy.confirmation}</div> : <form onSubmit={handleSubmit} className="mt-8 grid gap-5 sm:grid-cols-2"><Field label={copy.name} name="name" inputClass={input} required /><Field label={copy.organisation} name="organisation" inputClass={input} /><Field label={copy.email} name="email" type="email" inputClass={input} required /><Field label={copy.phone} name="phone" type="tel" inputClass={input} /><Field label={copy.type} name="eventType" placeholder={copy.eventPlaceholder} inputClass={input} required /><Field label={copy.attendees} name="attendees" type="number" placeholder={copy.attendeesPlaceholder} inputClass={input} /><label className="sm:col-span-2"><span className={`mb-2 block text-sm font-semibold ${isDark ? "text-slate-200" : "text-slate-700"}`}>{copy.message} <span className="text-forest">*</span></span><textarea required name="message" rows={5} placeholder={copy.messagePlaceholder} className={`w-full resize-y rounded-xl border px-4 py-3 outline-none transition focus:border-forest focus:ring-4 focus:ring-forest/10 ${input}`} /></label><button type="submit" className="sm:col-span-2 rounded-full bg-forest px-7 py-4 text-sm font-bold uppercase tracking-widest text-white shadow-lg shadow-forest/25 transition hover:bg-forest-deep">{copy.submit}</button></form>}</div></div></section>
-    <footer className="bg-slate-950 px-4 py-12 text-slate-300 sm:px-8"><div className="mx-auto flex max-w-6xl flex-col gap-8 border-b border-white/10 pb-8 md:flex-row md:items-center md:justify-between"><Logos light /><div className="flex gap-5 text-sm"><Link to="/lieux" className="hover:text-gold">{copy.venues}</Link><Link to="/destinations" className="hover:text-gold">{copy.destinations}</Link><Link to="/experiences" className="hover:text-gold">{copy.experiences}</Link></div></div><div className="mx-auto mt-7 flex max-w-6xl flex-col justify-between gap-3 text-xs text-slate-400 sm:flex-row"><p>© 2026 GabonMICE — AGATOUR. {copy.footer}</p><Link to="/" className="hover:text-gold">{copy.home}</Link></div></footer>
-  </main>;
+  const panel = isDark(theme) ? "bg-slate-900 text-slate-100" : "bg-white text-slate-900";
+  const muted = isDark(theme) ? "text-slate-300" : "text-slate-600";
+
+  return (
+    <ToastProvider>
+      <main
+        className={`min-h-screen overflow-hidden transition-colors ${isDark(theme) ? "bg-slate-950 text-slate-100" : "bg-slate-50 text-slate-900"}`}
+        lang={language}
+      >
+        <header className="mx-auto flex max-w-6xl items-center justify-between gap-2 text-white px-4 pt-5 sm:px-8">
+          <Link to="/" className="flex min-w-0 items-center gap-2 sm:gap-3" aria-label="GabonMICE">
+            <img
+              src="/logo%20GabonMince.png"
+              alt="GabonMICE"
+              className="h-9 w-9 shrink-0 rounded-full border border-white/30 bg-white object-cover p-1 sm:h-12 sm:w-12"
+            />
+            <span className="hidden font-display text-xl font-bold min-[430px]:inline">
+              GABON<span className="text-gold">MICE</span>
+            </span>
+          </Link>
+          <div className="flex shrink-0 gap-1.5 sm:gap-2">
+            <button
+              type="button"
+              onClick={() => setTheme(isDark(theme) ? "light" : "dark")}
+              className="rounded-full border border-white/40 px-3 py-2 text-xs font-bold hover:bg-white hover:text-forest"
+            >
+              {isDark(theme) ? "☀" : "☾"}
+            </button>
+            <button
+              type="button"
+              onClick={() => setLanguage(language === "fr" ? "en" : "fr")}
+              className="rounded-full border border-white/40 px-3 py-2 text-xs font-bold hover:bg-white hover:text-forest"
+            >
+              {language === "fr" ? "EN" : "FR"}
+            </button>
+            <Link
+              to="/"
+              className="rounded-full border border-white/40 px-3 py-2 text-[10px] font-bold uppercase tracking-wider hover:bg-white hover:text-forest sm:px-5 sm:text-xs sm:tracking-widest"
+            >
+              Accueil
+            </Link>
+          </div>
+        </header>
+
+        <section className="relative isolate min-h-[29rem] overflow-hidden bg-forest px-4 pt-5 sm:px-8">
+          <img
+            src="/formulaire.png"
+            alt="Organisation d'un événement au Gabon"
+            className="absolute inset-0 -z-20 h-full w-full object-cover"
+          />
+          <div className="absolute inset-0 -z-10 bg-slate-950/75" />
+          <div className="mx-auto max-w-3xl pt-20 text-center text-white sm:pt-24">
+            <span className="text-xs font-bold uppercase tracking-[0.3em] text-gold">
+              GabonMICE × AGATOUR
+            </span>
+            <h1 className="mt-5 font-display text-4xl font-bold sm:text-6xl">
+              {isFrench(language) ? "Organiser un événement" : "Plan an event"}
+            </h1>
+            <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-white/85 sm:text-lg">
+              {isFrench(language)
+                ? "Notre équipe vous accompagne pour concevoir un événement professionnel mémorable au Gabon."
+                : "Our team helps you create an unforgettable professional event in Gabon."}
+            </p>
+          </div>
+        </section>
+
+        <section className="relative z-10 mx-auto -mt-32 max-w-6xl px-4 pb-16 sm:px-8 sm:pb-24">
+          <div
+            className={`grid overflow-hidden rounded-[2rem] shadow-2xl md:grid-cols-[0.85fr_1.15fr] ${panel}`}
+          >
+            <aside className={`p-8 sm:p-12 ${isDark(theme) ? "bg-slate-800" : "bg-slate-100"}`}>
+              <span className="text-xs font-bold uppercase tracking-[0.25em] text-forest">
+                {isFrench(language) ? "Votre projet" : "Your project"}
+              </span>
+              <h2 className="mt-4 font-display text-3xl font-bold">
+                {isFrench(language) ? "Parlons de votre événement" : "Let's talk about your event"}
+              </h2>
+              <p className={`mt-5 leading-relaxed ${muted}`}>
+                {isFrench(language)
+                  ? "Congrès, séminaire, voyage incentive ou rencontre institutionnelle : partagez vos besoins et recevez un accompagnement personnalisé."
+                  : "Congress, seminar, incentive trip or institutional meeting: share your needs and receive personalised support."}
+              </p>
+              <div className="mt-10 space-y-7">
+                <InfoItem
+                  icon="⌖"
+                  title={isFrench(language) ? "Destination" : "Destination"}
+                  text={
+                    isFrench(language)
+                      ? "Libreville, Port-Gentil, Pointe Denis et parcs nationaux"
+                      : "Libreville, Port-Gentil, Pointe Denis and national parks"
+                  }
+                />
+                <InfoItem
+                  icon="✦"
+                  title={isFrench(language) ? "Accompagnement" : "Support"}
+                  text={
+                    isFrench(language)
+                      ? "Lieux, hébergements, expériences et coordination locale"
+                      : "Venues, accommodation, experiences and local coordination"
+                  }
+                />
+                <InfoItem
+                  icon="◷"
+                  title={isFrench(language) ? "Réponse personnalisée" : "Personalised response"}
+                  text={
+                    isFrench(language)
+                      ? "Notre équipe étudie votre demande et revient vers vous."
+                      : "Our team will review your request and get back to you."
+                  }
+                />
+              </div>
+              <div
+                className={`mt-12 border-t pt-7 ${isDark(theme) ? "border-slate-700" : "border-slate-300"}`}
+              >
+                <p
+                  className={`text-sm font-semibold ${isDark(theme) ? "text-slate-200" : "text-slate-700"}`}
+                >
+                  {isFrench(language) ? "Une initiative portée par" : "An initiative by"}
+                </p>
+                <Logos />
+              </div>
+            </aside>
+            <div className="p-8 sm:p-12">
+              <h2 className="font-display text-3xl font-bold">
+                {isFrench(language) ? "Envoyez-nous votre demande" : "Send us your request"}
+              </h2>
+              <p className={`mt-3 ${muted}`}>
+                {isFrench(language)
+                  ? "Les champs marqués d'un astérisque sont obligatoires."
+                  : "Fields marked with an asterisk are required."}
+              </p>
+              <ContactForm language={language} theme={theme} />
+            </div>
+          </div>
+        </section>
+
+        <footer className="bg-slate-950 px-4 py-12 text-slate-300 sm:px-8">
+          <div className="mx-auto flex max-w-6xl flex-col gap-8 border-b border-white/10 pb-8 md:flex-row md:items-center md:justify-between">
+            <Logos light />
+            <div className="flex gap-5 text-sm">
+              <Link to="/lieux" className="hover:text-gold">
+                {isFrench(language) ? "Lieux" : "Venues"}
+              </Link>
+              <Link to="/destinations" className="hover:text-gold">
+                {isFrench(language) ? "Destinations" : "Destinations"}
+              </Link>
+              <Link to="/experiences" className="hover:text-gold">
+                {isFrench(language) ? "Expériences" : "Experiences"}
+              </Link>
+            </div>
+          </div>
+          <div className="mx-auto mt-7 flex max-w-6xl flex-col justify-between gap-3 text-xs text-slate-400 sm:flex-row">
+            <p>
+              © 2026 GabonMICE — AGATOUR.{" "}
+              {isFrench(language) ? "Tous droits réservés." : "All rights reserved."}
+            </p>
+            <Link to="/" className="hover:text-gold">
+              {isFrench(language) ? "Accueil" : "Home"}
+            </Link>
+          </div>
+        </footer>
+      </main>
+    </ToastProvider>
+  );
 }
 
-function Logos({ light = false }: { light?: boolean }) { return <div className="mt-4 flex items-center gap-3"><img src="/logo%20GabonMince.png" alt="GabonMICE" className="h-10 w-10 rounded-full bg-white p-1 object-cover" /><span className={`hidden font-display text-base font-bold min-[430px]:inline ${light ? "text-white" : "text-forest"}`}>GABON<span className="text-gold">MICE</span></span><img src="/LogoAGATOUR.jpg" alt="AGATOUR" className="h-10 w-auto max-w-24 rounded bg-white p-1 object-contain" /></div>; }
-function Field({ label, name, type = "text", placeholder, required = false, inputClass }: { label: string; name: string; type?: string; placeholder?: string; required?: boolean; inputClass: string }) { return <label><span className="mb-2 block text-sm font-semibold">{label} {required && <span className="text-forest">*</span>}</span><input name={name} type={type} required={required} placeholder={placeholder} className={`w-full rounded-xl border px-4 py-3 outline-none transition focus:border-forest focus:ring-4 focus:ring-forest/10 ${inputClass}`} /></label>; }
-function InfoItem({ icon, title, text }: { icon: string; title: string; text: string }) { return <div className="flex gap-4"><span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-forest text-xl text-white">{icon}</span><div><h3 className="font-bold">{title}</h3><p className="mt-1 text-sm leading-relaxed opacity-75">{text}</p></div></div>; }
+function isDark(theme: "light" | "dark") {
+  return theme === "dark";
+}
+function isFrench(language: "fr" | "en") {
+  return language === "fr";
+}
+
+function Logos({ light = false }: { light?: boolean }) {
+  return (
+    <div className="mt-4 flex items-center gap-3">
+      <img
+        src="/logo%20GabonMince.png"
+        alt="GabonMICE"
+        className="h-10 w-10 rounded-full bg-white p-1 object-cover"
+      />
+      <span
+        className={`hidden font-display text-base font-bold min-[430px]:inline ${light ? "text-white" : "text-forest"}`}
+      >
+        GABON<span className="text-gold">MICE</span>
+      </span>
+      <img
+        src="/LogoAGATOUR.jpg"
+        alt="AGATOUR"
+        className="h-10 w-auto max-w-24 rounded bg-white p-1 object-contain"
+      />
+    </div>
+  );
+}
+
+function InfoItem({ icon, title, text }: { icon: string; title: string; text: string }) {
+  return (
+    <div className="flex gap-4">
+      <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-forest text-xl text-white">
+        {icon}
+      </span>
+      <div>
+        <h3 className="font-bold">{title}</h3>
+        <p className="mt-1 text-sm leading-relaxed opacity-75">{text}</p>
+      </div>
+    </div>
+  );
+}
