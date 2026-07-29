@@ -153,6 +153,7 @@ export const navLinksFr = [
   { label: "Expériences", href: "/experiences" },
   { label: "Investir", href: "/investir" },
   { label: "Actualités", href: "/actualites" },
+  { label: "Qui sommes-nous", href: "/about" },
   { label: "Contact", href: "/contact" },
 ] as const;
 
@@ -162,7 +163,86 @@ export const navLinksEn = [
   { label: "Experiences", href: "/experiences" },
   { label: "Invest", href: "/investir" },
   { label: "News", href: "/actualites" },
+  { label: "About Us", href: "/about" },
   { label: "Contact", href: "/contact" },
+] as const;
+
+export const testimonialsFr = [
+  {
+    name: "Marie Dupont",
+    role: "Directrice, Conférence Afrique",
+    text: "Organiser notre sommet annuel au Gabon a été une révélation. Les infrastructures sont remarquables et l'équipe locale d'une disponibilité exceptionnelle.",
+    image: "/Nomade.jpg",
+  },
+  {
+    name: "Jean-Pierre Kouassi",
+    role: "Président, Alliance Économique",
+    text: "Un cadre unique qui allie rigueur professionnelle et immersion dans une nature d'exception. Nos délégués en sont repartis transformés.",
+    image: "/TOURAGA.png",
+  },
+  {
+    name: "Sophie Martin",
+    role: "Directrice Marketing, GlobalTech",
+    text: "Le programme incentive proposé a dépassé toutes nos attentes. Une expérience authentique qui a renforcé la cohésion de nos équipes.",
+    image: "/NKOK.png",
+  },
+  {
+    name: "Amina Diallo",
+    role: "Responsable Événements, Banque Atlantique",
+    text: "Depuis notre séminaire à Port-Gentil, nous recommandons systématiquement le Gabon à nos partenaires internationaux.",
+    image: "/sogara.webp",
+  },
+  {
+    name: "Thomas Bernard",
+    role: "CEO, Horizon Consulting",
+    text: "La qualité des lieux, la beauté des paysages et l'accueil réservé à nos équipes ont fait de ce voyage un moment charnière pour notre entreprise.",
+    image: "/riverLoge.jpg",
+  },
+  {
+    name: "Claire Moreau",
+    role: "Directrice, Institut de la Francophonie",
+    text: "Le Palais des Congrès offre des capacités techniques irreprochables. Un environnement inspirant pour les échanges de haut niveau.",
+    image: "/Palaiscongrès2.webp",
+  },
+] as const;
+
+export const testimonialsEn = [
+  {
+    name: "Marie Dupont",
+    role: "Director, Africa Conference",
+    text: "Organising our annual summit in Gabon was a revelation. The infrastructure is remarkable and the local team's availability is exceptional.",
+    image: "/Nomade.jpg",
+  },
+  {
+    name: "Jean-Pierre Kouassi",
+    role: "President, Economic Alliance",
+    text: "A unique setting combining professional rigour with immersion in exceptional nature. Our delegates left transformed.",
+    image: "/TOURAGA.png",
+  },
+  {
+    name: "Sophie Martin",
+    role: "Marketing Director, GlobalTech",
+    text: "The incentive programme exceeded all our expectations. An authentic experience that strengthened our team cohesion.",
+    image: "/NKOK.png",
+  },
+  {
+    name: "Amina Diallo",
+    role: "Events Manager, Banque Atlantique",
+    text: "Since our seminar in Port-Gentil, we systematically recommend Gabon to our international partners.",
+    image: "/sogara.webp",
+  },
+  {
+    name: "Thomas Bernard",
+    role: "CEO, Horizon Consulting",
+    text: "The quality of venues, the beauty of landscapes and the welcome reserved for our teams made this trip a pivotal moment for our company.",
+    image: "/riverLoge.jpg",
+  },
+  {
+    name: "Claire Moreau",
+    role: "Director, Francophonie Institute",
+    text: "The Congress Palace offers impeccable technical capacity. An inspiring environment for high-level exchanges.",
+    image: "/Palaiscongrès2.webp",
+  },
 ] as const;
 
 export const homeCopyFr = {
@@ -222,6 +302,10 @@ export const homeCopyFr = {
     footerLink8: "Contact",
     footerPrivacy: "Confidentialité",
     footerLegal: "Mentions Légales",
+    testimonialsLabel: "Témoignages",
+    testimonialsTitle: "Ils ont vécu le Gabon",
+    testimonialsText:
+      "Des organisateurs, des dirigeants et des équipes du monde entier partagent leur expérience.",
   },
 } as const;
 
@@ -281,6 +365,9 @@ export const homeCopyEn = {
     footerLink8: "Contact",
     footerPrivacy: "Privacy",
     footerLegal: "Legal Notice",
+    testimonialsLabel: "Testimonials",
+    testimonialsTitle: "They experienced Gabon",
+    testimonialsText: "Organisers, leaders and teams from around the world share their experience.",
   },
 } as const;
 

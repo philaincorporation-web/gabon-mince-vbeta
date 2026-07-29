@@ -1,6 +1,12 @@
+import { useState, useEffect, useCallback } from "react";
 import loangoElephant from "@/assets/loango-elephant.jpg";
 import gabonMask from "@/assets/gabon-mask.jpg";
 import { homeCopyFr, homeCopyEn, stats, type HomeSections } from "@/lib/home-data";
+import useEmblaCarousel from "embla-carousel-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { motion } from "framer-motion";
+
+const biodiversityImages = [loangoElephant, gabonMask];
 
 interface BiodiversitySectionProps {
   language: "fr" | "en";
@@ -11,6 +17,40 @@ export function BiodiversitySection({ language, theme }: BiodiversitySectionProp
   const isFrench = language === "fr";
   const copy = isFrench ? homeCopyFr : homeCopyEn;
   const sections = copy.sections as unknown as HomeSections;
+
+  const [emblaRef, emblaApi] = useEmblaCarousel(
+    {
+      align: "start",
+      slidesToScroll: 1,
+      loop: true,
+      skipSnaps: false,
+    },
+    [],
+  );
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    const interval = setInterval(() => {
+      emblaApi.scrollNext();
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [emblaApi]);
+
+  const scrollPrev = useCallback(() => {
+    if (!emblaApi) return;
+    const snaps = emblaApi.scrollSnapList();
+    const current = emblaApi.selectedScrollSnap();
+    const prev = current === 0 ? snaps.length - 1 : current - 1;
+    emblaApi.scrollTo(prev);
+  }, [emblaApi]);
+
+  const scrollNext = useCallback(() => {
+    if (!emblaApi) return;
+    const snaps = emblaApi.scrollSnapList();
+    const current = emblaApi.selectedScrollSnap();
+    const next = current === snaps.length - 1 ? 0 : current + 1;
+    emblaApi.scrollTo(next);
+  }, [emblaApi]);
 
   return (
     <section
@@ -49,15 +89,39 @@ export function BiodiversitySection({ language, theme }: BiodiversitySectionProp
 
         <div className="relative">
           <div className="rounded-3xl overflow-hidden shadow-2xl rotate-0 lg:rotate-2 hover:rotate-0 transition-transform duration-700 max-w-md mx-auto lg:ml-auto max-h-[28rem] md:max-h-none">
-            <img
-              src={gabonMask}
-              alt="Masque traditionnel gabonais"
-              width={600}
-              height={800}
-              loading="lazy"
-              className="aspect-[3/4] w-full h-full object-cover"
-            />
+            <div className="overflow-hidden" ref={emblaRef}>
+              <div className="flex">
+                {biodiversityImages.map((img, i) => (
+                  <div key={i} className="flex-[0_0_100%] min-w-0">
+                    <img
+                      src={img}
+                      alt={`Biodiversity image ${i + 1}`}
+                      width={600}
+                      height={800}
+                      loading="lazy"
+                      className="aspect-[3/4] w-full h-full object-cover"
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
+          <button
+            type="button"
+            onClick={scrollPrev}
+            className="absolute -left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/80 border border-slate-200 flex items-center justify-center shadow-md hover:bg-forest hover:text-white hover:border-forest transition-all duration-300 z-10"
+            aria-label="Previous"
+          >
+            <ChevronLeft className="h-5 w-5" />
+          </button>
+          <button
+            type="button"
+            onClick={scrollNext}
+            className="absolute -right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/80 border border-slate-200 flex items-center justify-center shadow-md hover:bg-forest hover:text-white hover:border-forest transition-all duration-300 z-10"
+            aria-label="Next"
+          >
+            <ChevronRight className="h-5 w-5" />
+          </button>
           <div className="absolute -bottom-6 -left-6 bg-white/95 backdrop-blur rounded-2xl p-6 shadow-2xl max-w-xs hidden md:block">
             <div className="text-[10px] uppercase tracking-widest text-forest font-bold mb-2">
               {sections.culturalLabel}

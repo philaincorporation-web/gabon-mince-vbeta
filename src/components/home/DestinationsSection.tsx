@@ -1,3 +1,5 @@
+import { useEffect, useCallback, useState } from "react";
+import useEmblaCarousel from "embla-carousel-react";
 import { homeCopyFr, homeCopyEn, type HomeSections } from "@/lib/home-data";
 
 interface DestinationsSectionProps {
@@ -10,6 +12,80 @@ export function DestinationsSection({ language, theme }: DestinationsSectionProp
   const isDark = theme === "dark";
   const copy = isFrench ? homeCopyFr : homeCopyEn;
   const sections = copy.sections as unknown as HomeSections;
+
+  const [emblaRef, emblaApi] = useEmblaCarousel(
+    {
+      align: "start",
+      containScroll: "trimSnaps",
+      slidesToScroll: 1,
+    },
+    [],
+  );
+
+  const [selectedIndex, setSelectedIndex] = useState(0);
+
+  const onSelect = useCallback(() => {
+    if (!emblaApi) return;
+    setSelectedIndex(emblaApi.selectedScrollSnap());
+  }, [emblaApi]);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    onSelect();
+    emblaApi.on("select", onSelect);
+    emblaApi.on("reInit", onSelect);
+    return () => {
+      emblaApi.off("select", onSelect);
+      emblaApi.off("reInit", onSelect);
+    };
+  }, [emblaApi, onSelect]);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    const interval = setInterval(() => {
+      emblaApi.scrollNext();
+    }, 4000);
+    return () => clearInterval(interval);
+  }, [emblaApi]);
+
+  const slides = [
+    {
+      label: sections.destinationCard1Label,
+      title: sections.destinationCard1Title,
+      text: sections.destinationCard1Text,
+      image: "/muséé12.webp",
+      alt: "Libreville",
+      w: 1200,
+      h: 750,
+    },
+    {
+      label: sections.destinationCard2Label,
+      title: sections.destinationCard2Title,
+      text: undefined,
+      image: "/port-gentil11.webp",
+      alt: "Port-Gentil",
+      w: 1024,
+      h: 768,
+    },
+    {
+      label: sections.destinationCard3Label,
+      title: sections.destinationCard3Title,
+      text: undefined,
+      image: "/PLAteau.jpg",
+      alt: "Loango",
+      w: 1024,
+      h: 768,
+    },
+    {
+      label: sections.destinationCard4Label,
+      title: sections.destinationCard4Title,
+      text: sections.destinationCard4Text,
+      image: "/tortue.jpg",
+      alt: "Pointe Denis",
+      w: 1200,
+      h: 750,
+    },
+  ];
 
   return (
     <section
@@ -30,101 +106,53 @@ export function DestinationsSection({ language, theme }: DestinationsSectionProp
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-6 gap-6">
-        <a
-          href="#"
-          className="group md:col-span-4 relative overflow-hidden rounded-3xl aspect-[16/10] shadow-soft max-h-[26rem] sm:max-h-none"
-        >
-          <img
-            src="/muséé12.webp"
-            alt="Libreville"
-            width={1200}
-            height={750}
-            loading="lazy"
-            className="absolute inset-0 w-full h-full object-cover transition-transform duration-[900ms] group-hover:scale-105"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
-          <div className="absolute bottom-0 left-0 p-8 text-white">
-            <span className="text-gold text-[10px] uppercase tracking-widest font-bold">
-              {sections.destinationCard1Label}
-            </span>
-            <h3 className="font-display text-3xl md:text-4xl font-bold mt-2">
-              {sections.destinationCard1Title}
-            </h3>
-            <p className="text-white/80 font-light mt-2 max-w-sm">
-              {sections.destinationCard1Text}
-            </p>
+      <div className="relative">
+        <div className="overflow-hidden" ref={emblaRef}>
+          <div className="flex gap-4">
+            {slides.map((slide) => (
+              <div
+                key={slide.alt}
+                className="flex-[0_0_100%] sm:flex-[0_0_calc(50%-1rem)] lg:flex-[0_0_calc(33.333%-1.5rem)] min-w-0"
+              >
+                <a
+                  href="#"
+                  className="group relative overflow-hidden rounded-3xl aspect-[16/10] shadow-soft"
+                >
+                  <img
+                    src={slide.image}
+                    alt={slide.alt}
+                    width={slide.w}
+                    height={slide.h}
+                    loading="lazy"
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-[900ms] group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+                  <div className="absolute bottom-0 left-0 p-6 text-white">
+                    <span className="text-gold text-[10px] uppercase tracking-widest font-bold">
+                      {slide.label}
+                    </span>
+                    <h3 className="font-display text-2xl font-bold mt-2">{slide.title}</h3>
+                    {slide.text ? (
+                      <p className="text-white/80 font-light mt-2 max-w-sm">{slide.text}</p>
+                    ) : null}
+                  </div>
+                </a>
+              </div>
+            ))}
           </div>
-        </a>
-        <a
-          href="#"
-          className="group md:col-span-2 relative overflow-hidden rounded-3xl aspect-[4/3] sm:aspect-[16/10] md:aspect-auto shadow-soft max-h-[20rem] sm:max-h-none"
-        >
-          <img
-            src="/port-gentil11.webp"
-            alt="Port-Gentil"
-            width={1024}
-            height={768}
-            loading="lazy"
-            className="absolute inset-0 w-full h-full object-cover transition-transform duration-[900ms] group-hover:scale-105"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
-          <div className="absolute bottom-0 left-0 p-6 text-white">
-            <span className="text-gold text-[10px] uppercase tracking-widest font-bold">
-              {sections.destinationCard2Label}
-            </span>
-            <h3 className="font-display text-2xl font-bold mt-2">
-              {sections.destinationCard2Title}
-            </h3>
-          </div>
-        </a>
-        <a
-          href="#"
-          className="group md:col-span-2 relative overflow-hidden rounded-3xl aspect-[4/3] sm:aspect-[16/10] shadow-soft max-h-[20rem] sm:max-h-none"
-        >
-          <img
-            src="/PLAteau.jpg"
-            alt="Loango"
-            width={1024}
-            height={768}
-            loading="lazy"
-            className="absolute inset-0 w-full h-full object-cover transition-transform duration-[900ms] group-hover:scale-105"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
-          <div className="absolute bottom-0 left-0 p-6 text-white">
-            <span className="text-gold text-[10px] uppercase tracking-widest font-bold">
-              {sections.destinationCard3Label}
-            </span>
-            <h3 className="font-display text-2xl font-bold mt-2">
-              {sections.destinationCard3Title}
-            </h3>
-          </div>
-        </a>
-        <a
-          href="#"
-          className="group md:col-span-4 relative overflow-hidden rounded-3xl aspect-[16/10] shadow-soft max-h-[26rem] sm:max-h-none"
-        >
-          <img
-            src="/tortue.jpg"
-            alt="Pointe Denis"
-            width={1200}
-            height={750}
-            loading="lazy"
-            className="absolute inset-0 w-full h-full object-cover transition-transform duration-[900ms] group-hover:scale-105"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
-          <div className="absolute bottom-0 left-0 p-8 text-white">
-            <span className="text-gold text-[10px] uppercase tracking-widest font-bold">
-              {sections.destinationCard4Label}
-            </span>
-            <h3 className="font-display text-3xl md:text-4xl font-bold mt-2">
-              {sections.destinationCard4Title}
-            </h3>
-            <p className="text-white/80 font-light mt-2 max-w-sm">
-              {sections.destinationCard4Text}
-            </p>
-          </div>
-        </a>
+        </div>
+        <div className="flex justify-center gap-2 mt-4">
+          {slides.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => emblaApi?.scrollTo(i)}
+              className={`h-2 rounded-full transition-all duration-300 ${
+                i === selectedIndex ? "w-6 bg-forest" : "w-2 bg-slate-300"
+              }`}
+              aria-label={`Go to slide ${i + 1}`}
+            />
+          ))}
+        </div>
       </div>
     </section>
   );

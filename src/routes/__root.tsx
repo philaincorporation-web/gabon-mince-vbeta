@@ -7,7 +7,7 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
@@ -95,8 +95,16 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     ],
     links: [
       { rel: "stylesheet", href: appCss },
-      { rel: "icon", href: "/logo%20GabonMince.png", type: "image/png" },
-      { rel: "shortcut icon", href: "/logo%20GabonMince.png", type: "image/png" },
+      {
+        rel: "icon",
+        href: "/FAVICONE1.png?v=2",
+        type: "image/png",
+      },
+      {
+        rel: "icon",
+        href: "/FAVICONE1.png?v=2",
+        type: "image/png",
+      },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
@@ -127,10 +135,26 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const [language, setLanguage] = useState<"fr" | "en">("fr");
+  const [theme, setTheme] = useState<"light" | "dark">("light");
+
+  useEffect(() => {
+    const storedLanguage = window.localStorage.getItem("gabonmice-language") as "fr" | "en" | null;
+    const storedTheme = window.localStorage.getItem("gabonmice-theme") as "light" | "dark" | null;
+    if (storedLanguage) setLanguage(storedLanguage);
+    if (storedTheme) setTheme(storedTheme);
+  }, []);
+
+  useEffect(() => {
+    window.localStorage.setItem("gabonmice-language", language);
+  }, [language]);
+
+  useEffect(() => {
+    window.localStorage.setItem("gabonmice-theme", theme);
+  }, [theme]);
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <Outlet />
     </QueryClientProvider>
   );

@@ -7,6 +7,8 @@ import { VenuesSection } from "@/components/home/VenuesSection";
 import { BiodiversitySection } from "@/components/home/BiodiversitySection";
 import { DestinationsSection } from "@/components/home/DestinationsSection";
 import { InvestSection } from "@/components/home/InvestSection";
+import { TestimonialsSection } from "@/components/home/TestimonialsSection";
+import { CtaSection } from "@/components/home/CtaSection";
 import { NewsletterSection } from "@/components/home/NewsletterSection";
 import { ScrollToTop } from "@/components/home/ScrollToTop";
 import { homeCopyFr, homeCopyEn } from "@/lib/home-data";
@@ -63,6 +65,8 @@ function Home() {
         <BiodiversitySection language={language} theme={theme} />
         <DestinationsSection language={language} theme={theme} />
         <InvestSection language={language} theme={theme} />
+        <TestimonialsSection language={language} theme={theme} />
+        <CtaSection language={language} theme={theme} />
         <NewsletterSection language={language} theme={theme} />
       </main>
 

@@ -98,11 +98,7 @@ export function SiteNav({
         <span className="hidden font-display font-bold text-lg tracking-tight text-forest min-[430px]:inline sm:text-xl">
           GABON<span className="text-ocean">MICE</span>
         </span>
-        <img
-          src="/LogoAGATOUR.jpg"
-          alt="AGATOUR"
-          className="h-8 w-auto max-w-20 rounded bg-white p-0.5 object-contain sm:h-10 sm:max-w-none sm:p-1"
-        />
+       
       </Link>
 
       <div
