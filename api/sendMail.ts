@@ -91,7 +91,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 }
 
 function buildClientMail(body: SendMailBody): string {
-  const siteUrl = process.env.SITE_URL ?? "https://gabonmice.com";
+  const siteUrl = process.env.SITE_URL ?? "https://gabon-mince-vbeta.vercel.app/";
   return `<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Confirmation de réception</title></head><body style="margin:0;padding:0;background-color:#f4f6f8;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#f4f6f8;">
 <tr><td align="center" style="padding:20px 10px;">
