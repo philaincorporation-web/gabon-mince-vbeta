@@ -67,12 +67,12 @@ export function TestimonialsSection({ language, theme }: TestimonialsSectionProp
     return () => clearInterval(interval);
   }, [emblaApi]);
 
-  const bgClass = isDark ? "bg-slate-950" : "bg-white";
-  const textClass = isDark ? "text-slate-100" : "text-slate-900";
-  const mutedClass = isDark ? "text-slate-400" : "text-slate-500";
+  const bgClass = isDark ? "bg-slate-950" : "bg-cream";
+  const textClass = isDark ? "text-slate-100" : "text-forest-deep";
+  const mutedClass = isDark ? "text-slate-400" : "text-ink/60";
   const cardClass = isDark
     ? "bg-slate-900 border border-slate-800 shadow-soft"
-    : "bg-white border border-slate-200 shadow-soft";
+    : "bg-white border border-black/5 shadow-soft";
 
   return (
     <section
@@ -80,11 +80,11 @@ export function TestimonialsSection({ language, theme }: TestimonialsSectionProp
     >
       <div className="max-w-7xl mx-auto">
         <div className="text-center max-w-2xl mx-auto mb-14">
-          <span className="text-ocean font-bold tracking-[0.25em] text-xs uppercase">
+          <span className="text-sun-deep font-bold tracking-[0.22em] text-xs uppercase">
             {sections.testimonialsLabel}
           </span>
           <h2
-            className={`font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mt-5 leading-[1.05] ${textClass}`}
+            className={`font-display text-3xl sm:text-4xl font-extrabold mt-3 leading-tight ${textClass}`}
           >
             {sections.testimonialsTitle}
           </h2>
@@ -104,7 +104,7 @@ export function TestimonialsSection({ language, theme }: TestimonialsSectionProp
                     className="flex-[0_0_100%] md:flex-[0_0_calc(50%-1rem)] lg:flex-[0_0_calc(33.333%-1.5rem)] min-w-0"
                   >
                     <div
-                      className={`rounded-[1.5rem] p-6 sm:p-8 transition-all duration-500 ${cardClass} ${
+                      className={`rounded-[1.75rem] p-6 sm:p-8 transition-all duration-500 ${cardClass} ${
                         isActive ? "scale-100 opacity-100 shadow-elegant" : "scale-95 opacity-70"
                       }`}
                     >
@@ -121,11 +121,7 @@ export function TestimonialsSection({ language, theme }: TestimonialsSectionProp
                           <h3 className={`font-display text-lg font-bold truncate ${textClass}`}>
                             {t.name}
                           </h3>
-                          <p
-                            className={`text-xs font-semibold uppercase tracking-widest text-ocean truncate`}
-                          >
-                            {t.role}
-                          </p>
+                          <p className={`text-xs font-semibold text-sun-deep truncate`}>{t.role}</p>
                         </div>
                       </div>
                       <div className="relative">
@@ -150,7 +146,7 @@ export function TestimonialsSection({ language, theme }: TestimonialsSectionProp
                 key={i}
                 onClick={() => emblaApi?.scrollTo(i)}
                 className={`h-2 rounded-full transition-all duration-300 ${
-                  i === selectedIndex ? "w-6 bg-ocean" : "w-2 bg-slate-300"
+                  i === selectedIndex ? "w-6 bg-sun" : "w-2 bg-ink/20"
                 }`}
                 aria-label={`Go to testimonial ${i + 1}`}
               />

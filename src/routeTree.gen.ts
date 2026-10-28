@@ -12,11 +12,17 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as ActualitesRouteImport } from './routes/actualites'
+import { Route as CarteRouteImport } from './routes/carte'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as DestinationsRouteImport } from './routes/destinations'
+import { Route as EvenementsRouteImport } from './routes/evenements'
 import { Route as ExperiencesRouteImport } from './routes/experiences'
+import { Route as ExplorerRouteImport } from './routes/explorer'
 import { Route as InvestirRouteImport } from './routes/investir'
 import { Route as LieuxRouteImport } from './routes/lieux'
+import { Route as OffresRouteImport } from './routes/offres'
+import { Route as OrganisateurRouteImport } from './routes/organisateur'
+import { Route as PrestatairesRouteImport } from './routes/prestataires'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -33,6 +39,11 @@ const ActualitesRoute = ActualitesRouteImport.update({
   path: '/actualites',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CarteRoute = CarteRouteImport.update({
+  id: '/carte',
+  path: '/carte',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
@@ -43,9 +54,19 @@ const DestinationsRoute = DestinationsRouteImport.update({
   path: '/destinations',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EvenementsRoute = EvenementsRouteImport.update({
+  id: '/evenements',
+  path: '/evenements',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ExperiencesRoute = ExperiencesRouteImport.update({
   id: '/experiences',
   path: '/experiences',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExplorerRoute = ExplorerRouteImport.update({
+  id: '/explorer',
+  path: '/explorer',
   getParentRoute: () => rootRouteImport,
 } as any)
 const InvestirRoute = InvestirRouteImport.update({
@@ -58,37 +79,70 @@ const LieuxRoute = LieuxRouteImport.update({
   path: '/lieux',
   getParentRoute: () => rootRouteImport,
 } as any)
+const OffresRoute = OffresRouteImport.update({
+  id: '/offres',
+  path: '/offres',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OrganisateurRoute = OrganisateurRouteImport.update({
+  id: '/organisateur',
+  path: '/organisateur',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrestatairesRoute = PrestatairesRouteImport.update({
+  id: '/prestataires',
+  path: '/prestataires',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/actualites': typeof ActualitesRoute
+  '/carte': typeof CarteRoute
   '/contact': typeof ContactRoute
   '/destinations': typeof DestinationsRoute
+  '/evenements': typeof EvenementsRoute
   '/experiences': typeof ExperiencesRoute
+  '/explorer': typeof ExplorerRoute
   '/investir': typeof InvestirRoute
   '/lieux': typeof LieuxRoute
+  '/offres': typeof OffresRoute
+  '/organisateur': typeof OrganisateurRoute
+  '/prestataires': typeof PrestatairesRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/actualites': typeof ActualitesRoute
+  '/carte': typeof CarteRoute
   '/contact': typeof ContactRoute
   '/destinations': typeof DestinationsRoute
+  '/evenements': typeof EvenementsRoute
   '/experiences': typeof ExperiencesRoute
+  '/explorer': typeof ExplorerRoute
   '/investir': typeof InvestirRoute
   '/lieux': typeof LieuxRoute
+  '/offres': typeof OffresRoute
+  '/organisateur': typeof OrganisateurRoute
+  '/prestataires': typeof PrestatairesRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/actualites': typeof ActualitesRoute
+  '/carte': typeof CarteRoute
   '/contact': typeof ContactRoute
   '/destinations': typeof DestinationsRoute
+  '/evenements': typeof EvenementsRoute
   '/experiences': typeof ExperiencesRoute
+  '/explorer': typeof ExplorerRoute
   '/investir': typeof InvestirRoute
   '/lieux': typeof LieuxRoute
+  '/offres': typeof OffresRoute
+  '/organisateur': typeof OrganisateurRoute
+  '/prestataires': typeof PrestatairesRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -96,42 +150,66 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/actualites'
+    | '/carte'
     | '/contact'
     | '/destinations'
+    | '/evenements'
     | '/experiences'
+    | '/explorer'
     | '/investir'
     | '/lieux'
+    | '/offres'
+    | '/organisateur'
+    | '/prestataires'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about'
     | '/actualites'
+    | '/carte'
     | '/contact'
     | '/destinations'
+    | '/evenements'
     | '/experiences'
+    | '/explorer'
     | '/investir'
     | '/lieux'
+    | '/offres'
+    | '/organisateur'
+    | '/prestataires'
   id:
     | '__root__'
     | '/'
     | '/about'
     | '/actualites'
+    | '/carte'
     | '/contact'
     | '/destinations'
+    | '/evenements'
     | '/experiences'
+    | '/explorer'
     | '/investir'
     | '/lieux'
+    | '/offres'
+    | '/organisateur'
+    | '/prestataires'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   ActualitesRoute: typeof ActualitesRoute
+  CarteRoute: typeof CarteRoute
   ContactRoute: typeof ContactRoute
   DestinationsRoute: typeof DestinationsRoute
+  EvenementsRoute: typeof EvenementsRoute
   ExperiencesRoute: typeof ExperiencesRoute
+  ExplorerRoute: typeof ExplorerRoute
   InvestirRoute: typeof InvestirRoute
   LieuxRoute: typeof LieuxRoute
+  OffresRoute: typeof OffresRoute
+  OrganisateurRoute: typeof OrganisateurRoute
+  PrestatairesRoute: typeof PrestatairesRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -157,6 +235,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ActualitesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/carte': {
+      id: '/carte'
+      path: '/carte'
+      fullPath: '/carte'
+      preLoaderRoute: typeof CarteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/contact': {
       id: '/contact'
       path: '/contact'
@@ -171,11 +256,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DestinationsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/evenements': {
+      id: '/evenements'
+      path: '/evenements'
+      fullPath: '/evenements'
+      preLoaderRoute: typeof EvenementsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/experiences': {
       id: '/experiences'
       path: '/experiences'
       fullPath: '/experiences'
       preLoaderRoute: typeof ExperiencesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/explorer': {
+      id: '/explorer'
+      path: '/explorer'
+      fullPath: '/explorer'
+      preLoaderRoute: typeof ExplorerRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/investir': {
@@ -192,6 +291,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LieuxRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/offres': {
+      id: '/offres'
+      path: '/offres'
+      fullPath: '/offres'
+      preLoaderRoute: typeof OffresRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/organisateur': {
+      id: '/organisateur'
+      path: '/organisateur'
+      fullPath: '/organisateur'
+      preLoaderRoute: typeof OrganisateurRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/prestataires': {
+      id: '/prestataires'
+      path: '/prestataires'
+      fullPath: '/prestataires'
+      preLoaderRoute: typeof PrestatairesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -199,11 +319,17 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   ActualitesRoute: ActualitesRoute,
+  CarteRoute: CarteRoute,
   ContactRoute: ContactRoute,
   DestinationsRoute: DestinationsRoute,
+  EvenementsRoute: EvenementsRoute,
   ExperiencesRoute: ExperiencesRoute,
+  ExplorerRoute: ExplorerRoute,
   InvestirRoute: InvestirRoute,
   LieuxRoute: LieuxRoute,
+  OffresRoute: OffresRoute,
+  OrganisateurRoute: OrganisateurRoute,
+  PrestatairesRoute: PrestatairesRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

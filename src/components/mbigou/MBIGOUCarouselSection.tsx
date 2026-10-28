@@ -133,7 +133,7 @@ export function MBIGOUCarouselSection({ language }: MBIGOUCarouselSectionProps) 
             {mbigouCards.map((card) => (
               <div
                 key={card.id}
-                className="flex-[0_0_85%] sm:flex-[0_0_calc(50%-1rem)] lg:flex-[0_0_calc(33.333%-1.5rem)] min-w-0"
+                className="flex-[0_0_100%] sm:flex-[0_0_calc(50%-1rem)] lg:flex-[0_0_calc(33.333%-1.5rem)] min-w-0"
               >
                 <motion.button
                   whileHover={{ scale: 1.03, y: -4 }}

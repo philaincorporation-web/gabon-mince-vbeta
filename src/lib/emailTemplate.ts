@@ -45,7 +45,7 @@ export function buildNotificationEmail(
 <tr><td align="center" style="padding:20px 10px;">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:640px;background-color:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08);">
 <tr><td style="background-color:#1a365d;padding:20px 24px;">
-<h1 style="color:#ffffff;margin:0;font-size:20px;">📩 Nouvelle demande reçue</h1>
+<h1 style="color:#ffffff;margin:0;font-size:20px;">Nouvelle demande reçue</h1>
 </td></tr>
 <tr><td style="padding:24px;">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;margin:0 0 16px;">

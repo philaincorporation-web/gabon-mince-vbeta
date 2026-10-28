@@ -1,65 +1,184 @@
 import { useEffect, useState } from "react";
-import { Link } from "@tanstack/react-router";
-import loangoElephant from "@/assets/loango-elephant.jpg";
-import gabonMask from "@/assets/gabon-mask.jpg";
+import { Link, useRouterState } from "@tanstack/react-router";
 import {
-  heroSlidesFr,
-  heroSlidesEn,
-  homeCopyFr,
-  homeCopyEn,
-  navLinksFr,
-  navLinksEn,
-  type SocialPlatform,
-  socialPlatforms,
-} from "@/lib/home-data";
+  ArrowRight,
+  Building2,
+  CalendarDays,
+  ChevronDown,
+  Compass,
+  Handshake,
+  Hotel,
+  Map as MapIcon,
+  MapPinned,
+  Menu,
+  Moon,
+  Mountain,
+  Search,
+  Sparkles,
+  Sun,
+  TrendingUp,
+  Users,
+  X,
+} from "lucide-react";
+import { homeCopyFr, homeCopyEn } from "@/lib/home-data";
+import type { ListingCategory } from "@/lib/mice-data";
 
-function SocialIcon({ platform }: { platform: SocialPlatform }) {
-  const common = "h-5 w-5";
+type NavItem = {
+  to:
+    | "/offres"
+    | "/explorer"
+    | "/lieux"
+    | "/evenements"
+    | "/destinations"
+    | "/experiences"
+    | "/carte"
+    | "/organisateur"
+    | "/prestataires"
+    | "/investir";
+  cat?: ListingCategory;
+  icon: typeof Sparkles;
+  fr: string;
+  en: string;
+  descFr: string;
+  descEn: string;
+};
 
-  switch (platform) {
-    case "linkedin":
-      return (
-        <svg viewBox="0 0 24 24" fill="currentColor" className={common} aria-hidden="true">
-          <path d="M6.94 8.5A1.56 1.56 0 1 0 6.94 5.38a1.56 1.56 0 0 0 0 3.12ZM5.5 9.75h2.88V18H5.5zM10.27 9.75h2.76v1.12h.04c.38-.72 1.32-1.48 2.72-1.48 2.91 0 3.45 1.91 3.45 4.4V18h-2.88v-7.4c0-1.76-.03-4.03-2.46-4.03-2.46 0-2.84 1.92-2.84 3.9V18H10.27z" />
-        </svg>
-      );
-    case "twitter":
-      return (
-        <svg viewBox="0 0 24 24" fill="currentColor" className={common} aria-hidden="true">
-          <path d="M18.9 5H21l-6.2 7.1L22 19h-5.6l-4.3-5.6L7.3 19H5.2l6.7-7.6L2 5h5.7l3.9 5.2L18.9 5Zm-1 12.4h1.1L7.2 6.5H6.1l11.8 10.9Z" />
-        </svg>
-      );
-    case "instagram":
-      return (
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.8"
-          className={common}
-          aria-hidden="true"
-        >
-          <rect x="4.5" y="4.5" width="15" height="15" rx="4" />
-          <circle cx="12" cy="12" r="3.5" />
-          <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
-        </svg>
-      );
-    case "youtube":
-      return (
-        <svg viewBox="0 0 24 24" fill="currentColor" className={common} aria-hidden="true">
-          <path d="M21.6 7.2a2.8 2.8 0 0 0-2-2C17.8 4.8 12 4.8 12 4.8s-5.8 0-7.6.4a2.8 2.8 0 0 0-2 2A29.4 29.4 0 0 0 2 12a29.4 29.4 0 0 0 .4 4.8 2.8 2.8 0 0 0 2 2c1.8.4 7.6.4 7.6.4s5.8 0 7.6-.4a2.8 2.8 0 0 0 2-2A29.4 29.4 0 0 0 22 12a29.4 29.4 0 0 0-.4-4.8ZM10 15.5v-7l6 3.5-6 3.5Z" />
-        </svg>
-      );
-    default:
-      return null;
-  }
-}
+type NavGroup = { id: string; fr: string; en: string; items: NavItem[] };
+
+const navGroups: NavGroup[] = [
+  {
+    id: "mice",
+    fr: "MICE",
+    en: "MICE",
+    items: [
+      {
+        to: "/offres",
+        icon: Sparkles,
+        fr: "Offres spéciales",
+        en: "Special offers",
+        descFr: "Packages courts à Libreville",
+        descEn: "Short packages around Libreville",
+      },
+      {
+        to: "/explorer",
+        cat: "salle",
+        icon: Building2,
+        fr: "Salles de conférence",
+        en: "Conference venues",
+        descFr: "Lieux de réunion et congrès",
+        descEn: "Meeting & congress venues",
+      },
+      {
+        to: "/explorer",
+        cat: "hebergement",
+        icon: Hotel,
+        fr: "Hébergements",
+        en: "Accommodation",
+        descFr: "Hôtels et lodges",
+        descEn: "Hotels and lodges",
+      },
+      {
+        to: "/lieux",
+        icon: MapPinned,
+        fr: "Lieux d'événements",
+        en: "Event venues",
+        descFr: "Sélection premium",
+        descEn: "Premium selection",
+      },
+      {
+        to: "/evenements",
+        icon: CalendarDays,
+        fr: "Agenda des événements",
+        en: "Events calendar",
+        descFr: "Existants et à venir",
+        descEn: "Current and upcoming",
+      },
+    ],
+  },
+  {
+    id: "discover",
+    fr: "Découvrir",
+    en: "Discover",
+    items: [
+      {
+        to: "/destinations",
+        icon: Mountain,
+        fr: "Destinations",
+        en: "Destinations",
+        descFr: "Villes, parcs et littoral",
+        descEn: "Cities, parks and coast",
+      },
+      {
+        to: "/experiences",
+        icon: Compass,
+        fr: "Expériences",
+        en: "Experiences",
+        descFr: "Activités incentive",
+        descEn: "Incentive activities",
+      },
+      {
+        to: "/explorer",
+        cat: "circuit",
+        icon: MapIcon,
+        fr: "Circuits touristiques",
+        en: "Tours",
+        descFr: "De 1 à 4 jours",
+        descEn: "From 1 to 4 days",
+      },
+      {
+        to: "/carte",
+        icon: MapPinned,
+        fr: "Carte interactive",
+        en: "Interactive map",
+        descFr: "Hôtels, salles, sites…",
+        descEn: "Hotels, venues, sites…",
+      },
+    ],
+  },
+  {
+    id: "spaces",
+    fr: "Espaces",
+    en: "Spaces",
+    items: [
+      {
+        to: "/organisateur",
+        icon: Users,
+        fr: "Espace organisateur",
+        en: "Organiser space",
+        descFr: "Répertoriez votre événement",
+        descEn: "List your event",
+      },
+      {
+        to: "/prestataires",
+        icon: Handshake,
+        fr: "Espace prestataire",
+        en: "Provider space",
+        descFr: "Labellisation AGATOUR",
+        descEn: "AGATOUR labelling",
+      },
+      {
+        to: "/investir",
+        icon: TrendingUp,
+        fr: "Investir au Gabon",
+        en: "Invest in Gabon",
+        descFr: "Atouts et opportunités",
+        descEn: "Strengths and opportunities",
+      },
+    ],
+  },
+];
+
+const simpleLinks = [
+  { to: "/actualites", fr: "Actualités", en: "News" },
+  { to: "/about", fr: "À propos", en: "About" },
+  { to: "/contact", fr: "Contact", en: "Contact" },
+] as const;
 
 interface SiteNavProps {
   language: "fr" | "en";
   theme: "light" | "dark";
-  menuOpen: boolean;
-  onToggleMenu: (open: boolean) => void;
+  menuOpen?: boolean;
+  onToggleMenu?: (open: boolean) => void;
   onToggleTheme: () => void;
   onToggleLanguage: () => void;
 }
@@ -67,7 +186,7 @@ interface SiteNavProps {
 export function SiteNav({
   language,
   theme,
-  menuOpen,
+  menuOpen: controlledOpen,
   onToggleMenu,
   onToggleTheme,
   onToggleLanguage,
@@ -75,147 +194,326 @@ export function SiteNav({
   const isFrench = language === "fr";
   const isDark = theme === "dark";
   const copy = isFrench ? homeCopyFr : homeCopyEn;
-  const navLinks = isFrench ? navLinksFr : navLinksEn;
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const [internalOpen, setInternalOpen] = useState(false);
+  const [openGroup, setOpenGroup] = useState<string | null>(null);
+  const [scrolled, setScrolled] = useState(false);
+  const menuOpen = controlledOpen ?? internalOpen;
+  const setMenuOpen = (open: boolean) => {
+    setInternalOpen(open);
+    onToggleMenu?.(open);
+  };
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 12);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    setOpenGroup(null);
+    setInternalOpen(false);
+  }, [pathname]);
+
+  // Menu mobile ouvert : page figée, fermeture avec Échap.
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setInternalOpen(false);
+        onToggleMenu?.(false);
+      }
+    };
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [menuOpen, onToggleMenu]);
+
+  const groupActive = (group: NavGroup) => group.items.some((item) => item.to === pathname);
+  const linkBase = isDark ? "text-slate-200 hover:text-sun" : "text-ink/80 hover:text-sun-deep";
+  const iconButton = `inline-flex h-10 w-10 items-center justify-center rounded-full border transition-colors ${
+    isDark
+      ? "border-slate-700 bg-slate-900/60 text-slate-200 hover:bg-slate-800"
+      : "border-black/5 bg-white text-ink shadow-sm hover:bg-sand"
+  }`;
 
   return (
-    <nav
-      className={`fixed top-0 left-0 right-0 z-50 backdrop-blur-xl border-b px-4 sm:px-6 md:px-10 py-3 sm:py-4 flex flex-wrap items-center justify-between gap-3 transition-colors duration-500 ${
-        isDark ? "bg-slate-950/80 border-slate-800" : "bg-white/75 border-black/5"
-      }`}
-    >
-      <Link
-        to="/"
-        className="flex min-w-0 items-center gap-2 sm:gap-3"
-        onClick={() => onToggleMenu(false)}
-      >
-        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-forest/20 bg-white/90 p-1 shadow-sm shadow-forest/10 ring-1 ring-forest/10 sm:h-12 sm:w-12">
-          <img
-            src="/logo%20GabonMince.png"
-            alt="GabonMince"
-            className="h-full w-full rounded-full object-cover"
-          />
-        </div>
-        <span className="hidden font-display font-bold text-lg tracking-tight text-forest min-[430px]:inline sm:text-xl">
-          GABON<span className="text-ocean">MICE</span>
-        </span>
-       
-      </Link>
-
-      <div
-        className={`hidden lg:flex items-center gap-10 text-[11px] font-semibold uppercase tracking-[0.18em] ${isDark ? "text-slate-300" : "text-slate-600"}`}
-      >
-        {navLinks.map((link) => (
-          <Link key={link.href} to={link.href} className="hover:text-forest transition-colors">
-            {link.label}
-          </Link>
-        ))}
-      </div>
-
-      <div className="flex items-center gap-2 sm:gap-3">
-        <button
-          type="button"
-          onClick={onToggleTheme}
-          className={`inline-flex h-10 w-10 items-center justify-center rounded-full border text-[10px] sm:text-xs font-semibold uppercase transition-all duration-300 ${
-            isDark
-              ? "border-slate-700 text-slate-200 hover:bg-slate-800"
-              : "border-forest/30 text-forest hover:bg-forest hover:text-white"
-          }`}
-          aria-label="Toggle theme"
-        >
-          {isDark ? "☀" : "☾"}
-        </button>
-        <button
-          type="button"
-          onClick={onToggleLanguage}
-          className={`inline-flex px-3 sm:px-4 py-2.5 rounded-full border text-[10px] sm:text-xs font-semibold tracking-widest uppercase transition-all duration-300 ${
-            isDark
-              ? "border-slate-700 text-slate-200 hover:bg-slate-800"
-              : "border-forest/30 text-forest hover:bg-forest hover:text-white"
-          }`}
-        >
-          {isFrench ? "EN" : "FR"}
-        </button>
-        <button
-          type="button"
-          onClick={() => onToggleMenu(!menuOpen)}
-          className={`inline-flex items-center justify-center rounded-full border p-2.5 lg:hidden transition-colors duration-300 ${
-            isDark ? "border-slate-700 text-slate-200" : "border-slate-200 text-slate-700"
-          }`}
-          aria-label="Toggle navigation menu"
-        >
-          <span className="text-lg leading-none">☰</span>
-        </button>
-        <Link
-          to="/contact"
-          className="hidden sm:inline-flex px-4 sm:px-6 md:px-8 py-2.5 rounded-full bg-forest text-white text-[10px] sm:text-xs font-semibold tracking-widest uppercase shadow-lg shadow-forest/25 hover:bg-forest-deep transition-all"
-        >
-          {copy.nav.cta}
-        </Link>
-      </div>
-
-      <div
-        className={`fixed inset-0 z-40 bg-black/50 px-4 pt-20 transition-all duration-300 lg:hidden ${
-          menuOpen ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0"
+    <>
+      <nav
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+          scrolled
+            ? isDark
+              ? "bg-slate-950/90 shadow-lg shadow-black/20 backdrop-blur-xl"
+              : "bg-cream/90 shadow-soft backdrop-blur-xl"
+            : isDark
+              ? "bg-slate-950/70 backdrop-blur-md"
+              : "bg-cream/70 backdrop-blur-md"
         }`}
-        onClick={() => onToggleMenu(false)}
       >
-        <div
-          className={`mx-auto max-w-md rounded-[1.5rem] p-5 shadow-2xl transition-all duration-300 ${
-            isDark ? "bg-slate-900 text-slate-100" : "bg-white text-slate-900"
-          } ${menuOpen ? "translate-y-0 opacity-100" : "-translate-y-3 opacity-0"}`}
-          onClick={(e) => e.stopPropagation()}
-        >
-          <div className="mb-4 flex items-center justify-between">
-            <span className="text-sm font-semibold uppercase tracking-[0.2em] text-forest">
-              {isFrench ? "Navigation" : "Navigation"}
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-3 sm:px-6 lg:px-8">
+          <Link
+            to="/"
+            className="flex min-w-0 items-center gap-2.5"
+            onClick={() => setMenuOpen(false)}
+          >
+            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white p-1 shadow-sm ring-1 ring-forest/10 sm:h-11 sm:w-11">
+              <img
+                src="/logo%20GabonMince.png"
+                alt="GabonMICE"
+                className="h-full w-full rounded-full object-cover"
+              />
             </span>
-            <button
-              type="button"
-              onClick={() => onToggleMenu(false)}
-              className={`text-xl ${isDark ? "text-slate-400" : "text-slate-500"}`}
-            >
-              ×
-            </button>
-          </div>
-          <div className="flex flex-col gap-3">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                to={link.href}
-                className={`rounded-2xl border px-4 py-3 text-sm font-semibold uppercase tracking-[0.16em] transition-colors ${
-                  isDark
-                    ? "border-slate-700 text-slate-300 hover:border-forest hover:text-forest"
-                    : "border-slate-200 text-slate-700 hover:border-forest hover:text-forest"
-                }`}
-                onClick={() => onToggleMenu(false)}
+            <span className="hidden min-[400px]:flex flex-col leading-none">
+              <span
+                className={`font-display text-lg font-extrabold tracking-tight ${isDark ? "text-white" : "text-forest-deep"}`}
               >
-                {link.label}
-              </Link>
+                Gabon<span className="text-sun">MICE</span>
+              </span>
+              <span
+                className={`mt-1 text-[10px] font-medium ${isDark ? "text-slate-400" : "text-ink/50"}`}
+              >
+                {isFrench ? "Se réunir. Explorer. Découvrir." : "Meet. Explore. Discover."}
+              </span>
+            </span>
+          </Link>
+
+          <div className="hidden items-center gap-1 xl:flex">
+            <NavTextLink to="/" active={pathname === "/"} className={linkBase}>
+              {isFrench ? "Accueil" : "Home"}
+            </NavTextLink>
+            {navGroups.map((group) => (
+              <div
+                key={group.id}
+                className="relative"
+                onMouseEnter={() => setOpenGroup(group.id)}
+                onMouseLeave={() => setOpenGroup(null)}
+              >
+                <button
+                  type="button"
+                  onClick={() => setOpenGroup(openGroup === group.id ? null : group.id)}
+                  aria-expanded={openGroup === group.id}
+                  className={`relative flex items-center gap-1 whitespace-nowrap rounded-full px-2.5 py-2 text-sm font-semibold transition-colors ${linkBase} ${groupActive(group) ? "!text-sun-deep" : ""}`}
+                >
+                  {isFrench ? group.fr : group.en}
+                  <ChevronDown
+                    className={`h-3.5 w-3.5 transition-transform ${openGroup === group.id ? "rotate-180" : ""}`}
+                  />
+                </button>
+                <div
+                  className={`absolute left-1/2 top-full w-[22rem] -translate-x-1/2 pt-3 transition-all duration-200 ${
+                    openGroup === group.id
+                      ? "visible translate-y-0 opacity-100"
+                      : "invisible -translate-y-1 opacity-0"
+                  }`}
+                >
+                  <div
+                    className={`rounded-3xl border p-2 shadow-float ${isDark ? "border-slate-800 bg-slate-900" : "border-black/5 bg-white"}`}
+                  >
+                    {group.items.map((item) => (
+                      <NavMenuLink key={item.fr} item={item} isFrench={isFrench} isDark={isDark} />
+                    ))}
+                  </div>
+                </div>
+              </div>
             ))}
+            {simpleLinks.map((link) => (
+              <NavTextLink
+                key={link.to}
+                to={link.to}
+                active={pathname === link.to}
+                className={linkBase}
+              >
+                {isFrench ? link.fr : link.en}
+              </NavTextLink>
+            ))}
+          </div>
+
+          <div className="flex items-center gap-1.5 sm:gap-2">
             <Link
-              to="/contact"
-              className="rounded-2xl bg-forest px-4 py-3 text-center text-sm font-semibold uppercase tracking-[0.16em] text-white hover:bg-forest-deep transition-colors"
-              onClick={() => onToggleMenu(false)}
+              to="/explorer"
+              className={`${iconButton} hidden sm:inline-flex xl:hidden 2xl:inline-flex`}
+              aria-label={isFrench ? "Rechercher" : "Search"}
             >
-              {copy.nav.cta}
+              <Search className="h-4 w-4" />
             </Link>
             <button
               type="button"
-              onClick={() => {
-                onToggleLanguage();
-                onToggleMenu(false);
-              }}
-              className={`rounded-2xl px-4 py-3 text-sm font-semibold uppercase tracking-[0.16em] transition-colors ${
-                isDark
-                  ? "border border-slate-700 text-slate-300 hover:border-forest hover:text-forest"
-                  : "border border-slate-200 text-slate-700 hover:border-forest hover:text-forest"
-              }`}
+              onClick={onToggleTheme}
+              className={iconButton}
+              aria-label={isFrench ? "Changer de thème" : "Toggle theme"}
             >
-              {isFrench ? "Switch to English" : "Passer au Français"}
+              {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+            </button>
+            <button
+              type="button"
+              onClick={onToggleLanguage}
+              className={`${iconButton} w-auto px-3 text-xs font-bold tracking-wider`}
+              aria-label={isFrench ? "Switch to English" : "Passer en français"}
+            >
+              {isFrench ? "EN" : "FR"}
+            </button>
+            <Link
+              to="/organisateur"
+              className="hidden items-center gap-2 whitespace-nowrap rounded-full bg-sun px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-sun/30 transition-all hover:bg-sun-deep md:inline-flex"
+            >
+              {isFrench ? "Organiser" : "Plan an event"}
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+            <button
+              type="button"
+              onClick={() => setMenuOpen(!menuOpen)}
+              className={`${iconButton} xl:hidden`}
+              aria-label={isFrench ? "Ouvrir le menu" : "Open menu"}
+              aria-expanded={menuOpen}
+            >
+              <Menu className="h-4 w-4" />
             </button>
           </div>
         </div>
+      </nav>
+
+      {/* Menu mobile : hors de <nav>, car le backdrop-filter de la barre
+          ferait de celle-ci le conteneur des éléments `fixed` et couperait le panneau. */}
+      <div
+        className={`fixed inset-0 z-[110] bg-black/40 transition-opacity duration-300 xl:hidden ${
+          menuOpen ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0"
+        }`}
+        onClick={() => setMenuOpen(false)}
+      >
+        <div
+          className={`absolute right-0 top-0 flex h-full w-full max-w-sm flex-col overflow-y-auto p-5 shadow-2xl transition-transform duration-300 ${
+            isDark ? "bg-slate-950 text-slate-100" : "bg-cream text-ink"
+          } ${menuOpen ? "translate-x-0" : "translate-x-full"}`}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div className="mb-6 flex items-center justify-between">
+            <span className="font-display text-lg font-extrabold">
+              Gabon<span className="text-sun">MICE</span>
+            </span>
+            <button
+              type="button"
+              onClick={() => setMenuOpen(false)}
+              className={iconButton}
+              aria-label={isFrench ? "Fermer" : "Close"}
+            >
+              <X className="h-4 w-4" />
+            </button>
+          </div>
+          <Link
+            to="/"
+            onClick={() => setMenuOpen(false)}
+            className={`mb-4 rounded-2xl px-4 py-3 font-semibold ${isDark ? "bg-slate-900" : "bg-white"}`}
+          >
+            {isFrench ? "Accueil" : "Home"}
+          </Link>
+          {navGroups.map((group) => (
+            <div key={group.id} className="mb-4">
+              <p className="mb-2 px-1 text-[11px] font-bold uppercase tracking-[0.2em] text-sun-deep">
+                {isFrench ? group.fr : group.en}
+              </p>
+              <div className={`rounded-2xl p-1.5 ${isDark ? "bg-slate-900" : "bg-white"}`}>
+                {group.items.map((item) => (
+                  <NavMenuLink
+                    key={item.fr}
+                    item={item}
+                    isFrench={isFrench}
+                    isDark={isDark}
+                    onNavigate={() => setMenuOpen(false)}
+                  />
+                ))}
+              </div>
+            </div>
+          ))}
+          <div className={`mb-5 grid grid-cols-3 gap-2`}>
+            {simpleLinks.map((link) => (
+              <Link
+                key={link.to}
+                to={link.to}
+                onClick={() => setMenuOpen(false)}
+                className={`rounded-2xl px-2 py-3 text-center text-sm font-semibold ${isDark ? "bg-slate-900" : "bg-white"}`}
+              >
+                {isFrench ? link.fr : link.en}
+              </Link>
+            ))}
+          </div>
+          <Link
+            to="/organisateur"
+            onClick={() => setMenuOpen(false)}
+            className="mt-auto inline-flex items-center justify-center gap-2 rounded-full bg-sun px-5 py-3.5 font-semibold text-white"
+          >
+            {copy.nav.cta}
+            <ArrowRight className="h-4 w-4" />
+          </Link>
+        </div>
       </div>
-    </nav>
+    </>
+  );
+}
+
+function NavTextLink({
+  to,
+  active,
+  className,
+  children,
+}: {
+  to: "/" | "/actualites" | "/about" | "/contact";
+  active: boolean;
+  className: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <Link
+      to={to}
+      className={`relative whitespace-nowrap rounded-full px-2.5 py-2 text-sm font-semibold transition-colors ${className} ${active ? "!text-sun-deep" : ""}`}
+    >
+      {children}
+      {active && <span className="absolute inset-x-3 -bottom-0.5 h-0.5 rounded-full bg-sun" />}
+    </Link>
+  );
+}
+
+function NavMenuLink({
+  item,
+  isFrench,
+  isDark,
+  onNavigate,
+}: {
+  item: NavItem;
+  isFrench: boolean;
+  isDark: boolean;
+  onNavigate?: () => void;
+}) {
+  const Icon = item.icon;
+  const className = `flex items-center gap-3 rounded-2xl px-3 py-2.5 transition-colors ${isDark ? "hover:bg-slate-800" : "hover:bg-cream"}`;
+  const content = (
+    <>
+      <span
+        className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${isDark ? "bg-slate-800 text-sun" : "bg-forest/10 text-forest"}`}
+      >
+        <Icon className="h-[18px] w-[18px]" />
+      </span>
+      <span className="min-w-0">
+        <span className="block text-sm font-semibold">{isFrench ? item.fr : item.en}</span>
+        <span className={`block truncate text-xs ${isDark ? "text-slate-400" : "text-ink/55"}`}>
+          {isFrench ? item.descFr : item.descEn}
+        </span>
+      </span>
+    </>
+  );
+  if (item.to === "/explorer") {
+    return (
+      <Link to="/explorer" search={{ cat: item.cat }} className={className} onClick={onNavigate}>
+        {content}
+      </Link>
+    );
+  }
+  return (
+    <Link to={item.to} className={className} onClick={onNavigate}>
+      {content}
+    </Link>
   );
 }

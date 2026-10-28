@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import { CheckCircle2, Info, XCircle } from "lucide-react";
 
 type ToastType = "success" | "error" | "info";
 
@@ -42,8 +43,14 @@ export function ToastProvider({ children }: { children: ReactNode }) {
                   : "bg-ocean text-white border-ocean/30"
             }`}
           >
-            <span className="text-lg leading-none mt-0.5">
-              {toast.type === "success" ? "✓" : toast.type === "error" ? "✕" : "ℹ"}
+            <span className="mt-0.5 shrink-0">
+              {toast.type === "success" ? (
+                <CheckCircle2 className="h-5 w-5" />
+              ) : toast.type === "error" ? (
+                <XCircle className="h-5 w-5" />
+              ) : (
+                <Info className="h-5 w-5" />
+              )}
             </span>
             <div>
               <p className="font-bold text-sm">{toast.title}</p>

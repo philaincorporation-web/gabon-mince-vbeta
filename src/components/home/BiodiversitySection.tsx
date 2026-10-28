@@ -4,7 +4,7 @@ import gabonMask from "@/assets/gabon-mask.jpg";
 import { homeCopyFr, homeCopyEn, stats, type HomeSections } from "@/lib/home-data";
 import useEmblaCarousel from "embla-carousel-react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { motion } from "framer-motion";
+import { Link } from "@tanstack/react-router";
 
 const biodiversityImages = [loangoElephant, gabonMask];
 
@@ -55,14 +55,14 @@ export function BiodiversitySection({ language, theme }: BiodiversitySectionProp
   return (
     <section
       id="experiences"
-      className="bg-forest py-16 sm:py-20 md:py-24 relative overflow-hidden"
+      className="mx-3 sm:mx-5 rounded-[2rem] sm:rounded-[2.5rem] bg-forest-deep py-16 sm:py-20 md:py-24 relative overflow-hidden"
     >
       <div className="absolute right-0 top-0 h-full w-1/2 opacity-25 mix-blend-overlay">
         <img src={loangoElephant} alt="" loading="lazy" className="w-full h-full object-cover" />
       </div>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-10 relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-16 items-center">
         <div>
-          <span className="text-gold font-bold tracking-[0.25em] text-xs uppercase">
+          <span className="text-sun font-bold tracking-[0.22em] text-xs uppercase">
             {sections.experiencesEyebrow}
           </span>
           <h2 className="font-display text-[2.25rem] sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mt-5 mb-8 leading-[1.05]">
@@ -77,14 +77,17 @@ export function BiodiversitySection({ language, theme }: BiodiversitySectionProp
                 key={s.l}
                 className="bg-white/10 backdrop-blur-md px-4 sm:px-6 py-4 rounded-2xl border border-white/15 hover:bg-white/15 transition-colors"
               >
-                <div className="text-gold font-bold text-3xl mb-1 font-display">{s.n}</div>
+                <div className="text-sun font-extrabold text-3xl mb-1 font-display">{s.n}</div>
                 <div className="text-white/70 text-[10px] uppercase tracking-widest">{s.l}</div>
               </div>
             ))}
           </div>
-          <button className="mt-8 sm:mt-10 md:mt-12 w-full sm:w-auto px-8 py-4 rounded-full bg-gold text-forest-deep text-xs font-bold uppercase tracking-widest hover:bg-gold-soft transition-all shadow-xl shadow-black/20">
+          <Link
+            to="/experiences"
+            className="mt-8 sm:mt-10 md:mt-12 inline-flex w-full sm:w-auto justify-center px-8 py-4 rounded-full bg-sun text-white text-sm font-semibold hover:bg-sun-deep transition-all shadow-xl shadow-black/20"
+          >
             {sections.experiencesButton}
-          </button>
+          </Link>
         </div>
 
         <div className="relative">

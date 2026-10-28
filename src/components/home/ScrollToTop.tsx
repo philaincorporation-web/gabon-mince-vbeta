@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { ArrowUp } from "lucide-react";
 
 interface ScrollToTopProps {
   label: string;
@@ -31,9 +32,9 @@ export function ScrollToTop({ label, theme }: ScrollToTopProps) {
       type="button"
       onClick={scrollToTop}
       aria-label={label}
-      className="fixed bottom-5 right-5 z-[60] flex h-12 w-12 items-center justify-center rounded-full bg-forest text-white shadow-xl shadow-forest/30 transition-transform hover:scale-105"
+      className="fixed bottom-24 right-7 z-[60] flex h-12 w-12 items-center justify-center rounded-full bg-forest text-white shadow-xl shadow-forest/30 transition-transform hover:scale-105"
     >
-      ↑
+      <ArrowUp className="h-5 w-5" />
     </button>
   );
 }

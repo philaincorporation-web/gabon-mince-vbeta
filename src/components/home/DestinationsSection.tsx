@@ -92,11 +92,13 @@ export function DestinationsSection({ language, theme }: DestinationsSectionProp
       id="destinations"
       className="py-16 sm:py-20 md:py-24 px-4 sm:px-6 md:px-10 max-w-7xl mx-auto"
     >
-      <div className="max-w-2xl mb-16">
-        <span className="text-forest font-bold tracking-[0.25em] text-xs uppercase">
+      <div className="max-w-2xl mb-10">
+        <span className="text-sun-deep font-bold tracking-[0.22em] text-xs uppercase">
           {sections.destinationsLabel}
         </span>
-        <h2 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mt-5 text-slate-900 leading-[1.05]">
+        <h2
+          className={`font-display text-3xl sm:text-4xl font-extrabold mt-3 leading-tight ${isDark ? "text-white" : "text-forest-deep"}`}
+        >
           {sections.destinationsTitle}
         </h2>
         <p
@@ -115,8 +117,8 @@ export function DestinationsSection({ language, theme }: DestinationsSectionProp
                 className="flex-[0_0_100%] sm:flex-[0_0_calc(50%-1rem)] lg:flex-[0_0_calc(33.333%-1.5rem)] min-w-0"
               >
                 <a
-                  href="#"
-                  className="group relative overflow-hidden rounded-3xl aspect-[16/10] shadow-soft"
+                  href="/destinations"
+                  className="group relative block overflow-hidden rounded-[1.75rem] aspect-[16/10] shadow-soft"
                 >
                   <img
                     src={slide.image}
@@ -128,7 +130,7 @@ export function DestinationsSection({ language, theme }: DestinationsSectionProp
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
                   <div className="absolute bottom-0 left-0 p-6 text-white">
-                    <span className="text-gold text-[10px] uppercase tracking-widest font-bold">
+                    <span className="rounded-full bg-sun px-3 py-1 text-[10px] uppercase tracking-widest font-bold">
                       {slide.label}
                     </span>
                     <h3 className="font-display text-2xl font-bold mt-2">{slide.title}</h3>
@@ -147,7 +149,7 @@ export function DestinationsSection({ language, theme }: DestinationsSectionProp
               key={i}
               onClick={() => emblaApi?.scrollTo(i)}
               className={`h-2 rounded-full transition-all duration-300 ${
-                i === selectedIndex ? "w-6 bg-forest" : "w-2 bg-slate-300"
+                i === selectedIndex ? "w-6 bg-sun" : "w-2 bg-ink/20"
               }`}
               aria-label={`Go to slide ${i + 1}`}
             />

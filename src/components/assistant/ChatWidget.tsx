@@ -31,9 +31,7 @@ export function ChatWidget({ language, theme }: ChatWidgetProps) {
         type="button"
         onClick={() => setIsOpen(true)}
         className={`fixed bottom-6 right-6 z-[100] flex h-14 w-14 items-center justify-center rounded-full bg-forest p-0.5 shadow-lg transition-transform hover:scale-105 hover:shadow-xl md:bottom-6 md:right-6`}
-        aria-label={
-          language === "fr" ? "Ouvrir l'assistant GabonMICE" : "Open GabonMICE assistant"
-        }
+        aria-label={language === "fr" ? "Ouvrir l'assistant GabonMICE" : "Open GabonMICE assistant"}
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
       >
@@ -45,9 +43,6 @@ export function ChatWidget({ language, theme }: ChatWidgetProps) {
             onError={(e) => {
               const t = e.target as HTMLImageElement;
               t.style.display = "none";
-              const fallback = document.createElement("span");
-              fallback.textContent = "🦣";
-              t.parentElement?.appendChild(fallback);
             }}
           />
         </div>
@@ -74,19 +69,17 @@ export function ChatWidget({ language, theme }: ChatWidgetProps) {
               className={`fixed right-0 bottom-0 z-[100] mx-4 mb-20 flex h-[calc(100vh-100px)] w-full max-w-[380px] flex-col overflow-hidden rounded-3xl border shadow-xl md:mx-0 md:mb-0 md:h-[600px] md:max-w-[420px] ${
                 isDark ? "bg-slate-900" : "bg-white"
               } ${borderColor}`}
-              >
+            >
               <div
                 className={`flex items-center justify-between border-b px-5 py-4 ${headerBg} ${borderColor}`}
               >
                 <div className="flex items-center gap-3">
-                <img
-                  src="/logoGabonMinceROND.png"
-                  alt="GabonMICE AI"
-                  className="h-8 w-8 object-contain dark:brightness-0 dark:invert"
-                />
-                  <span className={`text-sm font-semibold ${textColor}`}>
-                    GabonMICE AI
-                  </span>
+                  <img
+                    src="/logoGabonMinceROND.png"
+                    alt="GabonMICE AI"
+                    className="h-8 w-8 object-contain dark:brightness-0 dark:invert"
+                  />
+                  <span className={`text-sm font-semibold ${textColor}`}>GabonMICE AI</span>
                 </div>
                 <Button
                   variant="ghost"
