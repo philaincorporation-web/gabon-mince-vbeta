@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as ActualitesRouteImport } from './routes/actualites'
 import { Route as CarteRouteImport } from './routes/carte'
+import { Route as ConfidentialiteRouteImport } from './routes/confidentialite'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as DestinationsRouteImport } from './routes/destinations'
 import { Route as EvenementsRouteImport } from './routes/evenements'
@@ -20,6 +21,7 @@ import { Route as ExperiencesRouteImport } from './routes/experiences'
 import { Route as ExplorerRouteImport } from './routes/explorer'
 import { Route as InvestirRouteImport } from './routes/investir'
 import { Route as LieuxRouteImport } from './routes/lieux'
+import { Route as MentionsLegalesRouteImport } from './routes/mentions-legales'
 import { Route as OffresRouteImport } from './routes/offres'
 import { Route as OrganisateurRouteImport } from './routes/organisateur'
 import { Route as PrestatairesRouteImport } from './routes/prestataires'
@@ -42,6 +44,11 @@ const ActualitesRoute = ActualitesRouteImport.update({
 const CarteRoute = CarteRouteImport.update({
   id: '/carte',
   path: '/carte',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConfidentialiteRoute = ConfidentialiteRouteImport.update({
+  id: '/confidentialite',
+  path: '/confidentialite',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContactRoute = ContactRouteImport.update({
@@ -79,6 +86,11 @@ const LieuxRoute = LieuxRouteImport.update({
   path: '/lieux',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MentionsLegalesRoute = MentionsLegalesRouteImport.update({
+  id: '/mentions-legales',
+  path: '/mentions-legales',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const OffresRoute = OffresRouteImport.update({
   id: '/offres',
   path: '/offres',
@@ -100,6 +112,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/actualites': typeof ActualitesRoute
   '/carte': typeof CarteRoute
+  '/confidentialite': typeof ConfidentialiteRoute
   '/contact': typeof ContactRoute
   '/destinations': typeof DestinationsRoute
   '/evenements': typeof EvenementsRoute
@@ -107,6 +120,7 @@ export interface FileRoutesByFullPath {
   '/explorer': typeof ExplorerRoute
   '/investir': typeof InvestirRoute
   '/lieux': typeof LieuxRoute
+  '/mentions-legales': typeof MentionsLegalesRoute
   '/offres': typeof OffresRoute
   '/organisateur': typeof OrganisateurRoute
   '/prestataires': typeof PrestatairesRoute
@@ -116,6 +130,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/actualites': typeof ActualitesRoute
   '/carte': typeof CarteRoute
+  '/confidentialite': typeof ConfidentialiteRoute
   '/contact': typeof ContactRoute
   '/destinations': typeof DestinationsRoute
   '/evenements': typeof EvenementsRoute
@@ -123,6 +138,7 @@ export interface FileRoutesByTo {
   '/explorer': typeof ExplorerRoute
   '/investir': typeof InvestirRoute
   '/lieux': typeof LieuxRoute
+  '/mentions-legales': typeof MentionsLegalesRoute
   '/offres': typeof OffresRoute
   '/organisateur': typeof OrganisateurRoute
   '/prestataires': typeof PrestatairesRoute
@@ -133,6 +149,7 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/actualites': typeof ActualitesRoute
   '/carte': typeof CarteRoute
+  '/confidentialite': typeof ConfidentialiteRoute
   '/contact': typeof ContactRoute
   '/destinations': typeof DestinationsRoute
   '/evenements': typeof EvenementsRoute
@@ -140,6 +157,7 @@ export interface FileRoutesById {
   '/explorer': typeof ExplorerRoute
   '/investir': typeof InvestirRoute
   '/lieux': typeof LieuxRoute
+  '/mentions-legales': typeof MentionsLegalesRoute
   '/offres': typeof OffresRoute
   '/organisateur': typeof OrganisateurRoute
   '/prestataires': typeof PrestatairesRoute
@@ -151,6 +169,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/actualites'
     | '/carte'
+    | '/confidentialite'
     | '/contact'
     | '/destinations'
     | '/evenements'
@@ -158,6 +177,7 @@ export interface FileRouteTypes {
     | '/explorer'
     | '/investir'
     | '/lieux'
+    | '/mentions-legales'
     | '/offres'
     | '/organisateur'
     | '/prestataires'
@@ -167,6 +187,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/actualites'
     | '/carte'
+    | '/confidentialite'
     | '/contact'
     | '/destinations'
     | '/evenements'
@@ -174,6 +195,7 @@ export interface FileRouteTypes {
     | '/explorer'
     | '/investir'
     | '/lieux'
+    | '/mentions-legales'
     | '/offres'
     | '/organisateur'
     | '/prestataires'
@@ -183,6 +205,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/actualites'
     | '/carte'
+    | '/confidentialite'
     | '/contact'
     | '/destinations'
     | '/evenements'
@@ -190,6 +213,7 @@ export interface FileRouteTypes {
     | '/explorer'
     | '/investir'
     | '/lieux'
+    | '/mentions-legales'
     | '/offres'
     | '/organisateur'
     | '/prestataires'
@@ -200,6 +224,7 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   ActualitesRoute: typeof ActualitesRoute
   CarteRoute: typeof CarteRoute
+  ConfidentialiteRoute: typeof ConfidentialiteRoute
   ContactRoute: typeof ContactRoute
   DestinationsRoute: typeof DestinationsRoute
   EvenementsRoute: typeof EvenementsRoute
@@ -207,6 +232,7 @@ export interface RootRouteChildren {
   ExplorerRoute: typeof ExplorerRoute
   InvestirRoute: typeof InvestirRoute
   LieuxRoute: typeof LieuxRoute
+  MentionsLegalesRoute: typeof MentionsLegalesRoute
   OffresRoute: typeof OffresRoute
   OrganisateurRoute: typeof OrganisateurRoute
   PrestatairesRoute: typeof PrestatairesRoute
@@ -240,6 +266,13 @@ declare module '@tanstack/react-router' {
       path: '/carte'
       fullPath: '/carte'
       preLoaderRoute: typeof CarteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/confidentialite': {
+      id: '/confidentialite'
+      path: '/confidentialite'
+      fullPath: '/confidentialite'
+      preLoaderRoute: typeof ConfidentialiteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contact': {
@@ -291,6 +324,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LieuxRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/mentions-legales': {
+      id: '/mentions-legales'
+      path: '/mentions-legales'
+      fullPath: '/mentions-legales'
+      preLoaderRoute: typeof MentionsLegalesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/offres': {
       id: '/offres'
       path: '/offres'
@@ -320,6 +360,7 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   ActualitesRoute: ActualitesRoute,
   CarteRoute: CarteRoute,
+  ConfidentialiteRoute: ConfidentialiteRoute,
   ContactRoute: ContactRoute,
   DestinationsRoute: DestinationsRoute,
   EvenementsRoute: EvenementsRoute,
@@ -327,6 +368,7 @@ const rootRouteChildren: RootRouteChildren = {
   ExplorerRoute: ExplorerRoute,
   InvestirRoute: InvestirRoute,
   LieuxRoute: LieuxRoute,
+  MentionsLegalesRoute: MentionsLegalesRoute,
   OffresRoute: OffresRoute,
   OrganisateurRoute: OrganisateurRoute,
   PrestatairesRoute: PrestatairesRoute,
