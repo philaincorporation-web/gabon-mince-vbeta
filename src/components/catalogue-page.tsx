@@ -4,11 +4,14 @@ import useEmblaCarousel from "embla-carousel-react";
 import { ArrowLeft, ArrowRight, X } from "lucide-react";
 import { PageHero, PageShell } from "@/components/layout/PageShell";
 import { RequestDialog, type RequestTarget } from "@/components/mice/RequestDialog";
+import { WeatherPanel } from "@/components/WeatherPanel";
 
 export type CatalogueItem = {
   fr: CatalogueText;
   en: CatalogueText;
   image: string;
+  /** [latitude, longitude] : affiche un bloc météo dans la fiche détaillée. */
+  coords?: [number, number];
 };
 
 export type CatalogueText = {
@@ -221,9 +224,16 @@ export function CataloguePage({
                   <h2 className="mt-2 font-display text-3xl font-extrabold text-forest-deep dark:text-white">
                     {selectedItem[language].title}
                   </h2>
-                  <p className="mt-5 text-lg leading-relaxed text-ink/75 dark:text-slate-300">
+                  <p className="mt-5 whitespace-pre-line text-lg leading-relaxed text-ink/75 dark:text-slate-300">
                     {selectedItem[language].details}
                   </p>
+                  {selectedItem.coords && (
+                    <WeatherPanel
+                      coords={selectedItem.coords}
+                      place={selectedItem[language].title}
+                      language={language}
+                    />
+                  )}
                   <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                     <button
                       type="button"
