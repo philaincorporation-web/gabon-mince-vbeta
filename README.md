@@ -74,7 +74,7 @@ Fichiers principaux : `prisma/schema.prisma`, `src/lib/auth/` (configuration, r�
 2. **API et services → Écran de consentement OAuth** : type « Externe », nom de l'application « GabonMICE », e-mail d'assistance, domaine autorisé (`gabon-mince-vbeta.vercel.app` ou votre domaine), portées `email` et `profile`. Publier l'application une fois testée.
 3. **Identifiants → Créer des identifiants → ID client OAuth** → type « Application Web » :
    - Origines JavaScript autorisées : `https://gabon-mince-vbeta.vercel.app` (et `http://localhost:8080` en local)
-   - URI de redirection autorisés : `https://gabon-mince-vbeta.vercel.app/api/auth/callback/google` (et `http://localhost:8080/api/auth/callback/google`)
+   - URI de redirection autorisés : `https://gabon-mince-vbeta.vercel.app/auth/callback/google` (et `http://localhost:8080/auth/callback/google`)
 4. Copier l'ID et le secret dans `AUTH_GOOGLE_ID` et `AUTH_GOOGLE_SECRET`. Sans ces variables, le bouton Google est simplement masqué.
 
 ## Déploiement sur Vercel

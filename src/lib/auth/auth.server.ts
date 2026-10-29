@@ -7,6 +7,7 @@ import bcrypt from "bcryptjs";
 import { getPrisma } from "@/lib/db.server";
 import { audit, clientIp } from "@/lib/auth/audit.server";
 
+export const AUTH_BASE_PATH = "/auth";
 export const MAX_FAILED_LOGINS = 5;
 export const LOCK_DURATION_MS = 15 * 60 * 1000;
 const BCRYPT_COST = 12;
@@ -40,6 +41,8 @@ function createAuth() {
     appName: "GabonMICE",
     secret: process.env.AUTH_SECRET,
     baseURL: process.env.AUTH_URL,
+    // Hors de /api : sur Vercel ce préfixe est réservé au dossier api/ (voir src/routes/auth/$.ts).
+    basePath: AUTH_BASE_PATH,
     database: prismaAdapter(prisma, { provider: "postgresql" }),
 
     emailAndPassword: {
@@ -74,6 +77,12 @@ function createAuth() {
     session: {
       // Session signée en cookie (équivalent du JWT demandé) : moins d'appels base.
       cookieCache: { enabled: true, maxAge: 5 * 60 },
+    },
+
+    advanced: {
+      // Sur Vercel, x-real-ip contient l'IP réelle du client (renseignée par la plateforme) :
+      // la limitation de débit compte ainsi par visiteur et non globalement.
+      ipAddress: { ipAddressHeaders: ["x-real-ip", "x-vercel-forwarded-for", "x-forwarded-for"] },
     },
 
     rateLimit: {

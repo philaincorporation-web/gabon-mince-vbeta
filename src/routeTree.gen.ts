@@ -33,11 +33,11 @@ import { Route as OffresRouteImport } from './routes/offres'
 import { Route as OrganisateurRouteImport } from './routes/organisateur'
 import { Route as PrestatairesRouteImport } from './routes/prestataires'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
+import { Route as AuthSplatRouteImport } from './routes/auth/$'
 import { Route as EspaceIndexRouteImport } from './routes/espace/index'
 import { Route as EspaceOrganisateurRouteImport } from './routes/espace/organisateur'
 import { Route as EspacePrestataireRouteImport } from './routes/espace/prestataire'
 import { Route as EspaceTouristeRouteImport } from './routes/espace/touriste'
-import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -159,6 +159,11 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AdminRoute,
 } as any)
+const AuthSplatRoute = AuthSplatRouteImport.update({
+  id: '/auth/$',
+  path: '/auth/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const EspaceIndexRoute = EspaceIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -178,11 +183,6 @@ const EspaceTouristeRoute = EspaceTouristeRouteImport.update({
   id: '/touriste',
   path: '/touriste',
   getParentRoute: () => EspaceRoute,
-} as any)
-const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
-  id: '/api/auth/$',
-  path: '/api/auth/$',
-  getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -209,12 +209,12 @@ export interface FileRoutesByFullPath {
   '/offres': typeof OffresRoute
   '/organisateur': typeof OrganisateurRoute
   '/prestataires': typeof PrestatairesRoute
+  '/auth/$': typeof AuthSplatRoute
   '/espace/organisateur': typeof EspaceOrganisateurRoute
   '/espace/prestataire': typeof EspacePrestataireRoute
   '/espace/touriste': typeof EspaceTouristeRoute
   '/admin/': typeof AdminIndexRoute
   '/espace/': typeof EspaceIndexRoute
-  '/api/auth/$': typeof ApiAuthSplatRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -238,12 +238,12 @@ export interface FileRoutesByTo {
   '/offres': typeof OffresRoute
   '/organisateur': typeof OrganisateurRoute
   '/prestataires': typeof PrestatairesRoute
+  '/auth/$': typeof AuthSplatRoute
   '/espace/organisateur': typeof EspaceOrganisateurRoute
   '/espace/prestataire': typeof EspacePrestataireRoute
   '/espace/touriste': typeof EspaceTouristeRoute
   '/admin': typeof AdminIndexRoute
   '/espace': typeof EspaceIndexRoute
-  '/api/auth/$': typeof ApiAuthSplatRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -270,12 +270,12 @@ export interface FileRoutesById {
   '/offres': typeof OffresRoute
   '/organisateur': typeof OrganisateurRoute
   '/prestataires': typeof PrestatairesRoute
+  '/auth/$': typeof AuthSplatRoute
   '/espace/organisateur': typeof EspaceOrganisateurRoute
   '/espace/prestataire': typeof EspacePrestataireRoute
   '/espace/touriste': typeof EspaceTouristeRoute
   '/admin/': typeof AdminIndexRoute
   '/espace/': typeof EspaceIndexRoute
-  '/api/auth/$': typeof ApiAuthSplatRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -303,12 +303,12 @@ export interface FileRouteTypes {
     | '/offres'
     | '/organisateur'
     | '/prestataires'
+    | '/auth/$'
     | '/espace/organisateur'
     | '/espace/prestataire'
     | '/espace/touriste'
     | '/admin/'
     | '/espace/'
-    | '/api/auth/$'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -332,12 +332,12 @@ export interface FileRouteTypes {
     | '/offres'
     | '/organisateur'
     | '/prestataires'
+    | '/auth/$'
     | '/espace/organisateur'
     | '/espace/prestataire'
     | '/espace/touriste'
     | '/admin'
     | '/espace'
-    | '/api/auth/$'
   id:
     | '__root__'
     | '/'
@@ -363,12 +363,12 @@ export interface FileRouteTypes {
     | '/offres'
     | '/organisateur'
     | '/prestataires'
+    | '/auth/$'
     | '/espace/organisateur'
     | '/espace/prestataire'
     | '/espace/touriste'
     | '/admin/'
     | '/espace/'
-    | '/api/auth/$'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -395,7 +395,7 @@ export interface RootRouteChildren {
   OffresRoute: typeof OffresRoute
   OrganisateurRoute: typeof OrganisateurRoute
   PrestatairesRoute: typeof PrestatairesRoute
-  ApiAuthSplatRoute: typeof ApiAuthSplatRoute
+  AuthSplatRoute: typeof AuthSplatRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -568,6 +568,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/auth/$': {
+      id: '/auth/$'
+      path: '/auth/$'
+      fullPath: '/auth/$'
+      preLoaderRoute: typeof AuthSplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/espace/': {
       id: '/espace/'
       path: '/'
@@ -595,13 +602,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/espace/touriste'
       preLoaderRoute: typeof EspaceTouristeRouteImport
       parentRoute: typeof EspaceRoute
-    }
-    '/api/auth/$': {
-      id: '/api/auth/$'
-      path: '/api/auth/$'
-      fullPath: '/api/auth/$'
-      preLoaderRoute: typeof ApiAuthSplatRouteImport
-      parentRoute: typeof rootRouteImport
     }
   }
 }
@@ -657,7 +657,7 @@ const rootRouteChildren: RootRouteChildren = {
   OffresRoute: OffresRoute,
   OrganisateurRoute: OrganisateurRoute,
   PrestatairesRoute: PrestatairesRoute,
-  ApiAuthSplatRoute: ApiAuthSplatRoute,
+  AuthSplatRoute: AuthSplatRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

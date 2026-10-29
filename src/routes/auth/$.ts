@@ -10,8 +10,9 @@ function handle(request: Request) {
   return getAuth().handler(request);
 }
 
-// Point d'entrée Better Auth : /api/auth/* (connexion, inscription, callback Google…).
-export const Route = createFileRoute("/api/auth/$")({
+// Point d'entrée Better Auth : /auth/* (connexion, inscription, callback Google…).
+// Pas sous /api : sur Vercel, ce préfixe est réservé au dossier api/ (fonction sendMail).
+export const Route = createFileRoute("/auth/$")({
   server: {
     handlers: {
       GET: ({ request }) => handle(request),
