@@ -1,6 +1,7 @@
 import { useState, type FormEvent, type ReactNode } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { CheckCircle2, ClipboardList, Loader2, Megaphone, Send, Sparkles } from "lucide-react";
+import { LoadingOverlay } from "@/components/ui/loading-overlay";
 import { PageHero, PageShell } from "@/components/layout/PageShell";
 import { cities, organiserNeeds } from "@/lib/mice-data";
 import { submitRequest, validateContact, type RequestErrors } from "@/lib/requests";
@@ -462,6 +463,10 @@ function OrganiserPage() {
                       ? t("Envoi en cours…", "Sending…")
                       : t("Répertorier mon événement", "List my event")}
                   </button>
+                  <LoadingOverlay
+                    show={status === "sending"}
+                    message={{ fr: "Envoi de votre demande…", en: "Sending your request…" }}
+                  />
                 </form>
               )}
             </section>

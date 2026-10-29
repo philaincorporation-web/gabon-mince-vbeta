@@ -11,6 +11,7 @@ import {
   Trash2,
   Upload,
 } from "lucide-react";
+import { LoadingOverlay } from "@/components/ui/loading-overlay";
 import { PageShell } from "@/components/layout/PageShell";
 import { Panel, SpaceHeader } from "@/components/auth/SpaceLayout";
 import { Notice } from "@/components/auth/AuthUI";
@@ -235,6 +236,14 @@ function DocumentsPanel({
             )}
             {t("Envoyer", "Upload")}
           </button>
+          <LoadingOverlay
+            show={busy !== null}
+            message={
+              busy === "upload"
+                ? { fr: "Envoi du justificatif…", en: "Uploading document…" }
+                : { fr: "Suppression…", en: "Deleting…" }
+            }
+          />
         </form>
       )}
       {error && (

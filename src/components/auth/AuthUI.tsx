@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { AlertCircle, CheckCircle2, Loader2 } from "lucide-react";
+import { LoadingOverlay } from "@/components/ui/loading-overlay";
 
 export const inputClass =
   "w-full rounded-2xl border border-black/10 bg-cream px-4 py-3 text-sm outline-none transition focus:border-forest focus:bg-white focus:ring-4 focus:ring-forest/10 aria-[invalid=true]:border-red-400 dark:border-slate-700 dark:bg-slate-800 dark:text-white";
@@ -79,14 +80,17 @@ export function Field({
 
 export function SubmitButton({ loading, children }: { loading: boolean; children: ReactNode }) {
   return (
-    <button
-      type="submit"
-      disabled={loading}
-      className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-sun px-6 py-3.5 text-sm font-semibold text-white shadow-lg shadow-sun/30 transition hover:bg-sun-deep disabled:opacity-60"
-    >
-      {loading && <Loader2 className="h-4 w-4 animate-spin" />}
-      {children}
-    </button>
+    <>
+      <button
+        type="submit"
+        disabled={loading}
+        className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-sun px-6 py-3.5 text-sm font-semibold text-white shadow-lg shadow-sun/30 transition hover:bg-sun-deep disabled:opacity-60"
+      >
+        {loading && <Loader2 className="h-4 w-4 animate-spin" />}
+        {children}
+      </button>
+      <LoadingOverlay show={loading} />
+    </>
   );
 }
 

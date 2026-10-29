@@ -1,4 +1,5 @@
 import { Component, lazy, Suspense, useEffect, useState, type ReactNode } from "react";
+import { InlineLoader } from "@/components/ui/loading-overlay";
 import type { MapPoint } from "@/lib/map-points";
 
 export { mapCategoryMeta, mapPoints, type MapCategory, type MapPoint } from "@/lib/map-points";
@@ -45,7 +46,12 @@ export function InteractiveMap({
 }) {
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
-  const loading = <MapMessage>Chargement de la carte…</MapMessage>;
+  const loading = (
+    <InlineLoader
+      label="Chargement de la carte…"
+      className="absolute inset-0 text-sm font-medium text-ink/60 dark:text-slate-400"
+    />
+  );
 
   return (
     // `isolate` contient les z-index de Leaflet sous la navigation fixe.

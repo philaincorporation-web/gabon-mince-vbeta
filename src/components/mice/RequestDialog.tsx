@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { CalendarCheck, CheckCircle2, FileText, Loader2, ShieldCheck, X } from "lucide-react";
+import { LoadingOverlay } from "@/components/ui/loading-overlay";
 import { submitRequest, validateContact, type RequestErrors } from "@/lib/requests";
 
 export type RequestTarget = {
@@ -264,6 +265,10 @@ export function RequestDialog({
                   ? t("Envoyer ma réservation", "Send my booking")
                   : t("Envoyer ma demande de devis", "Send my quote request")}
             </button>
+            <LoadingOverlay
+              show={status === "sending"}
+              message={{ fr: "Envoi de votre demande…", en: "Sending your request…" }}
+            />
           </form>
         )}
       </div>

@@ -3,6 +3,7 @@ import { useToast } from "./Toast";
 import { validateForm, sanitizeFormData, generateUUID } from "@/lib/validation";
 import { saveToSheetDB } from "@/lib/sheetdb";
 import type { FormErrors } from "@/lib/validation";
+import { LoadingOverlay } from "@/components/ui/loading-overlay";
 
 interface ContactFormProps {
   language: "fr" | "en";
@@ -202,6 +203,10 @@ export function ContactForm({ language, theme }: ContactFormProps) {
             ? "Envoyer la demande"
             : "Send request"}
       </button>
+      <LoadingOverlay
+        show={loading}
+        message={{ fr: "Envoi de votre demande…", en: "Sending your request…" }}
+      />
     </form>
   );
 }

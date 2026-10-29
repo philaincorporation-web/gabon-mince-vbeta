@@ -10,6 +10,7 @@ import {
   SearchCheck,
   Store,
 } from "lucide-react";
+import { LoadingOverlay } from "@/components/ui/loading-overlay";
 import { PageHero, PageShell, SectionTitle } from "@/components/layout/PageShell";
 import { ListingCard } from "@/components/mice/Cards";
 import { ListingDetailDialog } from "@/components/mice/DetailDialogs";
@@ -328,6 +329,10 @@ function ProvidersPage() {
                       ? t("Envoi en cours…", "Sending…")
                       : t("Envoyer ma candidature", "Send my application")}
                   </button>
+                  <LoadingOverlay
+                    show={status === "sending"}
+                    message={{ fr: "Envoi de votre demande…", en: "Sending your request…" }}
+                  />
                 </form>
               )}
             </section>

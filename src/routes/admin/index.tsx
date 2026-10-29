@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { LoadingOverlay } from "@/components/ui/loading-overlay";
 import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { BadgeCheck, Check, FileText, ShieldOff, X } from "lucide-react";
 import { PageShell } from "@/components/layout/PageShell";
@@ -60,6 +61,10 @@ function AdminPage() {
           d ? new Date(d).toLocaleDateString(language === "fr" ? "fr-FR" : "en-GB") : "—";
         return (
           <>
+            <LoadingOverlay
+              show={busy !== null}
+              message={{ fr: "Mise à jour en cours…", en: "Updating…" }}
+            />
             <SpaceHeader
               session={session}
               language={language}

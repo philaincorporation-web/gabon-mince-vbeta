@@ -7,13 +7,13 @@ import {
   CloudRain,
   CloudSun,
   Droplets,
-  Loader2,
   Sun,
   Thermometer,
   Umbrella,
   Wind,
   type LucideIcon,
 } from "lucide-react";
+import { GridLoader } from "react-spinners";
 import {
   fetchDestinationWeather,
   weatherKind,
@@ -71,7 +71,7 @@ export function WeatherPanel({
   if (!weather) {
     return (
       <div className="mt-8 flex items-center gap-2 rounded-2xl bg-slate-50 p-4 text-sm text-ink/60 dark:bg-slate-800 dark:text-slate-400">
-        <Loader2 className="h-4 w-4 animate-spin" />
+        <GridLoader color="#36d7b7" size={6} margin={1} aria-hidden />
         {t("Chargement de la météo…", "Loading weather…")}
       </div>
     );
