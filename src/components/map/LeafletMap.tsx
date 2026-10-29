@@ -1,6 +1,15 @@
 import { createElement, useEffect, useMemo } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import { MapContainer, Marker, TileLayer, Tooltip, useMap } from "react-leaflet";
+import {
+  LayerGroup,
+  LayersControl,
+  MapContainer,
+  Marker,
+  TileLayer,
+  Tooltip,
+  useMap,
+  useMapEvents,
+} from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { mapCategoryMeta, type MapCategory, type MapPoint } from "@/lib/map-points";
@@ -11,6 +20,86 @@ import { mapCategoryMeta, type MapCategory, type MapPoint } from "@/lib/map-poin
  */
 
 const LIBREVILLE: [number, number] = [0.4, 9.45];
+
+// Fonds CARTO. Avec VITE_CARTO_API_KEY : endpoint authentifié (quota de la clé) ;
+// sans clé : endpoint public, avec tuiles haute définition ({r}) sur écrans Retina.
+const CARTO_KEY = import.meta.env.VITE_CARTO_API_KEY as string | undefined;
+const cartoUrl = (style: string) =>
+  CARTO_KEY
+    ? `https://basemaps.cartocdn.com/rastertiles/${style}/{z}/{x}/{y}.png?key=${encodeURIComponent(CARTO_KEY)}`
+    : `https://{s}.basemaps.cartocdn.com/rastertiles/${style}/{z}/{x}/{y}{r}.png`;
+
+const ESRI = "https://server.arcgisonline.com/ArcGIS/rest/services";
+const CARTO_ATTRIBUTION =
+  '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>';
+
+type BaseLayerDef = {
+  id: string;
+  name: string;
+  url: string;
+  attribution: string;
+  maxNativeZoom: number;
+  /** Calque de noms de lieux superposé (vue satellite). */
+  labelsUrl?: string;
+};
+
+const BASE_LAYERS: BaseLayerDef[] = [
+  {
+    id: "satellite",
+    name: "Satellite",
+    url: `${ESRI}/World_Imagery/MapServer/tile/{z}/{y}/{x}`,
+    labelsUrl: `${ESRI}/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}`,
+    attribution: "Imagerie &copy; Esri, Maxar, Earthstar Geographics",
+    maxNativeZoom: 18,
+  },
+  {
+    id: "relief",
+    name: "Relief",
+    url: `${ESRI}/World_Topo_Map/MapServer/tile/{z}/{y}/{x}`,
+    attribution: "&copy; Esri, HERE, Garmin, OpenStreetMap",
+    maxNativeZoom: 18,
+  },
+  {
+    id: "plan",
+    name: "Plan",
+    url: cartoUrl("voyager"),
+    attribution: CARTO_ATTRIBUTION,
+    maxNativeZoom: 18,
+  },
+  {
+    id: "epure",
+    name: "Épuré",
+    url: cartoUrl("light_all"),
+    attribution: CARTO_ATTRIBUTION,
+    maxNativeZoom: 18,
+  },
+];
+
+const LAYER_KEY = "gabonmice-map-layer";
+
+function storedLayer() {
+  try {
+    const id = window.localStorage.getItem(LAYER_KEY);
+    return BASE_LAYERS.some((l) => l.id === id) ? id : BASE_LAYERS[0].id;
+  } catch {
+    return BASE_LAYERS[0].id;
+  }
+}
+
+/** Mémorise le fond choisi pour les prochaines visites. */
+function RememberLayer() {
+  useMapEvents({
+    baselayerchange: (event) => {
+      const layer = BASE_LAYERS.find((l) => l.name === event.name);
+      try {
+        if (layer) window.localStorage.setItem(LAYER_KEY, layer.id);
+      } catch {
+        // stockage indisponible : le choix vaut pour la visite en cours
+      }
+    },
+  });
+  return null;
+}
 
 // Icônes rondes colorées avec une icône Lucide blanche, mises en cache.
 const iconCache = new Map<string, L.DivIcon>();
@@ -62,6 +151,7 @@ export default function LeafletMap({
   onSelect?: (id: string) => void;
   interactive: boolean;
 }) {
+  const initialLayer = useMemo(storedLayer, []);
   // Les marqueurs actifs passent au premier plan.
   const ordered = useMemo(
     () => [...points].sort((a, b) => Number(a.id === activeId) - Number(b.id === activeId)),
@@ -75,11 +165,28 @@ export default function LeafletMap({
       scrollWheelZoom={interactive}
       className="h-full w-full"
     >
-      <TileLayer
-        url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>'
-        maxZoom={18}
-      />
+      <LayersControl position="topright">
+        {BASE_LAYERS.map((layer) => (
+          <LayersControl.BaseLayer
+            key={layer.id}
+            name={layer.name}
+            checked={layer.id === initialLayer}
+          >
+            <LayerGroup>
+              <TileLayer
+                url={layer.url}
+                attribution={layer.attribution}
+                maxNativeZoom={layer.maxNativeZoom}
+                maxZoom={19}
+              />
+              {layer.labelsUrl && (
+                <TileLayer url={layer.labelsUrl} maxNativeZoom={layer.maxNativeZoom} maxZoom={19} />
+              )}
+            </LayerGroup>
+          </LayersControl.BaseLayer>
+        ))}
+      </LayersControl>
+      <RememberLayer />
       {ordered.map((p) => (
         <Marker
           key={p.id}
