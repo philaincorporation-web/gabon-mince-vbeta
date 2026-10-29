@@ -13,6 +13,7 @@ import { useEffect, useState, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { ChatWidget } from "@/components/assistant/ChatWidget";
+import { PwaInstall } from "@/components/pwa/PwaInstall";
 
 function NotFoundComponent() {
   return (
@@ -86,6 +87,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           "La plateforme officielle du tourisme d'affaires (MICE) et de loisirs au Gabon. Centres de congrès, hôtels business, parcs nationaux et biodiversité d'exception.",
       },
       { name: "author", content: "GabonMICE" },
+      // PWA : couleur de la barre du navigateur et mode application sur iOS.
+      { name: "theme-color", content: "#133d29" },
+      { name: "mobile-web-app-capable", content: "yes" },
+      { name: "apple-mobile-web-app-capable", content: "yes" },
+      { name: "apple-mobile-web-app-status-bar-style", content: "default" },
+      { name: "apple-mobile-web-app-title", content: "GabonMICE" },
+      { name: "application-name", content: "GabonMICE" },
       { property: "og:title", content: "GabonMICE — L'Afrique émergente, au cœur de la nature" },
       {
         property: "og:description",
@@ -97,6 +105,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     ],
     links: [
       { rel: "stylesheet", href: appCss },
+      { rel: "manifest", href: "/manifest.webmanifest" },
+      { rel: "apple-touch-icon", href: "/icons/apple-touch-icon.png" },
       {
         rel: "icon",
         href: "/FAVICONE1.png?v=2",
@@ -159,6 +169,7 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       <Outlet />
       <ChatWidget language={language} theme={theme} />
+      <PwaInstall language={language} />
     </QueryClientProvider>
   );
 }
