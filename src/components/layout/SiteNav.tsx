@@ -18,8 +18,10 @@ import {
   Sun,
   TrendingUp,
   Users,
+  UserRound,
   X,
 } from "lucide-react";
+import { authClient } from "@/lib/auth/client";
 import { homeCopyFr, homeCopyEn } from "@/lib/home-data";
 import type { ListingCategory } from "@/lib/mice-data";
 
@@ -194,6 +196,9 @@ export function SiteNav({
   const isFrench = language === "fr";
   const isDark = theme === "dark";
   const copy = isFrench ? homeCopyFr : homeCopyEn;
+  // Session côté navigateur (null si non connecté ou si l'auth n'est pas configurée).
+  const { data: authSession } = authClient.useSession();
+  const signedIn = Boolean(authSession?.user);
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const [internalOpen, setInternalOpen] = useState(false);
   const [openGroup, setOpenGroup] = useState<string | null>(null);
@@ -356,6 +361,30 @@ export function SiteNav({
             >
               {isFrench ? "EN" : "FR"}
             </button>
+            <a
+              href={signedIn ? "/espace" : "/connexion"}
+              className={`${iconButton} w-auto gap-1.5 px-3 text-xs font-bold`}
+              aria-label={
+                signedIn
+                  ? isFrench
+                    ? "Mon espace"
+                    : "My space"
+                  : isFrench
+                    ? "Connexion"
+                    : "Sign in"
+              }
+            >
+              <UserRound className="h-4 w-4" />
+              <span className="hidden sm:inline">
+                {signedIn
+                  ? isFrench
+                    ? "Mon espace"
+                    : "My space"
+                  : isFrench
+                    ? "Connexion"
+                    : "Sign in"}
+              </span>
+            </a>
             <Link
               to="/organisateur"
               className="hidden items-center gap-2 whitespace-nowrap rounded-full bg-sun px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-sun/30 transition-all hover:bg-sun-deep md:inline-flex"
@@ -440,10 +469,23 @@ export function SiteNav({
               </Link>
             ))}
           </div>
+          <a
+            href={signedIn ? "/espace" : "/connexion"}
+            className={`mb-3 mt-auto inline-flex items-center justify-center gap-2 rounded-full px-5 py-3.5 font-semibold ${isDark ? "bg-slate-900" : "bg-white"}`}
+          >
+            <UserRound className="h-4 w-4" />
+            {signedIn
+              ? isFrench
+                ? "Mon espace"
+                : "My space"
+              : isFrench
+                ? "Connexion / Inscription"
+                : "Sign in / Sign up"}
+          </a>
           <Link
             to="/organisateur"
             onClick={() => setMenuOpen(false)}
-            className="mt-auto inline-flex items-center justify-center gap-2 rounded-full bg-sun px-5 py-3.5 font-semibold text-white"
+            className="inline-flex items-center justify-center gap-2 rounded-full bg-sun px-5 py-3.5 font-semibold text-white"
           >
             {copy.nav.cta}
             <ArrowRight className="h-4 w-4" />

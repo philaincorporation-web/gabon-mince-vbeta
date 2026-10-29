@@ -1,0 +1,173 @@
+// Schéma GabonMICE : authentification multi-rôles (Better Auth + Prisma).
+// Après modification : `npx prisma migrate dev` puis `npx prisma generate`.
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  TOURIST
+  ORGANIZER
+  PROVIDER
+  ADMIN
+}
+
+enum AccountStatus {
+  ACTIVE
+  PENDING
+  SUSPENDED
+}
+
+enum LabelStatus {
+  NONE
+  PENDING
+  GRANTED
+  REVOKED
+}
+
+model User {
+  id                 String            @id @default(cuid())
+  email              String            @unique
+  /// Identifiant de connexion (plugin username de Better Auth), stocké en minuscules.
+  username           String?           @unique
+  displayUsername    String?
+  name               String
+  phone              String?
+  image              String?
+  /// Better Auth gère la vérification d'e-mail sous forme de booléen.
+  emailVerified      Boolean           @default(false)
+  role               Role              @default(TOURIST)
+  status             AccountStatus     @default(ACTIVE)
+  /// Profil demandé par un utilisateur déjà inscrit (ex. touriste Google → organisateur).
+  requestedRole      Role?
+  mustChangePassword Boolean           @default(false)
+  lastLoginAt        DateTime?
+  /// Limitation des tentatives : 5 échecs → blocage 15 min.
+  failedLoginCount   Int               @default(0)
+  lockedUntil        DateTime?
+  createdAt          DateTime          @default(now())
+  updatedAt          DateTime          @updatedAt
+  accounts           Account[]
+  sessions           Session[]
+  touristProfile     TouristProfile?
+  organizerProfile   OrganizerProfile?
+  providerProfile    ProviderProfile?
+  auditLogs          AuditLog[]
+
+  @@map("user")
+}
+
+model TouristProfile {
+  id       String  @id @default(cuid())
+  userId   String  @unique
+  user     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  country  String?
+  company  String?
+  language String  @default("fr")
+}
+
+model OrganizerProfile {
+  id           String  @id @default(cuid())
+  userId       String  @unique
+  user         User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  organization String
+  position     String?
+  website      String?
+}
+
+model ProviderProfile {
+  id             String      @id @default(cuid())
+  userId         String      @unique
+  user           User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  businessName   String
+  /// hôtel, salle, restaurant, agence, transport…
+  category       String
+  address        String?
+  latitude       Float?
+  longitude      Float?
+  labelStatus    LabelStatus @default(PENDING)
+  labelGrantedAt DateTime?
+  labelExpiresAt DateTime?
+  documents      ProviderDocument[]
+}
+
+/// Justificatif de labellisation stocké dans Neon Object Storage (bucket « assets »).
+/// Seule la clé de l'objet est en base ; les liens de lecture sont signés à la demande.
+model ProviderDocument {
+  id                String          @id @default(cuid())
+  providerProfileId String
+  providerProfile   ProviderProfile @relation(fields: [providerProfileId], references: [id], onDelete: Cascade)
+  /// Clé de l'objet dans le bucket (providers/<profil>/<uuid>-<nom>)
+  key               String          @unique
+  fileName          String
+  contentType       String
+  size              Int
+  createdAt         DateTime        @default(now())
+
+  @@index([providerProfileId])
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  /// LOGIN, LOGIN_FAILED, LOGIN_LOCKED, ROLE_CHANGED, ACCOUNT_VALIDATED, LABEL_GRANTED…
+  action    String
+  details   Json?
+  ip        String?
+  createdAt DateTime @default(now())
+
+  @@index([action, createdAt])
+}
+
+// ---- Modèles Better Auth ----
+
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("session")
+}
+
+/// Comptes de connexion : "credential" (mot de passe haché bcrypt dans `password`) ou "google".
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@map("account")
+}
+
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@map("verification")
+}

@@ -11,20 +11,33 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
+import { Route as AccesRefuseRouteImport } from './routes/acces-refuse'
 import { Route as ActualitesRouteImport } from './routes/actualites'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as CarteRouteImport } from './routes/carte'
+import { Route as ChangerMotDePasseRouteImport } from './routes/changer-mot-de-passe'
+import { Route as CompteEnAttenteRouteImport } from './routes/compte-en-attente'
 import { Route as ConfidentialiteRouteImport } from './routes/confidentialite'
+import { Route as ConnexionRouteImport } from './routes/connexion'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as DestinationsRouteImport } from './routes/destinations'
+import { Route as EspaceRouteImport } from './routes/espace'
 import { Route as EvenementsRouteImport } from './routes/evenements'
 import { Route as ExperiencesRouteImport } from './routes/experiences'
 import { Route as ExplorerRouteImport } from './routes/explorer'
+import { Route as InscriptionRouteImport } from './routes/inscription'
 import { Route as InvestirRouteImport } from './routes/investir'
 import { Route as LieuxRouteImport } from './routes/lieux'
 import { Route as MentionsLegalesRouteImport } from './routes/mentions-legales'
 import { Route as OffresRouteImport } from './routes/offres'
 import { Route as OrganisateurRouteImport } from './routes/organisateur'
 import { Route as PrestatairesRouteImport } from './routes/prestataires'
+import { Route as AdminIndexRouteImport } from './routes/admin/index'
+import { Route as EspaceIndexRouteImport } from './routes/espace/index'
+import { Route as EspaceOrganisateurRouteImport } from './routes/espace/organisateur'
+import { Route as EspacePrestataireRouteImport } from './routes/espace/prestataire'
+import { Route as EspaceTouristeRouteImport } from './routes/espace/touriste'
+import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -36,9 +49,19 @@ const AboutRoute = AboutRouteImport.update({
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AccesRefuseRoute = AccesRefuseRouteImport.update({
+  id: '/acces-refuse',
+  path: '/acces-refuse',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ActualitesRoute = ActualitesRouteImport.update({
   id: '/actualites',
   path: '/actualites',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CarteRoute = CarteRouteImport.update({
@@ -46,9 +69,24 @@ const CarteRoute = CarteRouteImport.update({
   path: '/carte',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ChangerMotDePasseRoute = ChangerMotDePasseRouteImport.update({
+  id: '/changer-mot-de-passe',
+  path: '/changer-mot-de-passe',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CompteEnAttenteRoute = CompteEnAttenteRouteImport.update({
+  id: '/compte-en-attente',
+  path: '/compte-en-attente',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ConfidentialiteRoute = ConfidentialiteRouteImport.update({
   id: '/confidentialite',
   path: '/confidentialite',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConnexionRoute = ConnexionRouteImport.update({
+  id: '/connexion',
+  path: '/connexion',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContactRoute = ContactRouteImport.update({
@@ -59,6 +97,11 @@ const ContactRoute = ContactRouteImport.update({
 const DestinationsRoute = DestinationsRouteImport.update({
   id: '/destinations',
   path: '/destinations',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EspaceRoute = EspaceRouteImport.update({
+  id: '/espace',
+  path: '/espace',
   getParentRoute: () => rootRouteImport,
 } as any)
 const EvenementsRoute = EvenementsRouteImport.update({
@@ -74,6 +117,11 @@ const ExperiencesRoute = ExperiencesRouteImport.update({
 const ExplorerRoute = ExplorerRouteImport.update({
   id: '/explorer',
   path: '/explorer',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InscriptionRoute = InscriptionRouteImport.update({
+  id: '/inscription',
+  path: '/inscription',
   getParentRoute: () => rootRouteImport,
 } as any)
 const InvestirRoute = InvestirRouteImport.update({
@@ -106,136 +154,248 @@ const PrestatairesRoute = PrestatairesRouteImport.update({
   path: '/prestataires',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const EspaceIndexRoute = EspaceIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => EspaceRoute,
+} as any)
+const EspaceOrganisateurRoute = EspaceOrganisateurRouteImport.update({
+  id: '/organisateur',
+  path: '/organisateur',
+  getParentRoute: () => EspaceRoute,
+} as any)
+const EspacePrestataireRoute = EspacePrestataireRouteImport.update({
+  id: '/prestataire',
+  path: '/prestataire',
+  getParentRoute: () => EspaceRoute,
+} as any)
+const EspaceTouristeRoute = EspaceTouristeRouteImport.update({
+  id: '/touriste',
+  path: '/touriste',
+  getParentRoute: () => EspaceRoute,
+} as any)
+const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
+  id: '/api/auth/$',
+  path: '/api/auth/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/acces-refuse': typeof AccesRefuseRoute
   '/actualites': typeof ActualitesRoute
+  '/admin': typeof AdminRouteWithChildren
   '/carte': typeof CarteRoute
+  '/changer-mot-de-passe': typeof ChangerMotDePasseRoute
+  '/compte-en-attente': typeof CompteEnAttenteRoute
   '/confidentialite': typeof ConfidentialiteRoute
+  '/connexion': typeof ConnexionRoute
   '/contact': typeof ContactRoute
   '/destinations': typeof DestinationsRoute
+  '/espace': typeof EspaceRouteWithChildren
   '/evenements': typeof EvenementsRoute
   '/experiences': typeof ExperiencesRoute
   '/explorer': typeof ExplorerRoute
+  '/inscription': typeof InscriptionRoute
   '/investir': typeof InvestirRoute
   '/lieux': typeof LieuxRoute
   '/mentions-legales': typeof MentionsLegalesRoute
   '/offres': typeof OffresRoute
   '/organisateur': typeof OrganisateurRoute
   '/prestataires': typeof PrestatairesRoute
+  '/espace/organisateur': typeof EspaceOrganisateurRoute
+  '/espace/prestataire': typeof EspacePrestataireRoute
+  '/espace/touriste': typeof EspaceTouristeRoute
+  '/admin/': typeof AdminIndexRoute
+  '/espace/': typeof EspaceIndexRoute
+  '/api/auth/$': typeof ApiAuthSplatRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/acces-refuse': typeof AccesRefuseRoute
   '/actualites': typeof ActualitesRoute
   '/carte': typeof CarteRoute
+  '/changer-mot-de-passe': typeof ChangerMotDePasseRoute
+  '/compte-en-attente': typeof CompteEnAttenteRoute
   '/confidentialite': typeof ConfidentialiteRoute
+  '/connexion': typeof ConnexionRoute
   '/contact': typeof ContactRoute
   '/destinations': typeof DestinationsRoute
   '/evenements': typeof EvenementsRoute
   '/experiences': typeof ExperiencesRoute
   '/explorer': typeof ExplorerRoute
+  '/inscription': typeof InscriptionRoute
   '/investir': typeof InvestirRoute
   '/lieux': typeof LieuxRoute
   '/mentions-legales': typeof MentionsLegalesRoute
   '/offres': typeof OffresRoute
   '/organisateur': typeof OrganisateurRoute
   '/prestataires': typeof PrestatairesRoute
+  '/espace/organisateur': typeof EspaceOrganisateurRoute
+  '/espace/prestataire': typeof EspacePrestataireRoute
+  '/espace/touriste': typeof EspaceTouristeRoute
+  '/admin': typeof AdminIndexRoute
+  '/espace': typeof EspaceIndexRoute
+  '/api/auth/$': typeof ApiAuthSplatRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/acces-refuse': typeof AccesRefuseRoute
   '/actualites': typeof ActualitesRoute
+  '/admin': typeof AdminRouteWithChildren
   '/carte': typeof CarteRoute
+  '/changer-mot-de-passe': typeof ChangerMotDePasseRoute
+  '/compte-en-attente': typeof CompteEnAttenteRoute
   '/confidentialite': typeof ConfidentialiteRoute
+  '/connexion': typeof ConnexionRoute
   '/contact': typeof ContactRoute
   '/destinations': typeof DestinationsRoute
+  '/espace': typeof EspaceRouteWithChildren
   '/evenements': typeof EvenementsRoute
   '/experiences': typeof ExperiencesRoute
   '/explorer': typeof ExplorerRoute
+  '/inscription': typeof InscriptionRoute
   '/investir': typeof InvestirRoute
   '/lieux': typeof LieuxRoute
   '/mentions-legales': typeof MentionsLegalesRoute
   '/offres': typeof OffresRoute
   '/organisateur': typeof OrganisateurRoute
   '/prestataires': typeof PrestatairesRoute
+  '/espace/organisateur': typeof EspaceOrganisateurRoute
+  '/espace/prestataire': typeof EspacePrestataireRoute
+  '/espace/touriste': typeof EspaceTouristeRoute
+  '/admin/': typeof AdminIndexRoute
+  '/espace/': typeof EspaceIndexRoute
+  '/api/auth/$': typeof ApiAuthSplatRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/about'
+    | '/acces-refuse'
     | '/actualites'
+    | '/admin'
     | '/carte'
+    | '/changer-mot-de-passe'
+    | '/compte-en-attente'
     | '/confidentialite'
+    | '/connexion'
     | '/contact'
     | '/destinations'
+    | '/espace'
     | '/evenements'
     | '/experiences'
     | '/explorer'
+    | '/inscription'
     | '/investir'
     | '/lieux'
     | '/mentions-legales'
     | '/offres'
     | '/organisateur'
     | '/prestataires'
+    | '/espace/organisateur'
+    | '/espace/prestataire'
+    | '/espace/touriste'
+    | '/admin/'
+    | '/espace/'
+    | '/api/auth/$'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about'
+    | '/acces-refuse'
     | '/actualites'
     | '/carte'
+    | '/changer-mot-de-passe'
+    | '/compte-en-attente'
     | '/confidentialite'
+    | '/connexion'
     | '/contact'
     | '/destinations'
     | '/evenements'
     | '/experiences'
     | '/explorer'
+    | '/inscription'
     | '/investir'
     | '/lieux'
     | '/mentions-legales'
     | '/offres'
     | '/organisateur'
     | '/prestataires'
+    | '/espace/organisateur'
+    | '/espace/prestataire'
+    | '/espace/touriste'
+    | '/admin'
+    | '/espace'
+    | '/api/auth/$'
   id:
     | '__root__'
     | '/'
     | '/about'
+    | '/acces-refuse'
     | '/actualites'
+    | '/admin'
     | '/carte'
+    | '/changer-mot-de-passe'
+    | '/compte-en-attente'
     | '/confidentialite'
+    | '/connexion'
     | '/contact'
     | '/destinations'
+    | '/espace'
     | '/evenements'
     | '/experiences'
     | '/explorer'
+    | '/inscription'
     | '/investir'
     | '/lieux'
     | '/mentions-legales'
     | '/offres'
     | '/organisateur'
     | '/prestataires'
+    | '/espace/organisateur'
+    | '/espace/prestataire'
+    | '/espace/touriste'
+    | '/admin/'
+    | '/espace/'
+    | '/api/auth/$'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  AccesRefuseRoute: typeof AccesRefuseRoute
   ActualitesRoute: typeof ActualitesRoute
+  AdminRoute: typeof AdminRouteWithChildren
   CarteRoute: typeof CarteRoute
+  ChangerMotDePasseRoute: typeof ChangerMotDePasseRoute
+  CompteEnAttenteRoute: typeof CompteEnAttenteRoute
   ConfidentialiteRoute: typeof ConfidentialiteRoute
+  ConnexionRoute: typeof ConnexionRoute
   ContactRoute: typeof ContactRoute
   DestinationsRoute: typeof DestinationsRoute
+  EspaceRoute: typeof EspaceRouteWithChildren
   EvenementsRoute: typeof EvenementsRoute
   ExperiencesRoute: typeof ExperiencesRoute
   ExplorerRoute: typeof ExplorerRoute
+  InscriptionRoute: typeof InscriptionRoute
   InvestirRoute: typeof InvestirRoute
   LieuxRoute: typeof LieuxRoute
   MentionsLegalesRoute: typeof MentionsLegalesRoute
   OffresRoute: typeof OffresRoute
   OrganisateurRoute: typeof OrganisateurRoute
   PrestatairesRoute: typeof PrestatairesRoute
+  ApiAuthSplatRoute: typeof ApiAuthSplatRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -254,11 +414,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/acces-refuse': {
+      id: '/acces-refuse'
+      path: '/acces-refuse'
+      fullPath: '/acces-refuse'
+      preLoaderRoute: typeof AccesRefuseRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/actualites': {
       id: '/actualites'
       path: '/actualites'
       fullPath: '/actualites'
       preLoaderRoute: typeof ActualitesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/carte': {
@@ -268,11 +442,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CarteRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/changer-mot-de-passe': {
+      id: '/changer-mot-de-passe'
+      path: '/changer-mot-de-passe'
+      fullPath: '/changer-mot-de-passe'
+      preLoaderRoute: typeof ChangerMotDePasseRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/compte-en-attente': {
+      id: '/compte-en-attente'
+      path: '/compte-en-attente'
+      fullPath: '/compte-en-attente'
+      preLoaderRoute: typeof CompteEnAttenteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/confidentialite': {
       id: '/confidentialite'
       path: '/confidentialite'
       fullPath: '/confidentialite'
       preLoaderRoute: typeof ConfidentialiteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/connexion': {
+      id: '/connexion'
+      path: '/connexion'
+      fullPath: '/connexion'
+      preLoaderRoute: typeof ConnexionRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contact': {
@@ -287,6 +482,13 @@ declare module '@tanstack/react-router' {
       path: '/destinations'
       fullPath: '/destinations'
       preLoaderRoute: typeof DestinationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/espace': {
+      id: '/espace'
+      path: '/espace'
+      fullPath: '/espace'
+      preLoaderRoute: typeof EspaceRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/evenements': {
@@ -308,6 +510,13 @@ declare module '@tanstack/react-router' {
       path: '/explorer'
       fullPath: '/explorer'
       preLoaderRoute: typeof ExplorerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/inscription': {
+      id: '/inscription'
+      path: '/inscription'
+      fullPath: '/inscription'
+      preLoaderRoute: typeof InscriptionRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/investir': {
@@ -352,26 +561,103 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrestatairesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/espace/': {
+      id: '/espace/'
+      path: '/'
+      fullPath: '/espace/'
+      preLoaderRoute: typeof EspaceIndexRouteImport
+      parentRoute: typeof EspaceRoute
+    }
+    '/espace/organisateur': {
+      id: '/espace/organisateur'
+      path: '/organisateur'
+      fullPath: '/espace/organisateur'
+      preLoaderRoute: typeof EspaceOrganisateurRouteImport
+      parentRoute: typeof EspaceRoute
+    }
+    '/espace/prestataire': {
+      id: '/espace/prestataire'
+      path: '/prestataire'
+      fullPath: '/espace/prestataire'
+      preLoaderRoute: typeof EspacePrestataireRouteImport
+      parentRoute: typeof EspaceRoute
+    }
+    '/espace/touriste': {
+      id: '/espace/touriste'
+      path: '/touriste'
+      fullPath: '/espace/touriste'
+      preLoaderRoute: typeof EspaceTouristeRouteImport
+      parentRoute: typeof EspaceRoute
+    }
+    '/api/auth/$': {
+      id: '/api/auth/$'
+      path: '/api/auth/$'
+      fullPath: '/api/auth/$'
+      preLoaderRoute: typeof ApiAuthSplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
+
+interface AdminRouteChildren {
+  AdminIndexRoute: typeof AdminIndexRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminIndexRoute: AdminIndexRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
+
+interface EspaceRouteChildren {
+  EspaceOrganisateurRoute: typeof EspaceOrganisateurRoute
+  EspacePrestataireRoute: typeof EspacePrestataireRoute
+  EspaceTouristeRoute: typeof EspaceTouristeRoute
+  EspaceIndexRoute: typeof EspaceIndexRoute
+}
+
+const EspaceRouteChildren: EspaceRouteChildren = {
+  EspaceOrganisateurRoute: EspaceOrganisateurRoute,
+  EspacePrestataireRoute: EspacePrestataireRoute,
+  EspaceTouristeRoute: EspaceTouristeRoute,
+  EspaceIndexRoute: EspaceIndexRoute,
+}
+
+const EspaceRouteWithChildren =
+  EspaceRoute._addFileChildren(EspaceRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  AccesRefuseRoute: AccesRefuseRoute,
   ActualitesRoute: ActualitesRoute,
+  AdminRoute: AdminRouteWithChildren,
   CarteRoute: CarteRoute,
+  ChangerMotDePasseRoute: ChangerMotDePasseRoute,
+  CompteEnAttenteRoute: CompteEnAttenteRoute,
   ConfidentialiteRoute: ConfidentialiteRoute,
+  ConnexionRoute: ConnexionRoute,
   ContactRoute: ContactRoute,
   DestinationsRoute: DestinationsRoute,
+  EspaceRoute: EspaceRouteWithChildren,
   EvenementsRoute: EvenementsRoute,
   ExperiencesRoute: ExperiencesRoute,
   ExplorerRoute: ExplorerRoute,
+  InscriptionRoute: InscriptionRoute,
   InvestirRoute: InvestirRoute,
   LieuxRoute: LieuxRoute,
   MentionsLegalesRoute: MentionsLegalesRoute,
   OffresRoute: OffresRoute,
   OrganisateurRoute: OrganisateurRoute,
   PrestatairesRoute: PrestatairesRoute,
+  ApiAuthSplatRoute: ApiAuthSplatRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
