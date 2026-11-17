@@ -402,6 +402,7 @@ export const ModelName = {
   OrganizerProfile: 'OrganizerProfile',
   ProviderProfile: 'ProviderProfile',
   ProviderDocument: 'ProviderDocument',
+  Demande: 'Demande',
   AuditLog: 'AuditLog',
   Session: 'Session',
   Account: 'Account',
@@ -421,7 +422,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "touristProfile" | "organizerProfile" | "providerProfile" | "providerDocument" | "auditLog" | "session" | "account" | "verification"
+    modelProps: "user" | "touristProfile" | "organizerProfile" | "providerProfile" | "providerDocument" | "demande" | "auditLog" | "session" | "account" | "verification"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -792,6 +793,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.ProviderDocumentCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.ProviderDocumentCountAggregateOutputType> | number
+        }
+      }
+    }
+    Demande: {
+      payload: Prisma.$DemandePayload<ExtArgs>
+      fields: Prisma.DemandeFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.DemandeFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DemandePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.DemandeFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DemandePayload>
+        }
+        findFirst: {
+          args: Prisma.DemandeFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DemandePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.DemandeFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DemandePayload>
+        }
+        findMany: {
+          args: Prisma.DemandeFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DemandePayload>[]
+        }
+        create: {
+          args: Prisma.DemandeCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DemandePayload>
+        }
+        createMany: {
+          args: Prisma.DemandeCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.DemandeCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DemandePayload>[]
+        }
+        delete: {
+          args: Prisma.DemandeDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DemandePayload>
+        }
+        update: {
+          args: Prisma.DemandeUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DemandePayload>
+        }
+        deleteMany: {
+          args: Prisma.DemandeDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.DemandeUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.DemandeUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DemandePayload>[]
+        }
+        upsert: {
+          args: Prisma.DemandeUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DemandePayload>
+        }
+        aggregate: {
+          args: Prisma.DemandeAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateDemande>
+        }
+        groupBy: {
+          args: Prisma.DemandeGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DemandeGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.DemandeCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DemandeCountAggregateOutputType> | number
         }
       }
     }
@@ -1204,6 +1279,27 @@ export const ProviderDocumentScalarFieldEnum = {
 export type ProviderDocumentScalarFieldEnum = (typeof ProviderDocumentScalarFieldEnum)[keyof typeof ProviderDocumentScalarFieldEnum]
 
 
+export const DemandeScalarFieldEnum = {
+  id: 'id',
+  kind: 'kind',
+  subject: 'subject',
+  name: 'name',
+  organisation: 'organisation',
+  email: 'email',
+  phone: 'phone',
+  attendees: 'attendees',
+  message: 'message',
+  details: 'details',
+  status: 'status',
+  adminNote: 'adminNote',
+  userId: 'userId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DemandeScalarFieldEnum = (typeof DemandeScalarFieldEnum)[keyof typeof DemandeScalarFieldEnum]
+
+
 export const AuditLogScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
@@ -1414,6 +1510,20 @@ export type ListEnumLabelStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$
 
 
 /**
+ * Reference to a field of type 'DemandeKind'
+ */
+export type EnumDemandeKindFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DemandeKind'>
+    
+
+
+/**
+ * Reference to a field of type 'DemandeKind[]'
+ */
+export type ListEnumDemandeKindFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DemandeKind[]'>
+    
+
+
+/**
  * Reference to a field of type 'Json'
  */
 export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
@@ -1424,6 +1534,20 @@ export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'J
  * Reference to a field of type 'QueryMode'
  */
 export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
+    
+
+
+/**
+ * Reference to a field of type 'DemandeStatus'
+ */
+export type EnumDemandeStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DemandeStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'DemandeStatus[]'
+ */
+export type ListEnumDemandeStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DemandeStatus[]'>
     
 
 /**
@@ -1582,6 +1706,7 @@ export type GlobalOmitConfig = {
   organizerProfile?: Prisma.OrganizerProfileOmit
   providerProfile?: Prisma.ProviderProfileOmit
   providerDocument?: Prisma.ProviderDocumentOmit
+  demande?: Prisma.DemandeOmit
   auditLog?: Prisma.AuditLogOmit
   session?: Prisma.SessionOmit
   account?: Prisma.AccountOmit

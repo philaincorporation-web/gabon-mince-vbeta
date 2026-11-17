@@ -56,6 +56,7 @@ export const ModelName = {
   OrganizerProfile: 'OrganizerProfile',
   ProviderProfile: 'ProviderProfile',
   ProviderDocument: 'ProviderDocument',
+  Demande: 'Demande',
   AuditLog: 'AuditLog',
   Session: 'Session',
   Account: 'Account',
@@ -150,6 +151,27 @@ export const ProviderDocumentScalarFieldEnum = {
 } as const
 
 export type ProviderDocumentScalarFieldEnum = (typeof ProviderDocumentScalarFieldEnum)[keyof typeof ProviderDocumentScalarFieldEnum]
+
+
+export const DemandeScalarFieldEnum = {
+  id: 'id',
+  kind: 'kind',
+  subject: 'subject',
+  name: 'name',
+  organisation: 'organisation',
+  email: 'email',
+  phone: 'phone',
+  attendees: 'attendees',
+  message: 'message',
+  details: 'details',
+  status: 'status',
+  adminNote: 'adminNote',
+  userId: 'userId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DemandeScalarFieldEnum = (typeof DemandeScalarFieldEnum)[keyof typeof DemandeScalarFieldEnum]
 
 
 export const AuditLogScalarFieldEnum = {

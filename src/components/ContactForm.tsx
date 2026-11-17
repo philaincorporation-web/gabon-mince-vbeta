@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from "react";
 import { useToast } from "./Toast";
 import { validateForm, sanitizeFormData, generateUUID } from "@/lib/validation";
-import { saveToSheetDB } from "@/lib/sheetdb";
+import { saveRequest } from "@/lib/requests";
 import type { FormErrors } from "@/lib/validation";
 import { LoadingOverlay } from "@/components/ui/loading-overlay";
 
@@ -52,21 +52,22 @@ export function ContactForm({ language, theme }: ContactFormProps) {
       const dateCreation = now.toISOString().slice(0, 10);
       const hourCreation = now.toTimeString().slice(0, 8);
 
-      const sheetData = {
+      await saveRequest({
         id: uuid,
-        date_creation: dateCreation,
-        nom_complet: sanitized.name,
+        kind: "CONTACT",
+        subject: sanitized.eventType,
+        name: sanitized.name,
         organisation: sanitized.organisation,
         email: sanitized.email,
-        telephone: sanitized.phone,
-        type_evenement: sanitized.eventType,
-        nombre_participants: sanitized.attendees,
+        phone: sanitized.phone,
+        attendees: sanitized.attendees,
         message: sanitized.message,
-        statut: "Nouveau",
-      };
-
-      console.log("✔ Données enregistrées dans SheetDB");
-      await saveToSheetDB(sheetData);
+        details: {},
+        sheetType: sanitized.eventType,
+        sheetMessage: sanitized.message,
+        dateCreation,
+      });
+      console.log("✔ Demande enregistrée");
 
       try {
         const emailResponse = await fetch("/api/sendMail", {
@@ -101,7 +102,7 @@ export function ContactForm({ language, theme }: ContactFormProps) {
             : "Your request has been recorded. A confirmation email has been sent to you.",
         );
       } catch (emailErr) {
-        console.warn("⚠ SheetDB OK mais erreur lors de l'envoi des emails:", emailErr);
+        console.warn("⚠ Demande enregistrée mais erreur lors de l'envoi des emails:", emailErr);
         addToast(
           "info",
           isFrench ? "Demande enregistrée" : "Request recorded",
@@ -114,7 +115,7 @@ export function ContactForm({ language, theme }: ContactFormProps) {
       form.reset();
       setErrors({});
     } catch (err) {
-      console.error("✗ Erreur SheetDB:", err);
+      console.error("✗ Erreur d'enregistrement de la demande:", err);
       addToast(
         "error",
         "Erreur",

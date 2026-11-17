@@ -36,3 +36,24 @@ export const LabelStatus = {
 } as const
 
 export type LabelStatus = (typeof LabelStatus)[keyof typeof LabelStatus]
+
+
+export const DemandeKind = {
+  CONTACT: 'CONTACT',
+  RESERVATION: 'RESERVATION',
+  DEVIS: 'DEVIS',
+  EVENEMENT: 'EVENEMENT',
+  LABELLISATION: 'LABELLISATION'
+} as const
+
+export type DemandeKind = (typeof DemandeKind)[keyof typeof DemandeKind]
+
+
+export const DemandeStatus = {
+  NEW: 'NEW',
+  IN_PROGRESS: 'IN_PROGRESS',
+  DONE: 'DONE',
+  CANCELLED: 'CANCELLED'
+} as const
+
+export type DemandeStatus = (typeof DemandeStatus)[keyof typeof DemandeStatus]

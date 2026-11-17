@@ -318,6 +318,7 @@ export type UserWhereInput = {
   organizerProfile?: Prisma.XOR<Prisma.OrganizerProfileNullableScalarRelationFilter, Prisma.OrganizerProfileWhereInput> | null
   providerProfile?: Prisma.XOR<Prisma.ProviderProfileNullableScalarRelationFilter, Prisma.ProviderProfileWhereInput> | null
   auditLogs?: Prisma.AuditLogListRelationFilter
+  demandes?: Prisma.DemandeListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -344,6 +345,7 @@ export type UserOrderByWithRelationInput = {
   organizerProfile?: Prisma.OrganizerProfileOrderByWithRelationInput
   providerProfile?: Prisma.ProviderProfileOrderByWithRelationInput
   auditLogs?: Prisma.AuditLogOrderByRelationAggregateInput
+  demandes?: Prisma.DemandeOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -373,6 +375,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   organizerProfile?: Prisma.XOR<Prisma.OrganizerProfileNullableScalarRelationFilter, Prisma.OrganizerProfileWhereInput> | null
   providerProfile?: Prisma.XOR<Prisma.ProviderProfileNullableScalarRelationFilter, Prisma.ProviderProfileWhereInput> | null
   auditLogs?: Prisma.AuditLogListRelationFilter
+  demandes?: Prisma.DemandeListRelationFilter
 }, "id" | "email" | "username">
 
 export type UserOrderByWithAggregationInput = {
@@ -447,6 +450,7 @@ export type UserCreateInput = {
   organizerProfile?: Prisma.OrganizerProfileCreateNestedOneWithoutUserInput
   providerProfile?: Prisma.ProviderProfileCreateNestedOneWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  demandes?: Prisma.DemandeCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -473,6 +477,7 @@ export type UserUncheckedCreateInput = {
   organizerProfile?: Prisma.OrganizerProfileUncheckedCreateNestedOneWithoutUserInput
   providerProfile?: Prisma.ProviderProfileUncheckedCreateNestedOneWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  demandes?: Prisma.DemandeUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -499,6 +504,7 @@ export type UserUpdateInput = {
   organizerProfile?: Prisma.OrganizerProfileUpdateOneWithoutUserNestedInput
   providerProfile?: Prisma.ProviderProfileUpdateOneWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  demandes?: Prisma.DemandeUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -525,6 +531,7 @@ export type UserUncheckedUpdateInput = {
   organizerProfile?: Prisma.OrganizerProfileUncheckedUpdateOneWithoutUserNestedInput
   providerProfile?: Prisma.ProviderProfileUncheckedUpdateOneWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  demandes?: Prisma.DemandeUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -747,6 +754,22 @@ export type UserUpdateOneRequiredWithoutProviderProfileNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutProviderProfileInput, Prisma.UserUpdateWithoutProviderProfileInput>, Prisma.UserUncheckedUpdateWithoutProviderProfileInput>
 }
 
+export type UserCreateNestedOneWithoutDemandesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutDemandesInput, Prisma.UserUncheckedCreateWithoutDemandesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutDemandesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutDemandesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutDemandesInput, Prisma.UserUncheckedCreateWithoutDemandesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutDemandesInput
+  upsert?: Prisma.UserUpsertWithoutDemandesInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutDemandesInput, Prisma.UserUpdateWithoutDemandesInput>, Prisma.UserUncheckedUpdateWithoutDemandesInput>
+}
+
 export type UserCreateNestedOneWithoutAuditLogsInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutAuditLogsInput, Prisma.UserUncheckedCreateWithoutAuditLogsInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutAuditLogsInput
@@ -814,6 +837,7 @@ export type UserCreateWithoutTouristProfileInput = {
   organizerProfile?: Prisma.OrganizerProfileCreateNestedOneWithoutUserInput
   providerProfile?: Prisma.ProviderProfileCreateNestedOneWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  demandes?: Prisma.DemandeCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutTouristProfileInput = {
@@ -839,6 +863,7 @@ export type UserUncheckedCreateWithoutTouristProfileInput = {
   organizerProfile?: Prisma.OrganizerProfileUncheckedCreateNestedOneWithoutUserInput
   providerProfile?: Prisma.ProviderProfileUncheckedCreateNestedOneWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  demandes?: Prisma.DemandeUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutTouristProfileInput = {
@@ -880,6 +905,7 @@ export type UserUpdateWithoutTouristProfileInput = {
   organizerProfile?: Prisma.OrganizerProfileUpdateOneWithoutUserNestedInput
   providerProfile?: Prisma.ProviderProfileUpdateOneWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  demandes?: Prisma.DemandeUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutTouristProfileInput = {
@@ -905,6 +931,7 @@ export type UserUncheckedUpdateWithoutTouristProfileInput = {
   organizerProfile?: Prisma.OrganizerProfileUncheckedUpdateOneWithoutUserNestedInput
   providerProfile?: Prisma.ProviderProfileUncheckedUpdateOneWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  demandes?: Prisma.DemandeUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutOrganizerProfileInput = {
@@ -930,6 +957,7 @@ export type UserCreateWithoutOrganizerProfileInput = {
   touristProfile?: Prisma.TouristProfileCreateNestedOneWithoutUserInput
   providerProfile?: Prisma.ProviderProfileCreateNestedOneWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  demandes?: Prisma.DemandeCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutOrganizerProfileInput = {
@@ -955,6 +983,7 @@ export type UserUncheckedCreateWithoutOrganizerProfileInput = {
   touristProfile?: Prisma.TouristProfileUncheckedCreateNestedOneWithoutUserInput
   providerProfile?: Prisma.ProviderProfileUncheckedCreateNestedOneWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  demandes?: Prisma.DemandeUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutOrganizerProfileInput = {
@@ -996,6 +1025,7 @@ export type UserUpdateWithoutOrganizerProfileInput = {
   touristProfile?: Prisma.TouristProfileUpdateOneWithoutUserNestedInput
   providerProfile?: Prisma.ProviderProfileUpdateOneWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  demandes?: Prisma.DemandeUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutOrganizerProfileInput = {
@@ -1021,6 +1051,7 @@ export type UserUncheckedUpdateWithoutOrganizerProfileInput = {
   touristProfile?: Prisma.TouristProfileUncheckedUpdateOneWithoutUserNestedInput
   providerProfile?: Prisma.ProviderProfileUncheckedUpdateOneWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  demandes?: Prisma.DemandeUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutProviderProfileInput = {
@@ -1046,6 +1077,7 @@ export type UserCreateWithoutProviderProfileInput = {
   touristProfile?: Prisma.TouristProfileCreateNestedOneWithoutUserInput
   organizerProfile?: Prisma.OrganizerProfileCreateNestedOneWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  demandes?: Prisma.DemandeCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutProviderProfileInput = {
@@ -1071,6 +1103,7 @@ export type UserUncheckedCreateWithoutProviderProfileInput = {
   touristProfile?: Prisma.TouristProfileUncheckedCreateNestedOneWithoutUserInput
   organizerProfile?: Prisma.OrganizerProfileUncheckedCreateNestedOneWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  demandes?: Prisma.DemandeUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutProviderProfileInput = {
@@ -1112,6 +1145,7 @@ export type UserUpdateWithoutProviderProfileInput = {
   touristProfile?: Prisma.TouristProfileUpdateOneWithoutUserNestedInput
   organizerProfile?: Prisma.OrganizerProfileUpdateOneWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  demandes?: Prisma.DemandeUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutProviderProfileInput = {
@@ -1136,6 +1170,127 @@ export type UserUncheckedUpdateWithoutProviderProfileInput = {
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   touristProfile?: Prisma.TouristProfileUncheckedUpdateOneWithoutUserNestedInput
   organizerProfile?: Prisma.OrganizerProfileUncheckedUpdateOneWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  demandes?: Prisma.DemandeUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutDemandesInput = {
+  id?: string
+  email: string
+  username?: string | null
+  displayUsername?: string | null
+  name: string
+  phone?: string | null
+  image?: string | null
+  emailVerified?: boolean
+  role?: $Enums.Role
+  status?: $Enums.AccountStatus
+  requestedRole?: $Enums.Role | null
+  mustChangePassword?: boolean
+  lastLoginAt?: Date | string | null
+  failedLoginCount?: number
+  lockedUntil?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  touristProfile?: Prisma.TouristProfileCreateNestedOneWithoutUserInput
+  organizerProfile?: Prisma.OrganizerProfileCreateNestedOneWithoutUserInput
+  providerProfile?: Prisma.ProviderProfileCreateNestedOneWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutDemandesInput = {
+  id?: string
+  email: string
+  username?: string | null
+  displayUsername?: string | null
+  name: string
+  phone?: string | null
+  image?: string | null
+  emailVerified?: boolean
+  role?: $Enums.Role
+  status?: $Enums.AccountStatus
+  requestedRole?: $Enums.Role | null
+  mustChangePassword?: boolean
+  lastLoginAt?: Date | string | null
+  failedLoginCount?: number
+  lockedUntil?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  touristProfile?: Prisma.TouristProfileUncheckedCreateNestedOneWithoutUserInput
+  organizerProfile?: Prisma.OrganizerProfileUncheckedCreateNestedOneWithoutUserInput
+  providerProfile?: Prisma.ProviderProfileUncheckedCreateNestedOneWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutDemandesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutDemandesInput, Prisma.UserUncheckedCreateWithoutDemandesInput>
+}
+
+export type UserUpsertWithoutDemandesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutDemandesInput, Prisma.UserUncheckedUpdateWithoutDemandesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutDemandesInput, Prisma.UserUncheckedCreateWithoutDemandesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutDemandesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutDemandesInput, Prisma.UserUncheckedUpdateWithoutDemandesInput>
+}
+
+export type UserUpdateWithoutDemandesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  displayUsername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  status?: Prisma.EnumAccountStatusFieldUpdateOperationsInput | $Enums.AccountStatus
+  requestedRole?: Prisma.NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginCount?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  touristProfile?: Prisma.TouristProfileUpdateOneWithoutUserNestedInput
+  organizerProfile?: Prisma.OrganizerProfileUpdateOneWithoutUserNestedInput
+  providerProfile?: Prisma.ProviderProfileUpdateOneWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutDemandesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  displayUsername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  status?: Prisma.EnumAccountStatusFieldUpdateOperationsInput | $Enums.AccountStatus
+  requestedRole?: Prisma.NullableEnumRoleFieldUpdateOperationsInput | $Enums.Role | null
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  failedLoginCount?: Prisma.IntFieldUpdateOperationsInput | number
+  lockedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  touristProfile?: Prisma.TouristProfileUncheckedUpdateOneWithoutUserNestedInput
+  organizerProfile?: Prisma.OrganizerProfileUncheckedUpdateOneWithoutUserNestedInput
+  providerProfile?: Prisma.ProviderProfileUncheckedUpdateOneWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -1162,6 +1317,7 @@ export type UserCreateWithoutAuditLogsInput = {
   touristProfile?: Prisma.TouristProfileCreateNestedOneWithoutUserInput
   organizerProfile?: Prisma.OrganizerProfileCreateNestedOneWithoutUserInput
   providerProfile?: Prisma.ProviderProfileCreateNestedOneWithoutUserInput
+  demandes?: Prisma.DemandeCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAuditLogsInput = {
@@ -1187,6 +1343,7 @@ export type UserUncheckedCreateWithoutAuditLogsInput = {
   touristProfile?: Prisma.TouristProfileUncheckedCreateNestedOneWithoutUserInput
   organizerProfile?: Prisma.OrganizerProfileUncheckedCreateNestedOneWithoutUserInput
   providerProfile?: Prisma.ProviderProfileUncheckedCreateNestedOneWithoutUserInput
+  demandes?: Prisma.DemandeUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAuditLogsInput = {
@@ -1228,6 +1385,7 @@ export type UserUpdateWithoutAuditLogsInput = {
   touristProfile?: Prisma.TouristProfileUpdateOneWithoutUserNestedInput
   organizerProfile?: Prisma.OrganizerProfileUpdateOneWithoutUserNestedInput
   providerProfile?: Prisma.ProviderProfileUpdateOneWithoutUserNestedInput
+  demandes?: Prisma.DemandeUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAuditLogsInput = {
@@ -1253,6 +1411,7 @@ export type UserUncheckedUpdateWithoutAuditLogsInput = {
   touristProfile?: Prisma.TouristProfileUncheckedUpdateOneWithoutUserNestedInput
   organizerProfile?: Prisma.OrganizerProfileUncheckedUpdateOneWithoutUserNestedInput
   providerProfile?: Prisma.ProviderProfileUncheckedUpdateOneWithoutUserNestedInput
+  demandes?: Prisma.DemandeUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutSessionsInput = {
@@ -1278,6 +1437,7 @@ export type UserCreateWithoutSessionsInput = {
   organizerProfile?: Prisma.OrganizerProfileCreateNestedOneWithoutUserInput
   providerProfile?: Prisma.ProviderProfileCreateNestedOneWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  demandes?: Prisma.DemandeCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutSessionsInput = {
@@ -1303,6 +1463,7 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   organizerProfile?: Prisma.OrganizerProfileUncheckedCreateNestedOneWithoutUserInput
   providerProfile?: Prisma.ProviderProfileUncheckedCreateNestedOneWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  demandes?: Prisma.DemandeUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutSessionsInput = {
@@ -1344,6 +1505,7 @@ export type UserUpdateWithoutSessionsInput = {
   organizerProfile?: Prisma.OrganizerProfileUpdateOneWithoutUserNestedInput
   providerProfile?: Prisma.ProviderProfileUpdateOneWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  demandes?: Prisma.DemandeUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -1369,6 +1531,7 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   organizerProfile?: Prisma.OrganizerProfileUncheckedUpdateOneWithoutUserNestedInput
   providerProfile?: Prisma.ProviderProfileUncheckedUpdateOneWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  demandes?: Prisma.DemandeUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutAccountsInput = {
@@ -1394,6 +1557,7 @@ export type UserCreateWithoutAccountsInput = {
   organizerProfile?: Prisma.OrganizerProfileCreateNestedOneWithoutUserInput
   providerProfile?: Prisma.ProviderProfileCreateNestedOneWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  demandes?: Prisma.DemandeCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAccountsInput = {
@@ -1419,6 +1583,7 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   organizerProfile?: Prisma.OrganizerProfileUncheckedCreateNestedOneWithoutUserInput
   providerProfile?: Prisma.ProviderProfileUncheckedCreateNestedOneWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  demandes?: Prisma.DemandeUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAccountsInput = {
@@ -1460,6 +1625,7 @@ export type UserUpdateWithoutAccountsInput = {
   organizerProfile?: Prisma.OrganizerProfileUpdateOneWithoutUserNestedInput
   providerProfile?: Prisma.ProviderProfileUpdateOneWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  demandes?: Prisma.DemandeUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -1485,6 +1651,7 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   organizerProfile?: Prisma.OrganizerProfileUncheckedUpdateOneWithoutUserNestedInput
   providerProfile?: Prisma.ProviderProfileUncheckedUpdateOneWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  demandes?: Prisma.DemandeUncheckedUpdateManyWithoutUserNestedInput
 }
 
 
@@ -1496,12 +1663,14 @@ export type UserCountOutputType = {
   accounts: number
   sessions: number
   auditLogs: number
+  demandes: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   accounts?: boolean | UserCountOutputTypeCountAccountsArgs
   sessions?: boolean | UserCountOutputTypeCountSessionsArgs
   auditLogs?: boolean | UserCountOutputTypeCountAuditLogsArgs
+  demandes?: boolean | UserCountOutputTypeCountDemandesArgs
 }
 
 /**
@@ -1535,6 +1704,13 @@ export type UserCountOutputTypeCountAuditLogsArgs<ExtArgs extends runtime.Types.
   where?: Prisma.AuditLogWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountDemandesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.DemandeWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1560,6 +1736,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   organizerProfile?: boolean | Prisma.User$organizerProfileArgs<ExtArgs>
   providerProfile?: boolean | Prisma.User$providerProfileArgs<ExtArgs>
   auditLogs?: boolean | Prisma.User$auditLogsArgs<ExtArgs>
+  demandes?: boolean | Prisma.User$demandesArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -1631,6 +1808,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   organizerProfile?: boolean | Prisma.User$organizerProfileArgs<ExtArgs>
   providerProfile?: boolean | Prisma.User$providerProfileArgs<ExtArgs>
   auditLogs?: boolean | Prisma.User$auditLogsArgs<ExtArgs>
+  demandes?: boolean | Prisma.User$demandesArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -1645,6 +1823,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     organizerProfile: Prisma.$OrganizerProfilePayload<ExtArgs> | null
     providerProfile: Prisma.$ProviderProfilePayload<ExtArgs> | null
     auditLogs: Prisma.$AuditLogPayload<ExtArgs>[]
+    demandes: Prisma.$DemandePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2076,6 +2255,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   organizerProfile<T extends Prisma.User$organizerProfileArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$organizerProfileArgs<ExtArgs>>): Prisma.Prisma__OrganizerProfileClient<runtime.Types.Result.GetResult<Prisma.$OrganizerProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   providerProfile<T extends Prisma.User$providerProfileArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$providerProfileArgs<ExtArgs>>): Prisma.Prisma__ProviderProfileClient<runtime.Types.Result.GetResult<Prisma.$ProviderProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   auditLogs<T extends Prisma.User$auditLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$auditLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  demandes<T extends Prisma.User$demandesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$demandesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DemandePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2641,6 +2821,30 @@ export type User$auditLogsArgs<ExtArgs extends runtime.Types.Extensions.Internal
   take?: number
   skip?: number
   distinct?: Prisma.AuditLogScalarFieldEnum | Prisma.AuditLogScalarFieldEnum[]
+}
+
+/**
+ * User.demandes
+ */
+export type User$demandesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Demande
+   */
+  select?: Prisma.DemandeSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Demande
+   */
+  omit?: Prisma.DemandeOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DemandeInclude<ExtArgs> | null
+  where?: Prisma.DemandeWhereInput
+  orderBy?: Prisma.DemandeOrderByWithRelationInput | Prisma.DemandeOrderByWithRelationInput[]
+  cursor?: Prisma.DemandeWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.DemandeScalarFieldEnum | Prisma.DemandeScalarFieldEnum[]
 }
 
 /**

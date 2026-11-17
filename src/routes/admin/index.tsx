@@ -14,9 +14,14 @@ import {
 } from "@/lib/auth/functions";
 import { ROLE_LABEL, ROLES, type Role } from "@/lib/auth/access";
 import { errorMessage } from "@/lib/auth/schemas";
+import { getAdminDemandes } from "@/lib/demandes";
+import { DemandesPanel } from "@/components/admin/DemandesPanel";
 
 export const Route = createFileRoute("/admin/")({
-  loader: () => getAdminDashboard(),
+  loader: async () => {
+    const [dashboard, demandes] = await Promise.all([getAdminDashboard(), getAdminDemandes()]);
+    return { ...dashboard, demandes };
+  },
   head: () => ({ meta: [{ title: "Administration | GabonMICE" }] }),
   component: AdminPage,
 });
@@ -70,12 +75,14 @@ function AdminPage() {
               language={language}
               title={t("Administration AGATOUR", "AGATOUR administration")}
               subtitle={t(
-                "Validation des comptes, labels prestataires et rôles. Chaque action est tracée.",
-                "Account validation, provider labels and roles. Every action is logged.",
+                "Demandes reçues, validation des comptes, labels prestataires et rôles. Chaque action est tracée.",
+                "Incoming requests, account validation, provider labels and roles. Every action is logged.",
               )}
             />
             <section className="mx-auto max-w-7xl space-y-6 px-4 py-10 sm:px-6 lg:px-8">
               {error && <Notice tone="error">{error}</Notice>}
+
+              <DemandesPanel data={data.demandes} t={t} language={language} busy={busy} run={run} />
 
               <Panel
                 title={`${t("Comptes et demandes à valider", "Accounts and requests to review")} (${data.pending.length})`}

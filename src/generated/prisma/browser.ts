@@ -44,6 +44,12 @@ export type ProviderProfile = Prisma.ProviderProfileModel
  */
 export type ProviderDocument = Prisma.ProviderDocumentModel
 /**
+ * Model Demande
+ * Demande envoyée depuis un formulaire public (contact, réservation, devis,
+ * inscription d'événement, labellisation), suivie dans le back office.
+ */
+export type Demande = Prisma.DemandeModel
+/**
  * Model AuditLog
  * 
  */

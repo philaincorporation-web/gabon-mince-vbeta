@@ -58,6 +58,7 @@ model User {
   organizerProfile   OrganizerProfile?
   providerProfile    ProviderProfile?
   auditLogs          AuditLog[]
+  demandes           Demande[]
 
   @@map("user")
 }
@@ -110,6 +111,48 @@ model ProviderDocument {
   createdAt         DateTime        @default(now())
 
   @@index([providerProfileId])
+}
+
+enum DemandeKind {
+  CONTACT
+  RESERVATION
+  DEVIS
+  EVENEMENT
+  LABELLISATION
+}
+
+enum DemandeStatus {
+  NEW
+  IN_PROGRESS
+  DONE
+  CANCELLED
+}
+
+/// Demande envoyée depuis un formulaire public (contact, réservation, devis,
+/// inscription d'événement, labellisation), suivie dans le back office.
+model Demande {
+  id           String        @id
+  kind         DemandeKind
+  /// Élément concerné (offre, salle, hôtel…) ou type d'événement.
+  subject      String
+  name         String
+  organisation String
+  email        String
+  phone        String
+  attendees    String?
+  message      String?
+  /// Champs complémentaires du formulaire (libellé → valeur).
+  details      Json?
+  status       DemandeStatus @default(NEW)
+  /// Note interne de l'administrateur, jamais visible du demandeur.
+  adminNote    String?
+  /// Compte connecté au moment de l'envoi, s'il y en avait un.
+  userId       String?
+  user         User?         @relation(fields: [userId], references: [id], onDelete: SetNull)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  @@index([status, createdAt])
 }
 
 model AuditLog {
