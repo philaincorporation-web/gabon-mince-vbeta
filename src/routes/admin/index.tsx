@@ -45,12 +45,18 @@ function AdminPage() {
   const router = useRouter();
   const [busy, setBusy] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [mailWarning, setMailWarning] = useState(false);
 
   async function run(key: string, action: () => Promise<unknown>) {
     setBusy(key);
     setError(null);
+    setMailWarning(false);
     try {
-      await action();
+      const result = await action();
+      // Action enregistrée, mais l'e-mail de notification n'est pas parti.
+      if (result && typeof result === "object" && "emailSent" in result) {
+        setMailWarning(result.emailSent === false);
+      }
       await router.invalidate();
     } catch (e) {
       setError(errorMessage(e, "Action impossible."));
@@ -81,6 +87,14 @@ function AdminPage() {
             />
             <section className="mx-auto max-w-7xl space-y-6 px-4 py-10 sm:px-6 lg:px-8">
               {error && <Notice tone="error">{error}</Notice>}
+              {mailWarning && (
+                <Notice tone="info">
+                  {t(
+                    "Action enregistrée, mais l'e-mail de notification n'a pas pu être envoyé. Prévenez l'utilisateur directement.",
+                    "Action saved, but the notification email could not be sent. Please contact the user directly.",
+                  )}
+                </Notice>
+              )}
 
               <DemandesPanel data={data.demandes} t={t} language={language} busy={busy} run={run} />
 

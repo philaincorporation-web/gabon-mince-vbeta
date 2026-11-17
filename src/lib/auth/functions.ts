@@ -5,6 +5,7 @@ import { getAuth, isGoogleConfigured } from "@/lib/auth/auth.server";
 import { audit } from "@/lib/auth/audit.server";
 import { loadSessionInfo, requireRole, requireSession } from "@/lib/auth/guard.server";
 import { getPrisma, isDatabaseConfigured } from "@/lib/db.server";
+import { sendAccountEmail } from "@/lib/mail.server";
 import { deleteObject, isStorageConfigured, putObject, signedReadUrl } from "@/lib/storage.server";
 import { landingFor, ROLES } from "@/lib/auth/access";
 import { changePasswordSchema, registerSchema, roleUpgradeSchema } from "@/lib/auth/schemas";
@@ -382,22 +383,32 @@ export const adminReviewAccount = createServerFn({ method: "POST" })
           ? { role: user.requestedRole, requestedRole: null, status: "ACTIVE" }
           : { requestedRole: null },
       });
+      const emailSent = await sendAccountEmail(data.approve ? "ROLE_APPROVED" : "ROLE_REJECTED", {
+        name: user.name,
+        email: user.email,
+        role: user.requestedRole,
+      });
       await audit(data.approve ? "ROLE_CHANGED" : "ROLE_REQUEST_REJECTED", {
         userId: user.id,
-        details: { by: admin.id, from: user.role, to: user.requestedRole },
+        details: { by: admin.id, from: user.role, to: user.requestedRole, emailSent },
       });
-    } else {
-      // Nouveau compte organisateur / prestataire en attente
-      await prisma.user.update({
-        where: { id: user.id },
-        data: { status: data.approve ? "ACTIVE" : "SUSPENDED" },
-      });
-      await audit(data.approve ? "ACCOUNT_VALIDATED" : "ACCOUNT_REJECTED", {
-        userId: user.id,
-        details: { by: admin.id, role: user.role },
-      });
+      return { ok: true, emailSent };
     }
-    return { ok: true };
+
+    // Nouveau compte organisateur / prestataire en attente
+    await prisma.user.update({
+      where: { id: user.id },
+      data: { status: data.approve ? "ACTIVE" : "SUSPENDED" },
+    });
+    const emailSent = await sendAccountEmail(
+      data.approve ? "ACCOUNT_APPROVED" : "ACCOUNT_REJECTED",
+      { name: user.name, email: user.email, role: user.role },
+    );
+    await audit(data.approve ? "ACCOUNT_VALIDATED" : "ACCOUNT_REJECTED", {
+      userId: user.id,
+      details: { by: admin.id, role: user.role, emailSent },
+    });
+    return { ok: true, emailSent };
   });
 
 export const adminSetLabel = createServerFn({ method: "POST" })
@@ -459,6 +470,7 @@ export const adminSetStatus = createServerFn({ method: "POST" })
     if (data.userId === admin.id)
       throw new Error("Vous ne pouvez pas modifier votre propre statut.");
     const prisma = getPrisma();
+    const before = await prisma.user.findUniqueOrThrow({ where: { id: data.userId } });
     await prisma.user.update({
       where: { id: data.userId },
       data: {
@@ -470,9 +482,18 @@ export const adminSetStatus = createServerFn({ method: "POST" })
       // Déconnexion immédiate de toutes ses sessions
       await prisma.session.deleteMany({ where: { userId: data.userId } });
     }
+    // Compte en attente activé depuis la liste des utilisateurs : même e-mail que « Valider ».
+    const emailSent =
+      before.status === "PENDING" && data.status === "ACTIVE"
+        ? await sendAccountEmail("ACCOUNT_APPROVED", {
+            name: before.name,
+            email: before.email,
+            role: before.role,
+          })
+        : null;
     await audit("STATUS_CHANGED", {
       userId: data.userId,
-      details: { by: admin.id, status: data.status },
+      details: { by: admin.id, from: before.status, status: data.status, emailSent },
     });
-    return { ok: true };
+    return { ok: true, emailSent };
   });
