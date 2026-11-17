@@ -94,6 +94,9 @@ model ProviderProfile {
   labelStatus    LabelStatus @default(PENDING)
   labelGrantedAt DateTime?
   labelExpiresAt DateTime?
+  /// Fiche du catalogue public (id dans src/lib/mice-data.ts) associée par l'admin :
+  /// son badge « Labellisé AGATOUR » suit alors labelStatus / labelExpiresAt.
+  listingId      String?     @unique
   documents      ProviderDocument[]
 }
 

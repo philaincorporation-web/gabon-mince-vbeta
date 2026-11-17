@@ -8,6 +8,7 @@ import { getPrisma, isDatabaseConfigured } from "@/lib/db.server";
 import { sendAccountEmail } from "@/lib/mail.server";
 import { deleteObject, isStorageConfigured, putObject, signedReadUrl } from "@/lib/storage.server";
 import { landingFor, ROLES } from "@/lib/auth/access";
+import { getListing } from "@/lib/mice-data";
 import { changePasswordSchema, registerSchema, roleUpgradeSchema } from "@/lib/auth/schemas";
 
 /* ------------------------------------------------------------------ */
@@ -195,7 +196,13 @@ export const getAdminDashboard = createServerFn({ method: "GET" }).handler(async
     lastLoginAt: true,
     organizerProfile: { select: { organization: true, position: true } },
     providerProfile: {
-      select: { businessName: true, category: true, labelStatus: true, labelExpiresAt: true },
+      select: {
+        businessName: true,
+        category: true,
+        labelStatus: true,
+        labelExpiresAt: true,
+        listingId: true,
+      },
     },
   } as const;
   const [pending, users, providers, logs] = await Promise.all([
@@ -431,7 +438,11 @@ export const adminSetLabel = createServerFn({ method: "POST" })
       data: data.grant
         ? { labelStatus: "GRANTED", labelGrantedAt: now, labelExpiresAt: expires }
         : { labelStatus: "REVOKED", labelExpiresAt: now },
-      select: { businessName: true, user: { select: { name: true, email: true, role: true } } },
+      select: {
+        businessName: true,
+        listingId: true,
+        user: { select: { name: true, email: true, role: true } },
+      },
     });
     const emailSent = await sendAccountEmail(data.grant ? "LABEL_GRANTED" : "LABEL_REVOKED", {
       name: profile.user.name,
@@ -439,6 +450,7 @@ export const adminSetLabel = createServerFn({ method: "POST" })
       role: profile.user.role,
       businessName: profile.businessName,
       labelExpiresAt: data.grant ? expires : undefined,
+      listingName: profile.listingId ? getListing(profile.listingId)?.name : undefined,
     });
     await audit(data.grant ? "LABEL_GRANTED" : "LABEL_REVOKED", {
       userId: data.userId,

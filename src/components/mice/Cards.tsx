@@ -1,4 +1,5 @@
 import { BadgeCheck, Clock, MapPin, Users } from "lucide-react";
+import { useLabelled } from "@/hooks/use-labelled";
 import { categoryMeta, formatFcfa, type Listing, type SpecialOffer } from "@/lib/mice-data";
 
 type Lang = "fr" | "en";
@@ -110,6 +111,7 @@ export function ListingCard({
 }) {
   const isFrench = language === "fr";
   const meta = categoryMeta[listing.category];
+  const isLabelled = useLabelled();
   return (
     <article className="group flex h-full flex-col overflow-hidden rounded-[1.75rem] bg-white shadow-soft transition-all duration-500 hover:-translate-y-1 hover:shadow-elegant dark:bg-slate-900">
       <button
@@ -129,7 +131,9 @@ export function ListingCard({
         >
           {meta.label[language]}
         </span>
-        {listing.labelled && <LabelBadge language={language} className="absolute right-4 top-4" />}
+        {isLabelled(listing) && (
+          <LabelBadge language={language} className="absolute right-4 top-4" />
+        )}
       </button>
       <div className="flex flex-1 flex-col p-5">
         <p className="inline-flex items-center gap-1 text-xs font-medium text-ink/55 dark:text-slate-400">

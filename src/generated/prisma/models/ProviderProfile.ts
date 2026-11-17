@@ -47,6 +47,7 @@ export type ProviderProfileMinAggregateOutputType = {
   labelStatus: $Enums.LabelStatus | null
   labelGrantedAt: Date | null
   labelExpiresAt: Date | null
+  listingId: string | null
 }
 
 export type ProviderProfileMaxAggregateOutputType = {
@@ -60,6 +61,7 @@ export type ProviderProfileMaxAggregateOutputType = {
   labelStatus: $Enums.LabelStatus | null
   labelGrantedAt: Date | null
   labelExpiresAt: Date | null
+  listingId: string | null
 }
 
 export type ProviderProfileCountAggregateOutputType = {
@@ -73,6 +75,7 @@ export type ProviderProfileCountAggregateOutputType = {
   labelStatus: number
   labelGrantedAt: number
   labelExpiresAt: number
+  listingId: number
   _all: number
 }
 
@@ -98,6 +101,7 @@ export type ProviderProfileMinAggregateInputType = {
   labelStatus?: true
   labelGrantedAt?: true
   labelExpiresAt?: true
+  listingId?: true
 }
 
 export type ProviderProfileMaxAggregateInputType = {
@@ -111,6 +115,7 @@ export type ProviderProfileMaxAggregateInputType = {
   labelStatus?: true
   labelGrantedAt?: true
   labelExpiresAt?: true
+  listingId?: true
 }
 
 export type ProviderProfileCountAggregateInputType = {
@@ -124,6 +129,7 @@ export type ProviderProfileCountAggregateInputType = {
   labelStatus?: true
   labelGrantedAt?: true
   labelExpiresAt?: true
+  listingId?: true
   _all?: true
 }
 
@@ -224,6 +230,7 @@ export type ProviderProfileGroupByOutputType = {
   labelStatus: $Enums.LabelStatus
   labelGrantedAt: Date | null
   labelExpiresAt: Date | null
+  listingId: string | null
   _count: ProviderProfileCountAggregateOutputType | null
   _avg: ProviderProfileAvgAggregateOutputType | null
   _sum: ProviderProfileSumAggregateOutputType | null
@@ -260,6 +267,7 @@ export type ProviderProfileWhereInput = {
   labelStatus?: Prisma.EnumLabelStatusFilter<"ProviderProfile"> | $Enums.LabelStatus
   labelGrantedAt?: Prisma.DateTimeNullableFilter<"ProviderProfile"> | Date | string | null
   labelExpiresAt?: Prisma.DateTimeNullableFilter<"ProviderProfile"> | Date | string | null
+  listingId?: Prisma.StringNullableFilter<"ProviderProfile"> | string | null
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   documents?: Prisma.ProviderDocumentListRelationFilter
 }
@@ -275,6 +283,7 @@ export type ProviderProfileOrderByWithRelationInput = {
   labelStatus?: Prisma.SortOrder
   labelGrantedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   labelExpiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  listingId?: Prisma.SortOrderInput | Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
   documents?: Prisma.ProviderDocumentOrderByRelationAggregateInput
 }
@@ -282,6 +291,7 @@ export type ProviderProfileOrderByWithRelationInput = {
 export type ProviderProfileWhereUniqueInput = Prisma.AtLeast<{
   id?: string
   userId?: string
+  listingId?: string
   AND?: Prisma.ProviderProfileWhereInput | Prisma.ProviderProfileWhereInput[]
   OR?: Prisma.ProviderProfileWhereInput[]
   NOT?: Prisma.ProviderProfileWhereInput | Prisma.ProviderProfileWhereInput[]
@@ -295,7 +305,7 @@ export type ProviderProfileWhereUniqueInput = Prisma.AtLeast<{
   labelExpiresAt?: Prisma.DateTimeNullableFilter<"ProviderProfile"> | Date | string | null
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   documents?: Prisma.ProviderDocumentListRelationFilter
-}, "id" | "userId">
+}, "id" | "userId" | "listingId">
 
 export type ProviderProfileOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -308,6 +318,7 @@ export type ProviderProfileOrderByWithAggregationInput = {
   labelStatus?: Prisma.SortOrder
   labelGrantedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   labelExpiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  listingId?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.ProviderProfileCountOrderByAggregateInput
   _avg?: Prisma.ProviderProfileAvgOrderByAggregateInput
   _max?: Prisma.ProviderProfileMaxOrderByAggregateInput
@@ -329,6 +340,7 @@ export type ProviderProfileScalarWhereWithAggregatesInput = {
   labelStatus?: Prisma.EnumLabelStatusWithAggregatesFilter<"ProviderProfile"> | $Enums.LabelStatus
   labelGrantedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"ProviderProfile"> | Date | string | null
   labelExpiresAt?: Prisma.DateTimeNullableWithAggregatesFilter<"ProviderProfile"> | Date | string | null
+  listingId?: Prisma.StringNullableWithAggregatesFilter<"ProviderProfile"> | string | null
 }
 
 export type ProviderProfileCreateInput = {
@@ -341,6 +353,7 @@ export type ProviderProfileCreateInput = {
   labelStatus?: $Enums.LabelStatus
   labelGrantedAt?: Date | string | null
   labelExpiresAt?: Date | string | null
+  listingId?: string | null
   user: Prisma.UserCreateNestedOneWithoutProviderProfileInput
   documents?: Prisma.ProviderDocumentCreateNestedManyWithoutProviderProfileInput
 }
@@ -356,6 +369,7 @@ export type ProviderProfileUncheckedCreateInput = {
   labelStatus?: $Enums.LabelStatus
   labelGrantedAt?: Date | string | null
   labelExpiresAt?: Date | string | null
+  listingId?: string | null
   documents?: Prisma.ProviderDocumentUncheckedCreateNestedManyWithoutProviderProfileInput
 }
 
@@ -369,6 +383,7 @@ export type ProviderProfileUpdateInput = {
   labelStatus?: Prisma.EnumLabelStatusFieldUpdateOperationsInput | $Enums.LabelStatus
   labelGrantedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   labelExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  listingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user?: Prisma.UserUpdateOneRequiredWithoutProviderProfileNestedInput
   documents?: Prisma.ProviderDocumentUpdateManyWithoutProviderProfileNestedInput
 }
@@ -384,6 +399,7 @@ export type ProviderProfileUncheckedUpdateInput = {
   labelStatus?: Prisma.EnumLabelStatusFieldUpdateOperationsInput | $Enums.LabelStatus
   labelGrantedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   labelExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  listingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   documents?: Prisma.ProviderDocumentUncheckedUpdateManyWithoutProviderProfileNestedInput
 }
 
@@ -398,6 +414,7 @@ export type ProviderProfileCreateManyInput = {
   labelStatus?: $Enums.LabelStatus
   labelGrantedAt?: Date | string | null
   labelExpiresAt?: Date | string | null
+  listingId?: string | null
 }
 
 export type ProviderProfileUpdateManyMutationInput = {
@@ -410,6 +427,7 @@ export type ProviderProfileUpdateManyMutationInput = {
   labelStatus?: Prisma.EnumLabelStatusFieldUpdateOperationsInput | $Enums.LabelStatus
   labelGrantedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   labelExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  listingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ProviderProfileUncheckedUpdateManyInput = {
@@ -423,6 +441,7 @@ export type ProviderProfileUncheckedUpdateManyInput = {
   labelStatus?: Prisma.EnumLabelStatusFieldUpdateOperationsInput | $Enums.LabelStatus
   labelGrantedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   labelExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  listingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ProviderProfileNullableScalarRelationFilter = {
@@ -441,6 +460,7 @@ export type ProviderProfileCountOrderByAggregateInput = {
   labelStatus?: Prisma.SortOrder
   labelGrantedAt?: Prisma.SortOrder
   labelExpiresAt?: Prisma.SortOrder
+  listingId?: Prisma.SortOrder
 }
 
 export type ProviderProfileAvgOrderByAggregateInput = {
@@ -459,6 +479,7 @@ export type ProviderProfileMaxOrderByAggregateInput = {
   labelStatus?: Prisma.SortOrder
   labelGrantedAt?: Prisma.SortOrder
   labelExpiresAt?: Prisma.SortOrder
+  listingId?: Prisma.SortOrder
 }
 
 export type ProviderProfileMinOrderByAggregateInput = {
@@ -472,6 +493,7 @@ export type ProviderProfileMinOrderByAggregateInput = {
   labelStatus?: Prisma.SortOrder
   labelGrantedAt?: Prisma.SortOrder
   labelExpiresAt?: Prisma.SortOrder
+  listingId?: Prisma.SortOrder
 }
 
 export type ProviderProfileSumOrderByAggregateInput = {
@@ -552,6 +574,7 @@ export type ProviderProfileCreateWithoutUserInput = {
   labelStatus?: $Enums.LabelStatus
   labelGrantedAt?: Date | string | null
   labelExpiresAt?: Date | string | null
+  listingId?: string | null
   documents?: Prisma.ProviderDocumentCreateNestedManyWithoutProviderProfileInput
 }
 
@@ -565,6 +588,7 @@ export type ProviderProfileUncheckedCreateWithoutUserInput = {
   labelStatus?: $Enums.LabelStatus
   labelGrantedAt?: Date | string | null
   labelExpiresAt?: Date | string | null
+  listingId?: string | null
   documents?: Prisma.ProviderDocumentUncheckedCreateNestedManyWithoutProviderProfileInput
 }
 
@@ -594,6 +618,7 @@ export type ProviderProfileUpdateWithoutUserInput = {
   labelStatus?: Prisma.EnumLabelStatusFieldUpdateOperationsInput | $Enums.LabelStatus
   labelGrantedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   labelExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  listingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   documents?: Prisma.ProviderDocumentUpdateManyWithoutProviderProfileNestedInput
 }
 
@@ -607,6 +632,7 @@ export type ProviderProfileUncheckedUpdateWithoutUserInput = {
   labelStatus?: Prisma.EnumLabelStatusFieldUpdateOperationsInput | $Enums.LabelStatus
   labelGrantedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   labelExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  listingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   documents?: Prisma.ProviderDocumentUncheckedUpdateManyWithoutProviderProfileNestedInput
 }
 
@@ -620,6 +646,7 @@ export type ProviderProfileCreateWithoutDocumentsInput = {
   labelStatus?: $Enums.LabelStatus
   labelGrantedAt?: Date | string | null
   labelExpiresAt?: Date | string | null
+  listingId?: string | null
   user: Prisma.UserCreateNestedOneWithoutProviderProfileInput
 }
 
@@ -634,6 +661,7 @@ export type ProviderProfileUncheckedCreateWithoutDocumentsInput = {
   labelStatus?: $Enums.LabelStatus
   labelGrantedAt?: Date | string | null
   labelExpiresAt?: Date | string | null
+  listingId?: string | null
 }
 
 export type ProviderProfileCreateOrConnectWithoutDocumentsInput = {
@@ -662,6 +690,7 @@ export type ProviderProfileUpdateWithoutDocumentsInput = {
   labelStatus?: Prisma.EnumLabelStatusFieldUpdateOperationsInput | $Enums.LabelStatus
   labelGrantedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   labelExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  listingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user?: Prisma.UserUpdateOneRequiredWithoutProviderProfileNestedInput
 }
 
@@ -676,6 +705,7 @@ export type ProviderProfileUncheckedUpdateWithoutDocumentsInput = {
   labelStatus?: Prisma.EnumLabelStatusFieldUpdateOperationsInput | $Enums.LabelStatus
   labelGrantedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   labelExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  listingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -720,6 +750,7 @@ export type ProviderProfileSelect<ExtArgs extends runtime.Types.Extensions.Inter
   labelStatus?: boolean
   labelGrantedAt?: boolean
   labelExpiresAt?: boolean
+  listingId?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   documents?: boolean | Prisma.ProviderProfile$documentsArgs<ExtArgs>
   _count?: boolean | Prisma.ProviderProfileCountOutputTypeDefaultArgs<ExtArgs>
@@ -736,6 +767,7 @@ export type ProviderProfileSelectCreateManyAndReturn<ExtArgs extends runtime.Typ
   labelStatus?: boolean
   labelGrantedAt?: boolean
   labelExpiresAt?: boolean
+  listingId?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["providerProfile"]>
 
@@ -750,6 +782,7 @@ export type ProviderProfileSelectUpdateManyAndReturn<ExtArgs extends runtime.Typ
   labelStatus?: boolean
   labelGrantedAt?: boolean
   labelExpiresAt?: boolean
+  listingId?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["providerProfile"]>
 
@@ -764,9 +797,10 @@ export type ProviderProfileSelectScalar = {
   labelStatus?: boolean
   labelGrantedAt?: boolean
   labelExpiresAt?: boolean
+  listingId?: boolean
 }
 
-export type ProviderProfileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "businessName" | "category" | "address" | "latitude" | "longitude" | "labelStatus" | "labelGrantedAt" | "labelExpiresAt", ExtArgs["result"]["providerProfile"]>
+export type ProviderProfileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "businessName" | "category" | "address" | "latitude" | "longitude" | "labelStatus" | "labelGrantedAt" | "labelExpiresAt" | "listingId", ExtArgs["result"]["providerProfile"]>
 export type ProviderProfileInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   documents?: boolean | Prisma.ProviderProfile$documentsArgs<ExtArgs>
@@ -799,6 +833,11 @@ export type $ProviderProfilePayload<ExtArgs extends runtime.Types.Extensions.Int
     labelStatus: $Enums.LabelStatus
     labelGrantedAt: Date | null
     labelExpiresAt: Date | null
+    /**
+     * Fiche du catalogue public (id dans src/lib/mice-data.ts) associée par l'admin :
+     * son badge « Labellisé AGATOUR » suit alors labelStatus / labelExpiresAt.
+     */
+    listingId: string | null
   }, ExtArgs["result"]["providerProfile"]>
   composites: {}
 }
@@ -1234,6 +1273,7 @@ export interface ProviderProfileFieldRefs {
   readonly labelStatus: Prisma.FieldRef<"ProviderProfile", 'LabelStatus'>
   readonly labelGrantedAt: Prisma.FieldRef<"ProviderProfile", 'DateTime'>
   readonly labelExpiresAt: Prisma.FieldRef<"ProviderProfile", 'DateTime'>
+  readonly listingId: Prisma.FieldRef<"ProviderProfile", 'String'>
 }
     
 

@@ -2,6 +2,7 @@ import { useEffect, type ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
 import { Check, Clock, MapPin, Users, Wallet, X } from "lucide-react";
 import { LabelBadge } from "@/components/mice/Cards";
+import { useLabelled } from "@/hooks/use-labelled";
 import { categoryMeta, formatFcfa, type Listing, type SpecialOffer } from "@/lib/mice-data";
 
 type Lang = "fr" | "en";
@@ -180,6 +181,7 @@ export function ListingDetailDialog({
 }) {
   const isFrench = language === "fr";
   const meta = categoryMeta[listing.category];
+  const isLabelled = useLabelled();
   return (
     <Modal onClose={onClose} label={listing.name}>
       <div className="relative h-60 sm:h-72">
@@ -193,7 +195,7 @@ export function ListingDetailDialog({
             >
               {meta.label[language]}
             </span>
-            {listing.labelled && <LabelBadge language={language} />}
+            {isLabelled(listing) && <LabelBadge language={language} />}
           </div>
           <h2 className="mt-3 font-display text-3xl font-extrabold">{listing.name}</h2>
           <p className="mt-1 inline-flex items-center gap-1 text-sm text-white/80">

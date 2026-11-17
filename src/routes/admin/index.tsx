@@ -16,6 +16,8 @@ import { ROLE_LABEL, ROLES, type Role } from "@/lib/auth/access";
 import { errorMessage } from "@/lib/auth/schemas";
 import { getAdminDemandes } from "@/lib/demandes";
 import { DemandesPanel } from "@/components/admin/DemandesPanel";
+import { adminLinkListing } from "@/lib/labels";
+import { categoryMeta, categoryOrder, listings } from "@/lib/mice-data";
 
 export const Route = createFileRoute("/admin/")({
   loader: async () => {
@@ -64,6 +66,11 @@ function AdminPage() {
       setBusy(null);
     }
   }
+
+  // Fiches déjà associées à un prestataire (une fiche = un seul compte).
+  const linkedListings = new Set(
+    data.providers.map((u) => u.providerProfile?.listingId).filter(Boolean),
+  );
 
   return (
     <PageShell>
@@ -184,7 +191,7 @@ function AdminPage() {
                   </p>
                 ) : (
                   <div className="overflow-x-auto">
-                    <table className="w-full min-w-[720px] text-left text-sm">
+                    <table className="w-full min-w-[900px] text-left text-sm">
                       <thead className="text-xs uppercase tracking-wider text-ink/50 dark:text-slate-400">
                         <tr>
                           <th className="py-2">{t("Prestataire", "Provider")}</th>
@@ -192,6 +199,7 @@ function AdminPage() {
                           <th className="py-2">Label</th>
                           <th className="py-2">{t("Expire le", "Expires")}</th>
                           <th className="py-2">{t("Justificatifs", "Documents")}</th>
+                          <th className="py-2">{t("Fiche publique", "Public listing")}</th>
                           <th className="py-2 text-right">{t("Action", "Action")}</th>
                         </tr>
                       </thead>
@@ -228,6 +236,41 @@ function AdminPage() {
                                     ))}
                                   </ul>
                                 )}
+                              </td>
+                              <td className="py-3">
+                                <select
+                                  value={u.providerProfile?.listingId ?? ""}
+                                  disabled={busy !== null || !u.providerProfile}
+                                  aria-label={t("Fiche publique", "Public listing")}
+                                  onChange={(e) =>
+                                    run(`ll-${u.id}`, () =>
+                                      adminLinkListing({
+                                        data: { userId: u.id, listingId: e.target.value || null },
+                                      }),
+                                    )
+                                  }
+                                  className="max-w-[200px] rounded-full border border-black/10 bg-cream px-3 py-1.5 text-xs font-semibold disabled:opacity-60 dark:border-slate-700 dark:bg-slate-800"
+                                >
+                                  <option value="">{t("Aucune", "None")}</option>
+                                  {categoryOrder.map((cat) => (
+                                    <optgroup key={cat} label={categoryMeta[cat].plural[language]}>
+                                      {listings
+                                        .filter((l) => l.category === cat)
+                                        .map((l) => (
+                                          <option
+                                            key={l.id}
+                                            value={l.id}
+                                            disabled={
+                                              linkedListings.has(l.id) &&
+                                              u.providerProfile?.listingId !== l.id
+                                            }
+                                          >
+                                            {l.name} · {l.city}
+                                          </option>
+                                        ))}
+                                    </optgroup>
+                                  ))}
+                                </select>
                               </td>
                               <td className="py-3 text-right">
                                 {status === "GRANTED" ? (

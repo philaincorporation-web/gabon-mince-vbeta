@@ -13,6 +13,7 @@ import {
 import { LoadingOverlay } from "@/components/ui/loading-overlay";
 import { PageHero, PageShell, SectionTitle } from "@/components/layout/PageShell";
 import { ListingCard } from "@/components/mice/Cards";
+import { useLabelled } from "@/hooks/use-labelled";
 import { ListingDetailDialog } from "@/components/mice/DetailDialogs";
 import { RequestDialog, type RequestTarget } from "@/components/mice/RequestDialog";
 import { categoryMeta, categoryOrder, cities, listings, type Listing } from "@/lib/mice-data";
@@ -32,9 +33,9 @@ export const Route = createFileRoute("/prestataires")({
   component: ProvidersPage,
 });
 
-const labelled = listings.filter((l) => l.labelled && l.category !== "agence");
-
 function ProvidersPage() {
+  const isLabelled = useLabelled();
+  const labelled = listings.filter((l) => isLabelled(l) && l.category !== "agence");
   const [selected, setSelected] = useState<Listing | null>(null);
   const [request, setRequest] = useState<RequestTarget | null>(null);
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "partial" | "error">("idle");

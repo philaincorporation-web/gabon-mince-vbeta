@@ -22,6 +22,8 @@ type Recipient = {
   /** Labels prestataires : nom de l'établissement et date d'expiration du label. */
   businessName?: string;
   labelExpiresAt?: Date;
+  /** Fiche publique associée au prestataire, si l'admin l'a reliée. */
+  listingName?: string;
 };
 
 let transporter: nodemailer.Transporter | null = null;
@@ -139,7 +141,9 @@ function buildContent(kind: AccountEmailKind, to: Recipient): Content {
         title: "Félicitations, votre label est accordé",
         paragraphs: [
           `L'équipe AGATOUR a examiné votre dossier et vous accorde le label prestataire GabonMICE${business}.${until}`,
-          "Vous retrouvez son statut dans votre espace prestataire. Pensez à renouveler votre dossier avant son expiration.",
+          to.listingName
+            ? `Le badge « Labellisé AGATOUR » s'affiche désormais sur votre fiche publique « ${to.listingName} ». Pensez à renouveler votre dossier avant son expiration.`
+            : "Vous retrouvez son statut dans votre espace prestataire. Pensez à renouveler votre dossier avant son expiration.",
         ],
         cta: { label: "Accéder à mon espace", url: `${siteUrl()}/espace/prestataire` },
       };

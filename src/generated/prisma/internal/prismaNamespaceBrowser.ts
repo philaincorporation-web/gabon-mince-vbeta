@@ -134,7 +134,8 @@ export const ProviderProfileScalarFieldEnum = {
   longitude: 'longitude',
   labelStatus: 'labelStatus',
   labelGrantedAt: 'labelGrantedAt',
-  labelExpiresAt: 'labelExpiresAt'
+  labelExpiresAt: 'labelExpiresAt',
+  listingId: 'listingId'
 } as const
 
 export type ProviderProfileScalarFieldEnum = (typeof ProviderProfileScalarFieldEnum)[keyof typeof ProviderProfileScalarFieldEnum]

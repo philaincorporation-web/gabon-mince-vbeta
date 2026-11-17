@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { PageHero, PageShell } from "@/components/layout/PageShell";
 import { ListingCard } from "@/components/mice/Cards";
+import { useLabelled } from "@/hooks/use-labelled";
 import { ListingDetailDialog } from "@/components/mice/DetailDialogs";
 import { RequestDialog, type RequestTarget } from "@/components/mice/RequestDialog";
 import {
@@ -59,6 +60,7 @@ function ExplorerPage() {
   const [selected, setSelected] = useState<Listing | null>(null);
   const [request, setRequest] = useState<RequestTarget | null>(null);
   const [query, setQuery] = useState(search.q ?? "");
+  const isLabelled = useLabelled();
 
   const update = (patch: Partial<ExplorerSearch>) =>
     navigate({ search: (prev) => ({ ...prev, ...patch }), replace: true, resetScroll: false });
@@ -68,12 +70,12 @@ function ExplorerPage() {
     return listings.filter((l) => {
       if (search.cat && l.category !== search.cat) return false;
       if (search.ville && l.city !== search.ville) return false;
-      if (labelledOnly && !l.labelled) return false;
+      if (labelledOnly && !isLabelled(l)) return false;
       if (search.participants && l.capacity && l.capacity < search.participants) return false;
       if (!q) return true;
       return normalize(`${l.name} ${l.city} ${l.summary.fr} ${l.summary.en}`).includes(q);
     });
-  }, [search, labelledOnly]);
+  }, [search, labelledOnly, isLabelled]);
 
   const countFor = (cat?: ListingCategory) =>
     listings.filter((l) => !cat || l.category === cat).length;
