@@ -2,6 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { getRequestHeaders, getRequestIP } from "@tanstack/react-start/server";
 import { z } from "zod";
 import { getAuth, isGoogleConfigured } from "@/lib/auth/auth.server";
+import { assertKeepsSuperAdmin, requirePermission } from "@/lib/admin/guard.server";
 import { audit } from "@/lib/auth/audit.server";
 import { loadSessionInfo, requireRole, requireSession } from "@/lib/auth/guard.server";
 import { getPrisma, isDatabaseConfigured } from "@/lib/db.server";
@@ -181,91 +182,6 @@ export const getMyProfile = createServerFn({ method: "GET" }).handler(async () =
 /* Administration                                                       */
 /* ------------------------------------------------------------------ */
 
-export const getAdminDashboard = createServerFn({ method: "GET" }).handler(async () => {
-  await requireRole("ADMIN");
-  const prisma = getPrisma();
-  const select = {
-    id: true,
-    name: true,
-    email: true,
-    username: true,
-    role: true,
-    status: true,
-    requestedRole: true,
-    createdAt: true,
-    lastLoginAt: true,
-    organizerProfile: { select: { organization: true, position: true } },
-    providerProfile: {
-      select: {
-        businessName: true,
-        category: true,
-        labelStatus: true,
-        labelExpiresAt: true,
-        listingId: true,
-      },
-    },
-  } as const;
-  const [pending, users, providers, logs] = await Promise.all([
-    prisma.user.findMany({
-      where: { OR: [{ status: "PENDING" }, { requestedRole: { not: null } }] },
-      select,
-      orderBy: { createdAt: "asc" },
-    }),
-    prisma.user.findMany({ select, orderBy: { createdAt: "desc" }, take: 200 }),
-    prisma.user.findMany({
-      where: { role: "PROVIDER", status: "ACTIVE" },
-      select: {
-        ...select,
-        providerProfile: {
-          select: {
-            ...select.providerProfile.select,
-            documents: {
-              select: { id: true, key: true, fileName: true, size: true, createdAt: true },
-              orderBy: { createdAt: "desc" },
-            },
-          },
-        },
-      },
-      orderBy: { createdAt: "desc" },
-    }),
-    prisma.auditLog.findMany({
-      orderBy: { createdAt: "desc" },
-      take: 30,
-      select: {
-        id: true,
-        action: true,
-        ip: true,
-        createdAt: true,
-        details: true,
-        user: { select: { email: true } },
-      },
-    }),
-  ]);
-  // Justificatifs des prestataires : liens de lecture signés (15 min), sans exposer la clé du bucket.
-  const providersWithDocs = await Promise.all(
-    providers.map(async (u) => ({
-      ...u,
-      documents: isStorageConfigured()
-        ? await Promise.all(
-            (u.providerProfile?.documents ?? []).map(async (d) => ({
-              id: d.id,
-              fileName: d.fileName,
-              size: d.size,
-              url: await signedReadUrl(d.key, d.fileName),
-            })),
-          )
-        : [],
-    })),
-  );
-  return {
-    pending,
-    users,
-    providers: providersWithDocs,
-    storage: isStorageConfigured(),
-    logs: logs.map((l) => ({ ...l, details: l.details ? JSON.stringify(l.details) : null })),
-  };
-});
-
 /* ------------------------------------------------------------------ */
 /* Documents de labellisation (Neon Object Storage)                     */
 /* ------------------------------------------------------------------ */
@@ -378,7 +294,7 @@ export const adminReviewAccount = createServerFn({ method: "POST" })
     z.object({ userId: userIdSchema, approve: z.boolean() }).parse(input),
   )
   .handler(async ({ data }) => {
-    const admin = await requireRole("ADMIN");
+    const admin = await requirePermission("validations");
     const prisma = getPrisma();
     const user = await prisma.user.findUniqueOrThrow({ where: { id: data.userId } });
 
@@ -429,7 +345,7 @@ export const adminSetLabel = createServerFn({ method: "POST" })
       .parse(input),
   )
   .handler(async ({ data }) => {
-    const admin = await requireRole("ADMIN");
+    const admin = await requirePermission("labels");
     const now = new Date();
     const expires = new Date(now);
     expires.setMonth(expires.getMonth() + data.months);
@@ -464,13 +380,25 @@ export const adminChangeRole = createServerFn({ method: "POST" })
     z.object({ userId: userIdSchema, role: z.enum(ROLES) }).parse(input),
   )
   .handler(async ({ data }) => {
-    const admin = await requireRole("ADMIN");
+    const admin = await requirePermission("utilisateurs");
     if (data.userId === admin.id) throw new Error("Vous ne pouvez pas modifier votre propre rôle.");
     const prisma = getPrisma();
     const user = await prisma.user.findUniqueOrThrow({ where: { id: data.userId } });
+    if (user.role === "ADMIN" || data.role === "ADMIN") {
+      // Nommer ou retirer un administrateur relève de la gestion d'équipe.
+      await requirePermission("equipe");
+      if (user.role === "ADMIN" && data.role !== "ADMIN" && user.adminRoleId === null) {
+        await assertKeepsSuperAdmin(user.id);
+      }
+    }
     await prisma.user.update({
       where: { id: data.userId },
-      data: { role: data.role, requestedRole: null },
+      data: {
+        role: data.role,
+        requestedRole: null,
+        // Un administrateur retiré perd son rôle d'administration.
+        ...(data.role !== "ADMIN" ? { adminRoleId: null } : {}),
+      },
     });
     await audit("ROLE_CHANGED", {
       userId: data.userId,
@@ -486,11 +414,17 @@ export const adminSetStatus = createServerFn({ method: "POST" })
       .parse(input),
   )
   .handler(async ({ data }) => {
-    const admin = await requireRole("ADMIN");
+    const admin = await requirePermission("utilisateurs");
     if (data.userId === admin.id)
       throw new Error("Vous ne pouvez pas modifier votre propre statut.");
     const prisma = getPrisma();
     const before = await prisma.user.findUniqueOrThrow({ where: { id: data.userId } });
+    if (before.role === "ADMIN") {
+      await requirePermission("equipe");
+      if (before.adminRoleId === null && before.status === "ACTIVE" && data.status !== "ACTIVE") {
+        await assertKeepsSuperAdmin(before.id);
+      }
+    }
     await prisma.user.update({
       where: { id: data.userId },
       data: {

@@ -1,428 +1,229 @@
-import { useState } from "react";
-import { LoadingOverlay } from "@/components/ui/loading-overlay";
-import { createFileRoute, useRouter } from "@tanstack/react-router";
-import { BadgeCheck, Check, FileText, ShieldOff, X } from "lucide-react";
-import { PageShell } from "@/components/layout/PageShell";
-import { Panel, SpaceHeader } from "@/components/auth/SpaceLayout";
-import { Notice } from "@/components/auth/AuthUI";
-import {
-  adminChangeRole,
-  adminReviewAccount,
-  adminSetLabel,
-  adminSetStatus,
-  getAdminDashboard,
-} from "@/lib/auth/functions";
-import { ROLE_LABEL, ROLES, type Role } from "@/lib/auth/access";
-import { errorMessage } from "@/lib/auth/schemas";
-import { getAdminDemandes } from "@/lib/demandes";
-import { DemandesPanel } from "@/components/admin/DemandesPanel";
-import { adminLinkListing } from "@/lib/labels";
-import { categoryMeta, categoryOrder, listings } from "@/lib/mice-data";
+import type { ReactNode } from "react";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { ArrowRight, BadgeCheck, Inbox, UserCheck, Users, type LucideIcon } from "lucide-react";
+import { Panel } from "@/components/auth/SpaceLayout";
+import { AdminPage } from "@/components/admin/AdminPage";
+import { useAdminPrefs, useFormatDate } from "@/components/admin/AdminUI";
+import { getAdminSummary } from "@/lib/admin/functions";
+import { ROLE_LABEL, ROLES } from "@/lib/auth/access";
 
 export const Route = createFileRoute("/admin/")({
-  loader: async () => {
-    const [dashboard, demandes] = await Promise.all([getAdminDashboard(), getAdminDemandes()]);
-    return { ...dashboard, demandes };
-  },
-  head: () => ({ meta: [{ title: "Administration | GabonMICE" }] }),
-  component: AdminPage,
+  loader: () => getAdminSummary(),
+  component: DashboardPage,
 });
 
-const STATUS_LABEL = {
-  ACTIVE: { fr: "Actif", en: "Active", tone: "bg-forest/10 text-forest dark:text-emerald-300" },
-  PENDING: { fr: "En attente", en: "Pending", tone: "bg-sun/15 text-sun-deep" },
-  SUSPENDED: { fr: "Suspendu", en: "Suspended", tone: "bg-red-50 text-red-600 dark:bg-red-950/40" },
-} as const;
+const KIND_LABEL: Record<string, { fr: string; en: string }> = {
+  CONTACT: { fr: "Contact", en: "Contact" },
+  RESERVATION: { fr: "Réservation", en: "Booking" },
+  DEVIS: { fr: "Devis", en: "Quote" },
+  EVENEMENT: { fr: "Événement", en: "Event" },
+  LABELLISATION: { fr: "Labellisation", en: "Labelling" },
+};
 
-const LABEL_STATUS = {
-  NONE: { fr: "Aucun", en: "None" },
-  PENDING: { fr: "À examiner", en: "To review" },
-  GRANTED: { fr: "Accordé", en: "Granted" },
-  REVOKED: { fr: "Retiré", en: "Revoked" },
-} as const;
-
-function AdminPage() {
-  const { session } = Route.useRouteContext();
+function DashboardPage() {
+  const { session, admin } = Route.useRouteContext();
   const data = Route.useLoaderData();
-  const router = useRouter();
-  const [busy, setBusy] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [mailWarning, setMailWarning] = useState(false);
-
-  async function run(key: string, action: () => Promise<unknown>) {
-    setBusy(key);
-    setError(null);
-    setMailWarning(false);
-    try {
-      const result = await action();
-      // Action enregistrée, mais l'e-mail de notification n'est pas parti.
-      if (result && typeof result === "object" && "emailSent" in result) {
-        setMailWarning(result.emailSent === false);
-      }
-      await router.invalidate();
-    } catch (e) {
-      setError(errorMessage(e, "Action impossible."));
-    } finally {
-      setBusy(null);
-    }
-  }
-
-  // Fiches déjà associées à un prestataire (une fiche = un seul compte).
-  const linkedListings = new Set(
-    data.providers.map((u) => u.providerProfile?.listingId).filter(Boolean),
-  );
+  const { t, language } = useAdminPrefs();
+  const { date, dateTime } = useFormatDate();
+  const can = (p: (typeof admin.permissions)[number]) => admin.permissions.includes(p);
+  const totalUsers = Object.values(data.usersByRole).reduce((a, b) => a + b, 0);
+  const firstName = session.name.split(" ")[0];
 
   return (
-    <PageShell>
-      {({ t, language }) => {
-        const date = (d: Date | string | null) =>
-          d ? new Date(d).toLocaleDateString(language === "fr" ? "fr-FR" : "en-GB") : "—";
-        return (
-          <>
-            <LoadingOverlay
-              show={busy !== null}
-              message={{ fr: "Mise à jour en cours…", en: "Updating…" }}
-            />
-            <SpaceHeader
-              session={session}
-              language={language}
-              title={t("Administration AGATOUR", "AGATOUR administration")}
-              subtitle={t(
-                "Demandes reçues, validation des comptes, labels prestataires et rôles. Chaque action est tracée.",
-                "Incoming requests, account validation, provider labels and roles. Every action is logged.",
-              )}
-            />
-            <section className="mx-auto max-w-7xl space-y-6 px-4 py-10 sm:px-6 lg:px-8">
-              {error && <Notice tone="error">{error}</Notice>}
-              {mailWarning && (
-                <Notice tone="info">
-                  {t(
-                    "Action enregistrée, mais l'e-mail de notification n'a pas pu être envoyé. Prévenez l'utilisateur directement.",
-                    "Action saved, but the notification email could not be sent. Please contact the user directly.",
-                  )}
-                </Notice>
-              )}
+    <AdminPage
+      title={t(`Bonjour ${firstName}`, `Hello ${firstName}`)}
+      subtitle={t(
+        "Vue d'ensemble de la plateforme et des éléments qui attendent une action.",
+        "Platform overview and items awaiting action.",
+      )}
+    >
+      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        {can("demandes") && (
+          <Kpi
+            to="/admin/demandes"
+            icon={Inbox}
+            value={admin.counts.demandes}
+            label={t("Nouvelles demandes", "New requests")}
+            highlight={admin.counts.demandes > 0}
+          />
+        )}
+        {can("validations") && (
+          <Kpi
+            to="/admin/validations"
+            icon={UserCheck}
+            value={admin.counts.validations}
+            label={t("Comptes à valider", "Accounts to review")}
+            highlight={admin.counts.validations > 0}
+          />
+        )}
+        {can("labels") && (
+          <Kpi
+            to="/admin/labels"
+            icon={BadgeCheck}
+            value={data.labelled}
+            label={t("Prestataires labellisés", "Labelled providers")}
+            hint={
+              admin.counts.labels > 0
+                ? t(
+                    `${admin.counts.labels} expire(nt) sous 30 jours`,
+                    `${admin.counts.labels} expiring within 30 days`,
+                  )
+                : undefined
+            }
+            highlight={admin.counts.labels > 0}
+          />
+        )}
+        {can("utilisateurs") && (
+          <Kpi
+            to="/admin/utilisateurs"
+            icon={Users}
+            value={totalUsers}
+            label={t("Utilisateurs inscrits", "Registered users")}
+          />
+        )}
+      </div>
 
-              <DemandesPanel data={data.demandes} t={t} language={language} busy={busy} run={run} />
-
-              <Panel
-                title={`${t("Comptes et demandes à valider", "Accounts and requests to review")} (${data.pending.length})`}
-              >
-                {data.pending.length === 0 ? (
-                  <p className="text-sm text-ink/55 dark:text-slate-400">
-                    {t("Rien à valider.", "Nothing to review.")}
-                  </p>
-                ) : (
-                  <ul className="divide-y divide-black/5 dark:divide-slate-800">
-                    {data.pending.map((u) => {
-                      const target = (u.requestedRole ?? u.role) as Role;
-                      return (
-                        <li
-                          key={u.id}
-                          className="flex flex-col gap-3 py-4 md:flex-row md:items-center md:justify-between"
-                        >
-                          <div className="min-w-0">
-                            <p className="font-semibold">
-                              {u.name}{" "}
-                              <span className="font-normal text-ink/55 dark:text-slate-400">
-                                · {u.email}
-                              </span>
-                            </p>
-                            <p className="text-sm text-ink/65 dark:text-slate-400">
-                              {u.requestedRole
-                                ? t(
-                                    `Demande de passage ${ROLE_LABEL[u.role as Role].fr} → ${ROLE_LABEL[target].fr}`,
-                                    `Request ${ROLE_LABEL[u.role as Role].en} → ${ROLE_LABEL[target].en}`,
-                                  )
-                                : t(
-                                    `Nouveau compte ${ROLE_LABEL[target].fr}`,
-                                    `New ${ROLE_LABEL[target].en} account`,
-                                  )}
-                              {" · "}
-                              {u.organizerProfile?.organization ??
-                                u.providerProfile?.businessName ??
-                                ""}
-                              {u.providerProfile?.category
-                                ? ` (${u.providerProfile.category})`
-                                : ""}
-                              {" · "}
-                              {date(u.createdAt)}
-                            </p>
-                          </div>
-                          <div className="flex shrink-0 gap-2">
-                            <button
-                              type="button"
-                              disabled={busy !== null}
-                              onClick={() =>
-                                run(`ok-${u.id}`, () =>
-                                  adminReviewAccount({ data: { userId: u.id, approve: true } }),
-                                )
-                              }
-                              className="inline-flex items-center gap-1.5 rounded-full bg-forest px-4 py-2 text-sm font-semibold text-white hover:bg-forest-deep disabled:opacity-50"
-                            >
-                              <Check className="h-4 w-4" /> {t("Valider", "Approve")}
-                            </button>
-                            <button
-                              type="button"
-                              disabled={busy !== null}
-                              onClick={() =>
-                                run(`no-${u.id}`, () =>
-                                  adminReviewAccount({ data: { userId: u.id, approve: false } }),
-                                )
-                              }
-                              className="inline-flex items-center gap-1.5 rounded-full border border-black/10 px-4 py-2 text-sm font-semibold hover:bg-sand disabled:opacity-50 dark:border-slate-700"
-                            >
-                              <X className="h-4 w-4" /> {t("Refuser", "Reject")}
-                            </button>
-                          </div>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                )}
-              </Panel>
-
-              <Panel
-                title={`${t("Labels prestataires", "Provider labels")} (${data.providers.length})`}
-              >
-                {data.providers.length === 0 ? (
-                  <p className="text-sm text-ink/55 dark:text-slate-400">
-                    {t("Aucun prestataire actif.", "No active provider.")}
-                  </p>
-                ) : (
-                  <div className="overflow-x-auto">
-                    <table className="w-full min-w-[900px] text-left text-sm">
-                      <thead className="text-xs uppercase tracking-wider text-ink/50 dark:text-slate-400">
-                        <tr>
-                          <th className="py-2">{t("Prestataire", "Provider")}</th>
-                          <th className="py-2">{t("Catégorie", "Category")}</th>
-                          <th className="py-2">Label</th>
-                          <th className="py-2">{t("Expire le", "Expires")}</th>
-                          <th className="py-2">{t("Justificatifs", "Documents")}</th>
-                          <th className="py-2">{t("Fiche publique", "Public listing")}</th>
-                          <th className="py-2 text-right">{t("Action", "Action")}</th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-black/5 dark:divide-slate-800">
-                        {data.providers.map((u) => {
-                          const status = u.providerProfile?.labelStatus ?? "NONE";
-                          return (
-                            <tr key={u.id}>
-                              <td className="py-3 font-semibold">
-                                {u.providerProfile?.businessName ?? u.name}
-                              </td>
-                              <td className="py-3">{u.providerProfile?.category ?? "—"}</td>
-                              <td className="py-3">{LABEL_STATUS[status][language]}</td>
-                              <td className="py-3">
-                                {date(u.providerProfile?.labelExpiresAt ?? null)}
-                              </td>
-                              <td className="py-3">
-                                {u.documents.length === 0 ? (
-                                  <span className="text-ink/45 dark:text-slate-500">—</span>
-                                ) : (
-                                  <ul className="space-y-1">
-                                    {u.documents.map((d) => (
-                                      <li key={d.id}>
-                                        <a
-                                          href={d.url}
-                                          target="_blank"
-                                          rel="noreferrer"
-                                          className="inline-flex max-w-[180px] items-center gap-1 truncate text-xs font-semibold text-forest hover:underline dark:text-emerald-300"
-                                        >
-                                          <FileText className="h-3.5 w-3.5 shrink-0" />
-                                          <span className="truncate">{d.fileName}</span>
-                                        </a>
-                                      </li>
-                                    ))}
-                                  </ul>
-                                )}
-                              </td>
-                              <td className="py-3">
-                                <select
-                                  value={u.providerProfile?.listingId ?? ""}
-                                  disabled={busy !== null || !u.providerProfile}
-                                  aria-label={t("Fiche publique", "Public listing")}
-                                  onChange={(e) =>
-                                    run(`ll-${u.id}`, () =>
-                                      adminLinkListing({
-                                        data: { userId: u.id, listingId: e.target.value || null },
-                                      }),
-                                    )
-                                  }
-                                  className="max-w-[200px] rounded-full border border-black/10 bg-cream px-3 py-1.5 text-xs font-semibold disabled:opacity-60 dark:border-slate-700 dark:bg-slate-800"
-                                >
-                                  <option value="">{t("Aucune", "None")}</option>
-                                  {categoryOrder.map((cat) => (
-                                    <optgroup key={cat} label={categoryMeta[cat].plural[language]}>
-                                      {listings
-                                        .filter((l) => l.category === cat)
-                                        .map((l) => (
-                                          <option
-                                            key={l.id}
-                                            value={l.id}
-                                            disabled={
-                                              linkedListings.has(l.id) &&
-                                              u.providerProfile?.listingId !== l.id
-                                            }
-                                          >
-                                            {l.name} · {l.city}
-                                          </option>
-                                        ))}
-                                    </optgroup>
-                                  ))}
-                                </select>
-                              </td>
-                              <td className="py-3 text-right">
-                                {status === "GRANTED" ? (
-                                  <button
-                                    type="button"
-                                    disabled={busy !== null}
-                                    onClick={() =>
-                                      run(`lr-${u.id}`, () =>
-                                        adminSetLabel({ data: { userId: u.id, grant: false } }),
-                                      )
-                                    }
-                                    className="inline-flex items-center gap-1.5 rounded-full border border-red-200 px-3 py-1.5 text-xs font-semibold text-red-600 hover:bg-red-50 disabled:opacity-50"
-                                  >
-                                    <ShieldOff className="h-3.5 w-3.5" /> {t("Retirer", "Revoke")}
-                                  </button>
-                                ) : (
-                                  <button
-                                    type="button"
-                                    disabled={busy !== null || !u.providerProfile}
-                                    onClick={() =>
-                                      run(`lg-${u.id}`, () =>
-                                        adminSetLabel({
-                                          data: { userId: u.id, grant: true, months: 12 },
-                                        }),
-                                      )
-                                    }
-                                    className="inline-flex items-center gap-1.5 rounded-full bg-forest px-3 py-1.5 text-xs font-semibold text-white hover:bg-forest-deep disabled:opacity-50"
-                                  >
-                                    <BadgeCheck className="h-3.5 w-3.5" />{" "}
-                                    {t("Accorder (12 mois)", "Grant (12 months)")}
-                                  </button>
-                                )}
-                              </td>
-                            </tr>
-                          );
-                        })}
-                      </tbody>
-                    </table>
-                  </div>
-                )}
-              </Panel>
-
-              <Panel title={`${t("Utilisateurs", "Users")} (${data.users.length})`}>
-                <div className="overflow-x-auto">
-                  <table className="w-full min-w-[720px] text-left text-sm">
-                    <thead className="text-xs uppercase tracking-wider text-ink/50 dark:text-slate-400">
-                      <tr>
-                        <th className="py-2">{t("Utilisateur", "User")}</th>
-                        <th className="py-2">{t("Rôle", "Role")}</th>
-                        <th className="py-2">{t("Statut", "Status")}</th>
-                        <th className="py-2">{t("Dernière connexion", "Last sign-in")}</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-black/5 dark:divide-slate-800">
-                      {data.users.map((u) => {
-                        const self = u.id === session.id;
-                        return (
-                          <tr key={u.id}>
-                            <td className="py-3">
-                              <p className="font-semibold">{u.name}</p>
-                              <p className="text-xs text-ink/55 dark:text-slate-400">
-                                {u.email}
-                                {u.username ? ` · @${u.username}` : ""}
-                              </p>
-                            </td>
-                            <td className="py-3">
-                              <select
-                                value={u.role}
-                                disabled={self || busy !== null}
-                                aria-label={t("Rôle", "Role")}
-                                onChange={(e) =>
-                                  run(`r-${u.id}`, () =>
-                                    adminChangeRole({
-                                      data: { userId: u.id, role: e.target.value as Role },
-                                    }),
-                                  )
-                                }
-                                className="rounded-full border border-black/10 bg-cream px-3 py-1.5 text-xs font-semibold disabled:opacity-60 dark:border-slate-700 dark:bg-slate-800"
-                              >
-                                {ROLES.map((r) => (
-                                  <option key={r} value={r}>
-                                    {ROLE_LABEL[r][language]}
-                                  </option>
-                                ))}
-                              </select>
-                            </td>
-                            <td className="py-3">
-                              <select
-                                value={u.status}
-                                disabled={self || busy !== null}
-                                aria-label={t("Statut", "Status")}
-                                onChange={(e) =>
-                                  run(`s-${u.id}`, () =>
-                                    adminSetStatus({
-                                      data: {
-                                        userId: u.id,
-                                        status: e.target.value as
-                                          "ACTIVE" | "PENDING" | "SUSPENDED",
-                                      },
-                                    }),
-                                  )
-                                }
-                                className={`rounded-full px-3 py-1.5 text-xs font-semibold disabled:opacity-60 ${STATUS_LABEL[u.status].tone}`}
-                              >
-                                {(["ACTIVE", "PENDING", "SUSPENDED"] as const).map((s) => (
-                                  <option key={s} value={s}>
-                                    {STATUS_LABEL[s][language]}
-                                  </option>
-                                ))}
-                              </select>
-                            </td>
-                            <td className="py-3 text-ink/65 dark:text-slate-400">
-                              {date(u.lastLoginAt)}
-                            </td>
-                          </tr>
-                        );
-                      })}
-                    </tbody>
-                  </table>
-                </div>
-              </Panel>
-
-              <Panel
-                title={t("Journal d'audit (30 dernières actions)", "Audit log (last 30 actions)")}
-              >
-                <ul className="divide-y divide-black/5 text-sm dark:divide-slate-800">
-                  {data.logs.map((log) => (
-                    <li
-                      key={log.id}
-                      className="flex flex-col gap-1 py-2.5 sm:flex-row sm:items-center sm:gap-4"
-                    >
-                      <span className="w-40 shrink-0 text-xs text-ink/50 dark:text-slate-400">
-                        {new Date(log.createdAt).toLocaleString(
-                          language === "fr" ? "fr-FR" : "en-GB",
-                        )}
+      <div className="grid gap-6 xl:grid-cols-2">
+        {can("demandes") && (
+          <Panel title={t("Dernières demandes", "Latest requests")}>
+            {data.recentDemandes.length === 0 ? (
+              <Empty>{t("Aucune demande pour l'instant.", "No request yet.")}</Empty>
+            ) : (
+              <ul className="divide-y divide-black/5 dark:divide-slate-800">
+                {data.recentDemandes.map((d) => (
+                  <li key={d.id} className="flex items-center justify-between gap-3 py-3 text-sm">
+                    <div className="min-w-0">
+                      <p className="truncate font-semibold">
+                        {KIND_LABEL[d.kind]?.[language] ?? d.kind} · {d.subject}
+                      </p>
+                      <p className="text-xs text-ink/55 dark:text-slate-400">
+                        {d.name} · {dateTime(d.createdAt)}
+                      </p>
+                    </div>
+                    {d.status === "NEW" && (
+                      <span className="shrink-0 rounded-full bg-sun/15 px-2.5 py-0.5 text-xs font-semibold text-sun-deep">
+                        {t("Nouvelle", "New")}
                       </span>
-                      <span className="w-48 shrink-0 font-mono text-xs font-semibold">
-                        {log.action}
-                      </span>
-                      <span className="min-w-0 flex-1 truncate text-ink/65 dark:text-slate-400">
-                        {log.user?.email ?? "—"}
-                        {log.ip ? ` · ${log.ip}` : ""}
-                        {log.details ? ` · ${log.details}` : ""}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              </Panel>
-            </section>
-          </>
-        );
-      }}
-    </PageShell>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            )}
+            <MoreLink to="/admin/demandes">{t("Toutes les demandes", "All requests")}</MoreLink>
+          </Panel>
+        )}
+
+        {can("utilisateurs") && (
+          <Panel title={t("Répartition des comptes", "Accounts by profile")}>
+            <ul className="space-y-3">
+              {ROLES.map((r) => {
+                const n = data.usersByRole[r] ?? 0;
+                const pct = totalUsers ? Math.round((n / totalUsers) * 100) : 0;
+                return (
+                  <li key={r} className="text-sm">
+                    <div className="mb-1 flex justify-between">
+                      <span className="font-semibold">{ROLE_LABEL[r][language]}</span>
+                      <span className="tabular-nums text-ink/65 dark:text-slate-400">{n}</span>
+                    </div>
+                    <div className="h-2 overflow-hidden rounded-full bg-sand dark:bg-slate-800">
+                      <div className="h-full rounded-full bg-forest" style={{ width: `${pct}%` }} />
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
+          </Panel>
+        )}
+
+        {can("labels") && (
+          <Panel title={t("Labels qui expirent bientôt", "Labels expiring soon")}>
+            {data.expiring.length === 0 ? (
+              <Empty>
+                {t("Aucun label n'expire dans les 30 jours.", "No label expires within 30 days.")}
+              </Empty>
+            ) : (
+              <ul className="divide-y divide-black/5 dark:divide-slate-800">
+                {data.expiring.map((p) => (
+                  <li key={p.businessName} className="flex justify-between gap-3 py-3 text-sm">
+                    <span className="font-semibold">{p.businessName}</span>
+                    <span className="text-sun-deep">{date(p.labelExpiresAt)}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+            <MoreLink to="/admin/labels">{t("Gérer les labels", "Manage labels")}</MoreLink>
+          </Panel>
+        )}
+
+        {can("journal") && (
+          <Panel title={t("Activité récente", "Recent activity")}>
+            <ul className="divide-y divide-black/5 dark:divide-slate-800">
+              {data.recentLogs.map((log) => (
+                <li key={log.id} className="flex flex-col gap-0.5 py-2.5 text-sm">
+                  <span className="font-mono text-xs font-semibold">{log.action}</span>
+                  <span className="text-xs text-ink/55 dark:text-slate-400">
+                    {dateTime(log.createdAt)}
+                    {log.user?.email ? ` · ${log.user.email}` : ""}
+                  </span>
+                </li>
+              ))}
+            </ul>
+            <MoreLink to="/admin/journal">{t("Tout le journal", "Full log")}</MoreLink>
+          </Panel>
+        )}
+      </div>
+    </AdminPage>
+  );
+}
+
+function Kpi({
+  to,
+  icon: Icon,
+  value,
+  label,
+  hint,
+  highlight = false,
+}: {
+  to: string;
+  icon: LucideIcon;
+  value: number;
+  label: string;
+  hint?: string;
+  highlight?: boolean;
+}) {
+  return (
+    <Link
+      to={to}
+      className="group rounded-[1.5rem] bg-white p-5 shadow-soft transition hover:-translate-y-0.5 dark:bg-slate-900"
+    >
+      <div className="flex items-center justify-between">
+        <span
+          className={`grid h-10 w-10 place-items-center rounded-full ${
+            highlight ? "bg-sun/20 text-sun-deep" : "bg-forest/10 text-forest dark:text-emerald-300"
+          }`}
+        >
+          <Icon className="h-5 w-5" />
+        </span>
+        <ArrowRight className="h-4 w-4 text-ink/30 transition group-hover:translate-x-0.5 dark:text-slate-500" />
+      </div>
+      <p className="mt-4 font-display text-3xl font-extrabold tabular-nums">{value}</p>
+      <p className="text-sm font-semibold text-ink/65 dark:text-slate-400">{label}</p>
+      {hint && <p className="mt-1 text-xs font-semibold text-sun-deep">{hint}</p>}
+    </Link>
+  );
+}
+
+function Empty({ children }: { children: ReactNode }) {
+  return <p className="text-sm text-ink/55 dark:text-slate-400">{children}</p>;
+}
+
+function MoreLink({ to, children }: { to: string; children: ReactNode }) {
+  return (
+    <Link
+      to={to}
+      className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-forest hover:underline dark:text-emerald-300"
+    >
+      {children} <ArrowRight className="h-3.5 w-3.5" />
+    </Link>
   );
 }

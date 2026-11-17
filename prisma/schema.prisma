@@ -59,6 +59,10 @@ model User {
   providerProfile    ProviderProfile?
   auditLogs          AuditLog[]
   demandes           Demande[]
+  /// Rôle d'administration (équipe du back office). Pour un compte ADMIN,
+  /// null = Super admin (tous les accès) : c'est le cas des comptes existants.
+  adminRoleId        String?
+  adminRole          AdminRole?        @relation(fields: [adminRoleId], references: [id], onDelete: Restrict)
 
   @@map("user")
 }
@@ -156,6 +160,18 @@ model Demande {
   updatedAt    DateTime      @updatedAt
 
   @@index([status, createdAt])
+}
+
+/// Rôle d'administration personnalisé : liste des sections du back office accessibles.
+model AdminRole {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  description String?
+  /// Clés de permission (voir src/lib/admin/permissions.ts).
+  permissions String[]
+  members     User[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model AuditLog {

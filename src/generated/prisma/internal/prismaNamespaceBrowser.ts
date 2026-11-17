@@ -57,6 +57,7 @@ export const ModelName = {
   ProviderProfile: 'ProviderProfile',
   ProviderDocument: 'ProviderDocument',
   Demande: 'Demande',
+  AdminRole: 'AdminRole',
   AuditLog: 'AuditLog',
   Session: 'Session',
   Account: 'Account',
@@ -96,7 +97,8 @@ export const UserScalarFieldEnum = {
   failedLoginCount: 'failedLoginCount',
   lockedUntil: 'lockedUntil',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  adminRoleId: 'adminRoleId'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -173,6 +175,18 @@ export const DemandeScalarFieldEnum = {
 } as const
 
 export type DemandeScalarFieldEnum = (typeof DemandeScalarFieldEnum)[keyof typeof DemandeScalarFieldEnum]
+
+
+export const AdminRoleScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  permissions: 'permissions',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AdminRoleScalarFieldEnum = (typeof AdminRoleScalarFieldEnum)[keyof typeof AdminRoleScalarFieldEnum]
 
 
 export const AuditLogScalarFieldEnum = {

@@ -1,7 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { audit } from "@/lib/auth/audit.server";
-import { requireRole } from "@/lib/auth/guard.server";
+import { requirePermission } from "@/lib/admin/guard.server";
 import { getPrisma, isDatabaseConfigured } from "@/lib/db.server";
 import { getListing } from "@/lib/mice-data";
 
@@ -52,7 +52,7 @@ export const adminLinkListing = createServerFn({ method: "POST" })
       .parse(input),
   )
   .handler(async ({ data }) => {
-    const admin = await requireRole("ADMIN");
+    const admin = await requirePermission("labels");
     if (data.listingId && !getListing(data.listingId)) throw new Error("Fiche introuvable.");
     const prisma = getPrisma();
     if (data.listingId) {

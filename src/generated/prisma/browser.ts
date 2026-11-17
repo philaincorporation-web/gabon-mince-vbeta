@@ -50,6 +50,11 @@ export type ProviderDocument = Prisma.ProviderDocumentModel
  */
 export type Demande = Prisma.DemandeModel
 /**
+ * Model AdminRole
+ * Rôle d'administration personnalisé : liste des sections du back office accessibles.
+ */
+export type AdminRole = Prisma.AdminRoleModel
+/**
  * Model AuditLog
  * 
  */

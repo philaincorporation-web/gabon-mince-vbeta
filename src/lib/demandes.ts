@@ -2,7 +2,8 @@ import { createServerFn } from "@tanstack/react-start";
 import { getRequestIP } from "@tanstack/react-start/server";
 import { z } from "zod";
 import { audit } from "@/lib/auth/audit.server";
-import { loadSessionInfo, requireRole } from "@/lib/auth/guard.server";
+import { loadSessionInfo } from "@/lib/auth/guard.server";
+import { requirePermission } from "@/lib/admin/guard.server";
 import { getPrisma } from "@/lib/db.server";
 
 /**
@@ -71,7 +72,7 @@ export const createDemande = createServerFn({ method: "POST" })
 
 /** Admin : les 300 demandes les plus récentes et le nombre par statut. */
 export const getAdminDemandes = createServerFn({ method: "GET" }).handler(async () => {
-  await requireRole("ADMIN");
+  await requirePermission("demandes");
   const prisma = getPrisma();
   const [items, grouped] = await Promise.all([
     prisma.demande.findMany({ orderBy: { createdAt: "desc" }, take: 300 }),
@@ -103,7 +104,7 @@ export const adminUpdateDemande = createServerFn({ method: "POST" })
       .parse(input),
   )
   .handler(async ({ data }) => {
-    const admin = await requireRole("ADMIN");
+    const admin = await requirePermission("demandes");
     const prisma = getPrisma();
     const before = await prisma.demande.findUniqueOrThrow({ where: { id: data.id } });
     await prisma.demande.update({

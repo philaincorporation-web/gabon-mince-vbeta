@@ -50,7 +50,7 @@ export function DemandesPanel({
   t: T;
   language: Lang;
   busy: string | null;
-  run: (key: string, action: () => Promise<unknown>) => Promise<void>;
+  run: (key: string, action: () => Promise<unknown>) => Promise<unknown>;
 }) {
   const [filter, setFilter] = useState<Filter>("NEW");
   const [kind, setKind] = useState<DemandeKind | "ALL">("ALL");
@@ -152,7 +152,7 @@ function DemandeItem({
   t: T;
   language: Lang;
   busy: string | null;
-  run: (key: string, action: () => Promise<unknown>) => Promise<void>;
+  run: (key: string, action: () => Promise<unknown>) => Promise<unknown>;
 }) {
   const [note, setNote] = useState(d.adminNote ?? "");
   const noteChanged = note.trim() !== (d.adminNote ?? "");

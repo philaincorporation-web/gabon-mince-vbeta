@@ -33,6 +33,13 @@ import { Route as OffresRouteImport } from './routes/offres'
 import { Route as OrganisateurRouteImport } from './routes/organisateur'
 import { Route as PrestatairesRouteImport } from './routes/prestataires'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
+import { Route as AdminDemandesRouteImport } from './routes/admin/demandes'
+import { Route as AdminEquipeRouteImport } from './routes/admin/equipe'
+import { Route as AdminJournalRouteImport } from './routes/admin/journal'
+import { Route as AdminLabelsRouteImport } from './routes/admin/labels'
+import { Route as AdminRolesRouteImport } from './routes/admin/roles'
+import { Route as AdminUtilisateursRouteImport } from './routes/admin/utilisateurs'
+import { Route as AdminValidationsRouteImport } from './routes/admin/validations'
 import { Route as AuthSplatRouteImport } from './routes/auth/$'
 import { Route as EspaceIndexRouteImport } from './routes/espace/index'
 import { Route as EspaceOrganisateurRouteImport } from './routes/espace/organisateur'
@@ -159,6 +166,41 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminDemandesRoute = AdminDemandesRouteImport.update({
+  id: '/demandes',
+  path: '/demandes',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminEquipeRoute = AdminEquipeRouteImport.update({
+  id: '/equipe',
+  path: '/equipe',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminJournalRoute = AdminJournalRouteImport.update({
+  id: '/journal',
+  path: '/journal',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminLabelsRoute = AdminLabelsRouteImport.update({
+  id: '/labels',
+  path: '/labels',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminRolesRoute = AdminRolesRouteImport.update({
+  id: '/roles',
+  path: '/roles',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminUtilisateursRoute = AdminUtilisateursRouteImport.update({
+  id: '/utilisateurs',
+  path: '/utilisateurs',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminValidationsRoute = AdminValidationsRouteImport.update({
+  id: '/validations',
+  path: '/validations',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AuthSplatRoute = AuthSplatRouteImport.update({
   id: '/auth/$',
   path: '/auth/$',
@@ -209,6 +251,13 @@ export interface FileRoutesByFullPath {
   '/offres': typeof OffresRoute
   '/organisateur': typeof OrganisateurRoute
   '/prestataires': typeof PrestatairesRoute
+  '/admin/demandes': typeof AdminDemandesRoute
+  '/admin/equipe': typeof AdminEquipeRoute
+  '/admin/journal': typeof AdminJournalRoute
+  '/admin/labels': typeof AdminLabelsRoute
+  '/admin/roles': typeof AdminRolesRoute
+  '/admin/utilisateurs': typeof AdminUtilisateursRoute
+  '/admin/validations': typeof AdminValidationsRoute
   '/auth/$': typeof AuthSplatRoute
   '/espace/organisateur': typeof EspaceOrganisateurRoute
   '/espace/prestataire': typeof EspacePrestataireRoute
@@ -238,6 +287,13 @@ export interface FileRoutesByTo {
   '/offres': typeof OffresRoute
   '/organisateur': typeof OrganisateurRoute
   '/prestataires': typeof PrestatairesRoute
+  '/admin/demandes': typeof AdminDemandesRoute
+  '/admin/equipe': typeof AdminEquipeRoute
+  '/admin/journal': typeof AdminJournalRoute
+  '/admin/labels': typeof AdminLabelsRoute
+  '/admin/roles': typeof AdminRolesRoute
+  '/admin/utilisateurs': typeof AdminUtilisateursRoute
+  '/admin/validations': typeof AdminValidationsRoute
   '/auth/$': typeof AuthSplatRoute
   '/espace/organisateur': typeof EspaceOrganisateurRoute
   '/espace/prestataire': typeof EspacePrestataireRoute
@@ -270,6 +326,13 @@ export interface FileRoutesById {
   '/offres': typeof OffresRoute
   '/organisateur': typeof OrganisateurRoute
   '/prestataires': typeof PrestatairesRoute
+  '/admin/demandes': typeof AdminDemandesRoute
+  '/admin/equipe': typeof AdminEquipeRoute
+  '/admin/journal': typeof AdminJournalRoute
+  '/admin/labels': typeof AdminLabelsRoute
+  '/admin/roles': typeof AdminRolesRoute
+  '/admin/utilisateurs': typeof AdminUtilisateursRoute
+  '/admin/validations': typeof AdminValidationsRoute
   '/auth/$': typeof AuthSplatRoute
   '/espace/organisateur': typeof EspaceOrganisateurRoute
   '/espace/prestataire': typeof EspacePrestataireRoute
@@ -303,6 +366,13 @@ export interface FileRouteTypes {
     | '/offres'
     | '/organisateur'
     | '/prestataires'
+    | '/admin/demandes'
+    | '/admin/equipe'
+    | '/admin/journal'
+    | '/admin/labels'
+    | '/admin/roles'
+    | '/admin/utilisateurs'
+    | '/admin/validations'
     | '/auth/$'
     | '/espace/organisateur'
     | '/espace/prestataire'
@@ -332,6 +402,13 @@ export interface FileRouteTypes {
     | '/offres'
     | '/organisateur'
     | '/prestataires'
+    | '/admin/demandes'
+    | '/admin/equipe'
+    | '/admin/journal'
+    | '/admin/labels'
+    | '/admin/roles'
+    | '/admin/utilisateurs'
+    | '/admin/validations'
     | '/auth/$'
     | '/espace/organisateur'
     | '/espace/prestataire'
@@ -363,6 +440,13 @@ export interface FileRouteTypes {
     | '/offres'
     | '/organisateur'
     | '/prestataires'
+    | '/admin/demandes'
+    | '/admin/equipe'
+    | '/admin/journal'
+    | '/admin/labels'
+    | '/admin/roles'
+    | '/admin/utilisateurs'
+    | '/admin/validations'
     | '/auth/$'
     | '/espace/organisateur'
     | '/espace/prestataire'
@@ -568,6 +652,55 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/demandes': {
+      id: '/admin/demandes'
+      path: '/demandes'
+      fullPath: '/admin/demandes'
+      preLoaderRoute: typeof AdminDemandesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/equipe': {
+      id: '/admin/equipe'
+      path: '/equipe'
+      fullPath: '/admin/equipe'
+      preLoaderRoute: typeof AdminEquipeRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/journal': {
+      id: '/admin/journal'
+      path: '/journal'
+      fullPath: '/admin/journal'
+      preLoaderRoute: typeof AdminJournalRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/labels': {
+      id: '/admin/labels'
+      path: '/labels'
+      fullPath: '/admin/labels'
+      preLoaderRoute: typeof AdminLabelsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/roles': {
+      id: '/admin/roles'
+      path: '/roles'
+      fullPath: '/admin/roles'
+      preLoaderRoute: typeof AdminRolesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/utilisateurs': {
+      id: '/admin/utilisateurs'
+      path: '/utilisateurs'
+      fullPath: '/admin/utilisateurs'
+      preLoaderRoute: typeof AdminUtilisateursRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/validations': {
+      id: '/admin/validations'
+      path: '/validations'
+      fullPath: '/admin/validations'
+      preLoaderRoute: typeof AdminValidationsRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/auth/$': {
       id: '/auth/$'
       path: '/auth/$'
@@ -607,10 +740,24 @@ declare module '@tanstack/react-router' {
 }
 
 interface AdminRouteChildren {
+  AdminDemandesRoute: typeof AdminDemandesRoute
+  AdminEquipeRoute: typeof AdminEquipeRoute
+  AdminJournalRoute: typeof AdminJournalRoute
+  AdminLabelsRoute: typeof AdminLabelsRoute
+  AdminRolesRoute: typeof AdminRolesRoute
+  AdminUtilisateursRoute: typeof AdminUtilisateursRoute
+  AdminValidationsRoute: typeof AdminValidationsRoute
   AdminIndexRoute: typeof AdminIndexRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
+  AdminDemandesRoute: AdminDemandesRoute,
+  AdminEquipeRoute: AdminEquipeRoute,
+  AdminJournalRoute: AdminJournalRoute,
+  AdminLabelsRoute: AdminLabelsRoute,
+  AdminRolesRoute: AdminRolesRoute,
+  AdminUtilisateursRoute: AdminUtilisateursRoute,
+  AdminValidationsRoute: AdminValidationsRoute,
   AdminIndexRoute: AdminIndexRoute,
 }
 
