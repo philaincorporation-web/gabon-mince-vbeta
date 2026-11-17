@@ -8,9 +8,21 @@ import { ROLE_LABEL, type Role } from "@/lib/auth/access";
  */
 
 export type AccountEmailKind =
-  "ACCOUNT_APPROVED" | "ACCOUNT_REJECTED" | "ROLE_APPROVED" | "ROLE_REJECTED";
+  | "ACCOUNT_APPROVED"
+  | "ACCOUNT_REJECTED"
+  | "ROLE_APPROVED"
+  | "ROLE_REJECTED"
+  | "LABEL_GRANTED"
+  | "LABEL_REVOKED";
 
-type Recipient = { name: string; email: string; role: Role };
+type Recipient = {
+  name: string;
+  email: string;
+  role: Role;
+  /** Labels prestataires : nom de l'établissement et date d'expiration du label. */
+  businessName?: string;
+  labelExpiresAt?: Date;
+};
 
 let transporter: nodemailer.Transporter | null = null;
 
@@ -112,6 +124,38 @@ function buildContent(kind: AccountEmailKind, to: Recipient): Content {
         ],
         cta: login,
       };
+    case "LABEL_GRANTED": {
+      const business = to.businessName ? ` pour « ${to.businessName} »` : "";
+      const until = to.labelExpiresAt
+        ? ` Il est valable jusqu'au ${to.labelExpiresAt.toLocaleDateString("fr-FR", {
+            day: "numeric",
+            month: "long",
+            year: "numeric",
+            timeZone: "Africa/Libreville",
+          })}.`
+        : "";
+      return {
+        subject: "Votre label GabonMICE est accordé",
+        title: "Félicitations, votre label est accordé",
+        paragraphs: [
+          `L'équipe AGATOUR a examiné votre dossier et vous accorde le label prestataire GabonMICE${business}.${until}`,
+          "Vous retrouvez son statut dans votre espace prestataire. Pensez à renouveler votre dossier avant son expiration.",
+        ],
+        cta: { label: "Accéder à mon espace", url: `${siteUrl()}/espace/prestataire` },
+      };
+    }
+    case "LABEL_REVOKED": {
+      const business = to.businessName ? ` pour « ${to.businessName} »` : "";
+      return {
+        subject: "Votre label GabonMICE a été retiré",
+        title: "Votre label a été retiré",
+        paragraphs: [
+          `L'équipe AGATOUR vous informe que le label prestataire GabonMICE${business} a été retiré. Votre compte prestataire reste actif.`,
+          "Pour connaître les raisons de cette décision ou déposer un nouveau dossier, répondez simplement à cet e-mail ou ajoutez vos justificatifs depuis votre espace.",
+        ],
+        cta: { label: "Accéder à mon espace", url: `${siteUrl()}/espace/prestataire` },
+      };
+    }
   }
 }
 

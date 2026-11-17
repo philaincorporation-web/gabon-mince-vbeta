@@ -426,17 +426,25 @@ export const adminSetLabel = createServerFn({ method: "POST" })
     const now = new Date();
     const expires = new Date(now);
     expires.setMonth(expires.getMonth() + data.months);
-    await getPrisma().providerProfile.update({
+    const profile = await getPrisma().providerProfile.update({
       where: { userId: data.userId },
       data: data.grant
         ? { labelStatus: "GRANTED", labelGrantedAt: now, labelExpiresAt: expires }
         : { labelStatus: "REVOKED", labelExpiresAt: now },
+      select: { businessName: true, user: { select: { name: true, email: true, role: true } } },
+    });
+    const emailSent = await sendAccountEmail(data.grant ? "LABEL_GRANTED" : "LABEL_REVOKED", {
+      name: profile.user.name,
+      email: profile.user.email,
+      role: profile.user.role,
+      businessName: profile.businessName,
+      labelExpiresAt: data.grant ? expires : undefined,
     });
     await audit(data.grant ? "LABEL_GRANTED" : "LABEL_REVOKED", {
       userId: data.userId,
-      details: { by: admin.id, expiresAt: data.grant ? expires.toISOString() : null },
+      details: { by: admin.id, expiresAt: data.grant ? expires.toISOString() : null, emailSent },
     });
-    return { ok: true };
+    return { ok: true, emailSent };
   });
 
 export const adminChangeRole = createServerFn({ method: "POST" })
